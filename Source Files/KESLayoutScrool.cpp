@@ -5,131 +5,131 @@
 /** IApplication
 IApplication is similar to ISession,
 and holds all the app-specific and UI-specific information on the current session (kSessionBoss).
-Œ»İ‚ÌƒZƒbƒVƒ‡ƒ“ (kSessionBoss) ‚ÉŠÖ‚·‚éƒAƒvƒŠŒÅ—L‚¨‚æ‚Ñ UI ŒÅ—L‚Ì‚·‚×‚Ä‚Ìî•ñ‚ğ•Û‚µ‚Ü‚·
+ç¾åœ¨ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ (kSessionBoss) ã«é–¢ã™ã‚‹ã‚¢ãƒ—ãƒªå›ºæœ‰ãŠã‚ˆã³ UI å›ºæœ‰ã®ã™ã¹ã¦ã®æƒ…å ±ã‚’ä¿æŒã—ã¾ã™
 The application object (kAppBoss) 
 also manages and provides access to the global event loop (via its interface IEventDispatcher).
-ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ ƒIƒuƒWƒFƒNƒg (kAppBoss) ‚ÍA
-ƒOƒ[ƒoƒ‹ ƒCƒxƒ“ƒg ƒ‹[ƒv‚ğ (ƒCƒ“ƒ^[ƒtƒFƒCƒX IEventDispatcher ‚ğ‰î‚µ‚Ä) ŠÇ—‚µAƒAƒNƒZƒX‚à’ñ‹Ÿ‚µ‚Ü‚·B
+ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ (kAppBoss) ã¯ã€
+ã‚°ãƒ­ãƒ¼ãƒãƒ« ã‚¤ãƒ™ãƒ³ãƒˆ ãƒ«ãƒ¼ãƒ—ã‚’ (ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ IEventDispatcher ã‚’ä»‹ã—ã¦) ç®¡ç†ã—ã€ã‚¢ã‚¯ã‚»ã‚¹ã‚‚æä¾›ã—ã¾ã™ã€‚
 */
 #include "IApplication.h"
 
 /** IControlView
 Interface responsible for determining the visual appearance of widgets. 
-ƒEƒBƒWƒFƒbƒg‚Ì‹Šo“I‚ÈŠOŠÏ‚ğŒˆ’è‚·‚é–ğŠ„‚ğ’S‚¤ƒCƒ“ƒ^[ƒtƒFƒCƒXB
+ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã®è¦–è¦šçš„ãªå¤–è¦³ã‚’æ±ºå®šã™ã‚‹å½¹å‰²ã‚’æ‹…ã†ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã€‚
 Handles drawing in various states. 
-‚³‚Ü‚´‚Ü‚Èó‘Ô‚Å‚Ì•`‰æ‚ğˆ—‚µ‚Ü‚·B
+ã•ã¾ã–ã¾ãªçŠ¶æ…‹ã§ã®æç”»ã‚’å‡¦ç†ã—ã¾ã™ã€‚
 Also involved in hit testing and Auto attaching/detaching observers.
-ƒqƒbƒgƒeƒXƒg‚âƒIƒuƒU[ƒo[‚Ì©“®’…’E‚É‚àŠÖ—^‚µ‚Ä‚¢‚Ü‚·B
+ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆã‚„ã‚ªãƒ–ã‚¶ãƒ¼ãƒãƒ¼ã®è‡ªå‹•ç€è„±ã«ã‚‚é–¢ä¸ã—ã¦ã„ã¾ã™ã€‚
 */
 #include "IControlView.h"
 
 /** ICommand
 commands are used to modify objects that persist in an InDesign database that supports undo. 
-ƒRƒ}ƒ“ƒh‚ÍAŒ³‚É–ß‚·‚ğƒTƒ|[ƒg‚·‚é InDesign ƒf[ƒ^ƒx[ƒX‚É•Û‚³‚ê‚éƒIƒuƒWƒFƒNƒg‚ğ•ÏX‚·‚é‚½‚ß‚Ég—p‚³‚ê‚Ü‚·
+ã‚³ãƒãƒ³ãƒ‰ã¯ã€å…ƒã«æˆ»ã™ã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ InDesign ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«ä¿æŒã•ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã•ã‚Œã¾ã™
 */
 #include "ICommand.h"
 
 /** IDataBase
 A database is the underlying data structure used for storage of documents, preferences, books, etc.
-ƒf[ƒ^ƒx[ƒX‚ÍAƒhƒLƒ…ƒƒ“ƒgAİ’èA‘Ğ‚È‚Ç‚Ì•Û‘¶‚Ég—p‚³‚ê‚éŠî‘b‚Æ‚È‚éƒf[ƒ^\‘¢‚Å‚·B
+ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¯ã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã€è¨­å®šã€æ›¸ç±ãªã©ã®ä¿å­˜ã«ä½¿ç”¨ã•ã‚Œã‚‹åŸºç¤ã¨ãªã‚‹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ã§ã™ã€‚
 It handles allocation, serialization, deletion of objects in the files.
-ƒtƒ@ƒCƒ‹“à‚ÌƒIƒuƒWƒFƒNƒg‚ÌŠ„‚è“–‚ÄAƒVƒŠƒAƒ‹‰»Aíœ‚ğˆ—‚µ‚Ü‚·B
+ãƒ•ã‚¡ã‚¤ãƒ«å†…ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰²ã‚Šå½“ã¦ã€ã‚·ãƒªã‚¢ãƒ«åŒ–ã€å‰Šé™¤ã‚’å‡¦ç†ã—ã¾ã™ã€‚
 It also handles caching of objects.
-‚Ü‚½AƒIƒuƒWƒFƒNƒg‚ÌƒLƒƒƒbƒVƒ…‚àˆ—‚µ‚Ü‚·B
+ã¾ãŸã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚‚å‡¦ç†ã—ã¾ã™ã€‚
 */
 #include "IDataBase.h"
 
 /** IDocument
 Represents an InDesign publication. Provides the basic file operations. 
-InDesign •¶‘‚ğ•\‚µ‚Ü‚·BŠî–{“I‚Èƒtƒ@ƒCƒ‹‘€ì‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+InDesign æ–‡æ›¸ã‚’è¡¨ã—ã¾ã™ã€‚åŸºæœ¬çš„ãªãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œã‚’æä¾›ã—ã¾ã™ã€‚
 */
 #include "IDocument.h"
 
 /** IDocumentList
 store a list of open documents.
-ŠJ‚¢‚Ä‚¢‚éƒhƒLƒ…ƒƒ“ƒg‚ÌƒŠƒXƒg‚ªŠi”[‚³‚ê‚Ü‚·B
+é–‹ã„ã¦ã„ã‚‹ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ãƒªã‚¹ãƒˆãŒæ ¼ç´ã•ã‚Œã¾ã™ã€‚
 */
 #include "IDocumentList.h"
 
 /** IGalleyUtils
 an aggregrate of many different utility functions centered around the document window and galley sub window.
-ƒhƒLƒ…ƒƒ“ƒg ƒEƒBƒ“ƒhƒE‚ÆƒMƒƒƒŒ[ ƒTƒu ƒEƒBƒ“ƒhƒE‚ğ’†S‚Æ‚µ‚½‚³‚Ü‚´‚Ü‚Èƒ†[ƒeƒBƒŠƒeƒBŠÖ”‚ÌW‡‘Ì‚Å‚·B
+ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¨ã‚®ãƒ£ãƒ¬ãƒ¼ ã‚µãƒ– ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä¸­å¿ƒã¨ã—ãŸã•ã¾ã–ã¾ãªãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°ã®é›†åˆä½“ã§ã™ã€‚
 */
 #include "IGalleyUtils.h"
 
 /** IHierarchy
 stores a persistent, UID-based tree structure. This tree structure is used for InDesign's display hierarchy.
-‰i‘±“I‚È UID ƒx[ƒX‚ÌƒcƒŠ[\‘¢‚ªŠi”[‚³‚ê‚Ü‚·B‚±‚ÌƒcƒŠ[\‘¢‚ÍAInDesign ‚Ì•\¦ŠK‘w‚Ég—p‚³‚ê‚Ü‚·B
+æ°¸ç¶šçš„ãª UID ãƒ™ãƒ¼ã‚¹ã®ãƒ„ãƒªãƒ¼æ§‹é€ ãŒæ ¼ç´ã•ã‚Œã¾ã™ã€‚ã“ã®ãƒ„ãƒªãƒ¼æ§‹é€ ã¯ã€InDesign ã®è¡¨ç¤ºéšå±¤ã«ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚
 */
 #include "IHierarchy.h"
 
 /** IScript
 Added to any boss that wants to be visible as an object in the scripting architecture
 and thus available to any scripting client.
-ƒXƒNƒŠƒvƒgƒA[ƒLƒeƒNƒ`ƒƒ‚ÅƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Ä•\¦‚µ
-ƒXƒNƒŠƒvƒgƒNƒ‰ƒCƒAƒ“ƒg‚Åg—p‚Å‚«‚é‚æ‚¤‚É‚·‚éƒ{ƒX‚É’Ç‰Á‚³‚ê‚Ü‚·B
+ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦è¡¨ç¤ºã—
+ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã§ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ãƒœã‚¹ã«è¿½åŠ ã•ã‚Œã¾ã™ã€‚
 */
 #include "IScript.h"
 
 /** IScriptRequestData
 Used to pass data into and out of a scripting request.
-ƒXƒNƒŠƒvƒg—v‹‚Æ‚ÌŠÔ‚Åƒf[ƒ^‚ğ‚â‚èæ‚è‚·‚é‚½‚ß‚Ég—p‚µ‚Ü‚·B
+ã‚¹ã‚¯ãƒªãƒ—ãƒˆè¦æ±‚ã¨ã®é–“ã§ãƒ‡ãƒ¼ã‚¿ã‚’ã‚„ã‚Šå–ã‚Šã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã—ã¾ã™ã€‚
 */
 #include "IScriptRequestData.h"
 
 /** ILayoutControlData
 Data interface for the Layout Widget.
-ƒCƒAƒEƒgƒEƒBƒWƒFƒbƒg‚Ìƒf[ƒ^ƒCƒ“ƒ^[ƒtƒF[ƒXB
+ã‚¤ã‚¢ã‚¦ãƒˆã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
 Provides access to the spread, document, and currently installed selection.
-Œ©ŠJ‚«AƒhƒLƒ…ƒƒ“ƒgA‚¨‚æ‚ÑŒ»İƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‘I‘ğ”ÍˆÍ‚Ö‚ÌƒAƒNƒZƒX‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+è¦‹é–‹ãã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã€ãŠã‚ˆã³ç¾åœ¨ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹é¸æŠç¯„å›²ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã‚’æä¾›ã—ã¾ã™ã€‚
 */
 #include "ILayoutControlData.h"
 
 /** ILayoutCmdData
 Command data interface used to pass layout data information to various commands.
-ƒŒƒCƒAƒEƒgƒf[ƒ^î•ñ‚ğŠeíƒRƒ}ƒ“ƒh‚É“n‚·‚½‚ß‚ÌƒRƒ}ƒ“ƒhƒf[ƒ^ƒCƒ“ƒ^ƒtƒF[ƒX
+ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ãƒ¼ã‚¿æƒ…å ±ã‚’å„ç¨®ã‚³ãƒãƒ³ãƒ‰ã«æ¸¡ã™ãŸã‚ã®ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹
 */
 #include "ILayoutCmdData.h"
 
 /** ILayoutUIUtils
 UI Layout-related utilities
-UI ƒŒƒCƒAƒEƒgŠÖ˜A‚Ìƒ†[ƒeƒBƒŠƒeƒB
+UI ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆé–¢é€£ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 */
 #include "ILayoutUIUtils.h"
 
 /** IPageList
 which caches commonly needed information about pages in the document. 
-ƒhƒLƒ…ƒƒ“ƒg“à‚Ìƒy[ƒW‚ÉŠÖ‚µ‚Äˆê”Ê“I‚É•K—v‚Èî•ñ‚ğƒLƒƒƒbƒVƒ…‚µ‚Ü‚·B
+ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆå†…ã®ãƒšãƒ¼ã‚¸ã«é–¢ã—ã¦ä¸€èˆ¬çš„ã«å¿…è¦ãªæƒ…å ±ã‚’ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ã¾ã™ã€‚
 */
 #include "IPageList.h"
 
 /** IPanelControlData
 Interface that container widgets implement.
-ƒRƒ“ƒeƒiƒEƒBƒWƒFƒbƒg‚ªÀ‘•‚·‚éƒCƒ“ƒ^[ƒtƒF[ƒX
+ã‚³ãƒ³ãƒ†ãƒŠã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆãŒå®Ÿè£…ã™ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
 */
 #include "IPanelControlData.h"
 
 /** IPanorama
 Interface used to manage views that can scroll.
-ƒXƒNƒ[ƒ‹‚Å‚«‚éƒrƒ…[‚ğŠÇ—‚·‚é‚½‚ß‚Ég—p‚³‚ê‚éƒCƒ“ƒ^[ƒtƒFƒCƒXB
+ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã§ãã‚‹ãƒ“ãƒ¥ãƒ¼ã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã•ã‚Œã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã€‚
 */
 #include "IPanorama.h"
 
 /** IPresentationList
 unordered list of document presentations. 
-ƒhƒLƒ…ƒƒ“ƒgƒvƒŒƒ[ƒ“ƒe[ƒVƒ‡ƒ“‚Ì‡˜•t‚¯‚³‚ê‚Ä‚¢‚È‚¢ƒŠƒXƒg‚ğ•Û‚µ‚Ü‚·B
+ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ—ãƒ¬ã‚¼ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®é †åºä»˜ã‘ã•ã‚Œã¦ã„ãªã„ãƒªã‚¹ãƒˆã‚’ä¿æŒã—ã¾ã™ã€‚
 */
 #include "IPresentationList.h"
 
 /** ISpread
 A spread is the root of all drawable page item's IHierarchies
-ƒXƒvƒŒƒbƒh‚ÍA‚·‚×‚Ä‚Ì•`‰æ‰Â”\‚Èƒy[ƒWƒAƒCƒeƒ€‚ÌIHierarchies‚Ìƒ‹[ƒg‚Å‚·
+ã‚¹ãƒ—ãƒ¬ãƒƒãƒ‰ã¯ã€ã™ã¹ã¦ã®æç”»å¯èƒ½ãªãƒšãƒ¼ã‚¸ã‚¢ã‚¤ãƒ†ãƒ ã®IHierarchiesã®ãƒ«ãƒ¼ãƒˆã§ã™
 */
 #include "ISpread.h"
 
 /** IUIDData
 data interface that holds onto a UIDRef that can be used to uniquely describe a persistent object.
-‰i‘±ƒIƒuƒWƒFƒNƒg‚ğˆêˆÓ‚É‹Lq‚·‚é‚½‚ß‚Ég—p‚Å‚«‚éUIDRef‚ğ•Û‚·‚éƒf[ƒ^ ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Å‚·B
+æ°¸ç¶šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸€æ„ã«è¨˜è¿°ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã§ãã‚‹UIDRefã‚’ä¿æŒã™ã‚‹ãƒ‡ãƒ¼ã‚¿ ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã§ã™ã€‚
 */
 #include "IUIDData.h"
 
