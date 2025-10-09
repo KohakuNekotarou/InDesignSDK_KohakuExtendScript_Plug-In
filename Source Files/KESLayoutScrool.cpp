@@ -141,6 +141,14 @@ Data interface that holds onto a UIDRef that can be used to uniquely describe a 
 
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
+
+
+/** KeyValuePair
+KeyValuePair is similar in concept to std::pair.
+KeyValuePair は、概念が std::pair に似ています。
+*/
+#include "KeyValuePair.h"
+
 /** ScriptData
 Class that can hold any of the data types supported by the scripting architecture.
 スクリプト アーキテクチャでサポートされている任意のデータ型を保持できるクラスです。
@@ -211,10 +219,11 @@ ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 				IDocument* iDocument = iDocumentList->GetNthDoc(i);
 
 				// Get IControlView and IPanorama
-				auto result = KESLayoutScrool::QueryControlViewAndPanorama(iDocument);
-				IControlView* iControlView = result.first;
+				KeyValuePair<IControlView*, IPanorama*> result =
+					KESLayoutScrool::QueryControlViewAndPanorama(iDocument);
+				IControlView* iControlView = result.Key();
 				if (!iControlView) continue;
-				IPanorama* iPanorama = result.second;
+				IPanorama* iPanorama = result.Value();
 				if (!iPanorama) continue;
 
 				// Set Page
@@ -297,8 +306,9 @@ ErrorCode KESLayoutScrool::AccessContentLocationAtFrameOrigin
 		if (!iDocument) break;
 
 		// Get IPanorama
-		auto result = KESLayoutScrool::QueryControlViewAndPanorama(iDocument);
-		IPanorama* iPanorama = result.second;
+		KeyValuePair<IControlView*, IPanorama*> result = 
+			KESLayoutScrool::QueryControlViewAndPanorama(iDocument);
+		IPanorama* iPanorama = result.Value();
 		if (!iPanorama) break;
 
 		// Get top-left position
@@ -349,7 +359,9 @@ ErrorCode KESLayoutScrool::AccessContentLocationAtFrameOrigin
 	return status; // If kSuccess is not returned, an error occurs
 }
 /* Query controlView and panorama */
-std::pair<IControlView*, IPanorama*> KESLayoutScrool::QueryControlViewAndPanorama(IDocument* iDocument)
+
+
+KeyValuePair<IControlView*, IPanorama*> KESLayoutScrool::QueryControlViewAndPanorama(IDocument* iDocument)
 {
 	IControlView* iControlView = nil;
 	IPanorama* iPanorama = nil;
@@ -380,5 +392,5 @@ std::pair<IControlView*, IPanorama*> KESLayoutScrool::QueryControlViewAndPanoram
 		}
 	} while (false); // only do once
 
-	return std::make_pair(iControlView, iPanorama);
+	return KeyValuePair(iControlView, iPanorama);
 }
