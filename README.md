@@ -1,15 +1,16 @@
 # InDesign Plug-In
-## Win 64bit
+### Win 64bit
 
-I'll add various things to ExtendScript.
+**I'll add various things to ExtendScript.**
 
-### // extendScript for JavaScript
-
+## extendScript for JavaScript
+```
 // Match scroll zoom all layout.
 app.matchScrollZoomAllLayout();
 
- // Set
+ // Set Top-left coordinates of the LayoutView.
 app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0;
 
- // Get
+ // Get Top-left coordinates of the LayoutView.
 y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY;
+```
