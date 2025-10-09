@@ -2,6 +2,7 @@
 ### Win 64bit
 
 **I'll add various things to ExtendScript.**
+<br>**Let's learn the InDesign SDK together.**
 
 ## extendScript for JavaScript
 ```
