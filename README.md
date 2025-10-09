@@ -1,7 +1,19 @@
-Apply the scroll and zoom settings from the front layout to all layouts.
+InDesign Plug-In
 
-Methods and properties will be added gradually.
+Win 64bit
+
+I'll add various things to ExtendScript.
 
 // extendScript for JavaScript
 
+// Match scroll zoom all layout.
+
 app.matchScrollZoomAllLayout();
+
+ // Set
+ 
+app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0;
+
+ // Get
+ 
+y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY;
