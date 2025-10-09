@@ -1,6 +1,5 @@
-InDesign Plug-In
-
-Win 64bit
+# InDesign Plug-In
+## Win 64bit
 
 I'll add various things to ExtendScript.
 
