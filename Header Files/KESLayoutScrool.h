@@ -1,12 +1,14 @@
 #pragma once
 
+// Interface includes:
 #include "IControlView.h"
 #include "IDocument.h"
 #include "IPanorama.h"
 #include "IScript.h"
 #include "IScriptRequestData.h"
 
-#include <string>
+// General includes:
+#include "KeyValuePair.h"
 
 class KESLayoutScrool
 {
@@ -23,6 +25,6 @@ public:
 private:
     /**  Query panorama.
     */
-    static std::pair<IControlView*, IPanorama*> QueryControlViewAndPanorama(IDocument* idocument);
+    static KeyValuePair<IControlView*, IPanorama*> QueryControlViewAndPanorama(IDocument* idocument);
 };
 
