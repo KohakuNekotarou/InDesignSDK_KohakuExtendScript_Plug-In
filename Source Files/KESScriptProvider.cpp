@@ -60,7 +60,7 @@ public:
 	@param data identifies an interface pointer used to extract data.
 	@param parent identifies an interface pointer on the script object 		representing the parent of the application object.
 	*/
-	//virtual ErrorCode AccessProperty(ScriptID propID, IScriptRequestData* data, IScript* parent);
+	virtual ErrorCode AccessProperty(ScriptID propID, IScriptRequestData* data, IScript* parent);
 };
 
 
@@ -87,4 +87,26 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID methodID, IScriptRequestData*
 	}
 
     return status;
+}
+
+/* AccessProperty */
+ErrorCode KESScriptProvider::AccessProperty(ScriptID propID, IScriptRequestData* data, IScript* parent)
+{
+	ErrorCode status = kFailure;
+
+	switch (propID.Get())
+	{
+	case p_AccessContentLocationAtFrameOriginX:
+		status = KESLayoutScrool::AccessContentLocationAtFrameOrigin(propID, data, parent, "X");
+		break;
+
+	case p_AccessContentLocationAtFrameOriginY:
+		status = KESLayoutScrool::AccessContentLocationAtFrameOrigin(propID, data, parent, "Y");
+		break;
+
+	default:
+		status = CScriptProvider::AccessProperty(propID, data, parent);
+	}
+
+	return status;
 }

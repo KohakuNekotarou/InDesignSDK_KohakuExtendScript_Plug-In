@@ -1,197 +1,364 @@
 #include "VCPlugInHeaders.h" // Visual Studio only?
 #include "KESLayoutScrool.h"
 
+#include <string>
+
 // Interface includes:
 /** IApplication
 IApplication is similar to ISession,
 and holds all the app-specific and UI-specific information on the current session (kSessionBoss).
-ç¾åœ¨ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ (kSessionBoss) ã«é–¢ã™ã‚‹ã‚¢ãƒ—ãƒªå›ºæœ‰ãŠã‚ˆã³ UI å›ºæœ‰ã®ã™ã¹ã¦ã®æƒ…å ±ã‚’ä¿æŒã—ã¾ã™
+Œ»İ‚ÌƒZƒbƒVƒ‡ƒ“ (kSessionBoss) ‚ÉŠÖ‚·‚éƒAƒvƒŠŒÅ—L‚¨‚æ‚Ñ UI ŒÅ—L‚Ì‚·‚×‚Ä‚Ìî•ñ‚ğ•Û‚µ‚Ü‚·
 The application object (kAppBoss) 
 also manages and provides access to the global event loop (via its interface IEventDispatcher).
-ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ (kAppBoss) ã¯ã€
-ã‚°ãƒ­ãƒ¼ãƒãƒ« ã‚¤ãƒ™ãƒ³ãƒˆ ãƒ«ãƒ¼ãƒ—ã‚’ (ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ IEventDispatcher ã‚’ä»‹ã—ã¦) ç®¡ç†ã—ã€ã‚¢ã‚¯ã‚»ã‚¹ã‚‚æä¾›ã—ã¾ã™ã€‚
+ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ ƒIƒuƒWƒFƒNƒg (kAppBoss) ‚ÍA
+ƒOƒ[ƒoƒ‹ ƒCƒxƒ“ƒg ƒ‹[ƒv‚ğ (ƒCƒ“ƒ^[ƒtƒFƒCƒX IEventDispatcher ‚ğ‰î‚µ‚Ä) ŠÇ—‚µAƒAƒNƒZƒX‚à’ñ‹Ÿ‚µ‚Ü‚·B
 */
 #include "IApplication.h"
 
 /** IControlView
 Interface responsible for determining the visual appearance of widgets. 
-ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã®è¦–è¦šçš„ãªå¤–è¦³ã‚’æ±ºå®šã™ã‚‹å½¹å‰²ã‚’æ‹…ã†ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã€‚
+ƒEƒBƒWƒFƒbƒg‚Ì‹Šo“I‚ÈŠOŠÏ‚ğŒˆ’è‚·‚é–ğŠ„‚ğ’S‚¤ƒCƒ“ƒ^[ƒtƒFƒCƒXB
 Handles drawing in various states. 
-ã•ã¾ã–ã¾ãªçŠ¶æ…‹ã§ã®æç”»ã‚’å‡¦ç†ã—ã¾ã™ã€‚
+‚³‚Ü‚´‚Ü‚Èó‘Ô‚Å‚Ì•`‰æ‚ğˆ—‚µ‚Ü‚·B
 Also involved in hit testing and Auto attaching/detaching observers.
-ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆã‚„ã‚ªãƒ–ã‚¶ãƒ¼ãƒãƒ¼ã®è‡ªå‹•ç€è„±ã«ã‚‚é–¢ä¸ã—ã¦ã„ã¾ã™ã€‚
+ƒqƒbƒgƒeƒXƒg‚âƒIƒuƒU[ƒo[‚Ì©“®’…’E‚É‚àŠÖ—^‚µ‚Ä‚¢‚Ü‚·B
 */
 #include "IControlView.h"
 
 /** ICommand
 commands are used to modify objects that persist in an InDesign database that supports undo. 
-ã‚³ãƒãƒ³ãƒ‰ã¯ã€å…ƒã«æˆ»ã™ã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ InDesign ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«ä¿æŒã•ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã•ã‚Œã¾ã™
+ƒRƒ}ƒ“ƒh‚ÍAŒ³‚É–ß‚·‚ğƒTƒ|[ƒg‚·‚é InDesign ƒf[ƒ^ƒx[ƒX‚É•Û‚³‚ê‚éƒIƒuƒWƒFƒNƒg‚ğ•ÏX‚·‚é‚½‚ß‚Ég—p‚³‚ê‚Ü‚·
 */
 #include "ICommand.h"
 
 /** IDataBase
 A database is the underlying data structure used for storage of documents, preferences, books, etc.
-ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¯ã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã€è¨­å®šã€æ›¸ç±ãªã©ã®ä¿å­˜ã«ä½¿ç”¨ã•ã‚Œã‚‹åŸºç¤ã¨ãªã‚‹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ã§ã™ã€‚
+ƒf[ƒ^ƒx[ƒX‚ÍAƒhƒLƒ…ƒƒ“ƒgAİ’èA‘Ğ‚È‚Ç‚Ì•Û‘¶‚Ég—p‚³‚ê‚éŠî‘b‚Æ‚È‚éƒf[ƒ^\‘¢‚Å‚·B
 It handles allocation, serialization, deletion of objects in the files.
-ãƒ•ã‚¡ã‚¤ãƒ«å†…ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰²ã‚Šå½“ã¦ã€ã‚·ãƒªã‚¢ãƒ«åŒ–ã€å‰Šé™¤ã‚’å‡¦ç†ã—ã¾ã™ã€‚
+ƒtƒ@ƒCƒ‹“à‚ÌƒIƒuƒWƒFƒNƒg‚ÌŠ„‚è“–‚ÄAƒVƒŠƒAƒ‹‰»Aíœ‚ğˆ—‚µ‚Ü‚·B
 It also handles caching of objects.
-ã¾ãŸã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚‚å‡¦ç†ã—ã¾ã™ã€‚
+‚Ü‚½AƒIƒuƒWƒFƒNƒg‚ÌƒLƒƒƒbƒVƒ…‚àˆ—‚µ‚Ü‚·B
 */
 #include "IDataBase.h"
 
 /** IDocument
 Represents an InDesign publication. Provides the basic file operations. 
-InDesign æ–‡æ›¸ã‚’è¡¨ã—ã¾ã™ã€‚åŸºæœ¬çš„ãªãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œã‚’æä¾›ã—ã¾ã™ã€‚
+InDesign •¶‘‚ğ•\‚µ‚Ü‚·BŠî–{“I‚Èƒtƒ@ƒCƒ‹‘€ì‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 */
 #include "IDocument.h"
 
 /** IDocumentList
 store a list of open documents.
-é–‹ã„ã¦ã„ã‚‹ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ãƒªã‚¹ãƒˆãŒæ ¼ç´ã•ã‚Œã¾ã™ã€‚
+ŠJ‚¢‚Ä‚¢‚éƒhƒLƒ…ƒƒ“ƒg‚ÌƒŠƒXƒg‚ªŠi”[‚³‚ê‚Ü‚·B
 */
 #include "IDocumentList.h"
 
 /** IGalleyUtils
 an aggregrate of many different utility functions centered around the document window and galley sub window.
-ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¨ã‚®ãƒ£ãƒ¬ãƒ¼ ã‚µãƒ– ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä¸­å¿ƒã¨ã—ãŸã•ã¾ã–ã¾ãªãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°ã®é›†åˆä½“ã§ã™ã€‚
+ƒhƒLƒ…ƒƒ“ƒg ƒEƒBƒ“ƒhƒE‚ÆƒMƒƒƒŒ[ ƒTƒu ƒEƒBƒ“ƒhƒE‚ğ’†S‚Æ‚µ‚½‚³‚Ü‚´‚Ü‚Èƒ†[ƒeƒBƒŠƒeƒBŠÖ”‚ÌW‡‘Ì‚Å‚·B
 */
 #include "IGalleyUtils.h"
 
 /** IHierarchy
 stores a persistent, UID-based tree structure. This tree structure is used for InDesign's display hierarchy.
-æ°¸ç¶šçš„ãª UID ãƒ™ãƒ¼ã‚¹ã®ãƒ„ãƒªãƒ¼æ§‹é€ ãŒæ ¼ç´ã•ã‚Œã¾ã™ã€‚ã“ã®ãƒ„ãƒªãƒ¼æ§‹é€ ã¯ã€InDesign ã®è¡¨ç¤ºéšå±¤ã«ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚
+‰i‘±“I‚È UID ƒx[ƒX‚ÌƒcƒŠ[\‘¢‚ªŠi”[‚³‚ê‚Ü‚·B‚±‚ÌƒcƒŠ[\‘¢‚ÍAInDesign ‚Ì•\¦ŠK‘w‚Ég—p‚³‚ê‚Ü‚·B
 */
 #include "IHierarchy.h"
 
-/** IScript
-Added to any boss that wants to be visible as an object in the scripting architecture
-and thus available to any scripting client.
-ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦è¡¨ç¤ºã—
-ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã§ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ãƒœã‚¹ã«è¿½åŠ ã•ã‚Œã¾ã™ã€‚
-*/
-#include "IScript.h"
-
-/** IScriptRequestData
-Used to pass data into and out of a scripting request.
-ã‚¹ã‚¯ãƒªãƒ—ãƒˆè¦æ±‚ã¨ã®é–“ã§ãƒ‡ãƒ¼ã‚¿ã‚’ã‚„ã‚Šå–ã‚Šã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã—ã¾ã™ã€‚
-*/
-#include "IScriptRequestData.h"
-
 /** ILayoutControlData
 Data interface for the Layout Widget.
-ã‚¤ã‚¢ã‚¦ãƒˆã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
+ƒCƒAƒEƒgƒEƒBƒWƒFƒbƒg‚Ìƒf[ƒ^ƒCƒ“ƒ^[ƒtƒF[ƒXB
 Provides access to the spread, document, and currently installed selection.
-è¦‹é–‹ãã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã€ãŠã‚ˆã³ç¾åœ¨ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹é¸æŠç¯„å›²ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã‚’æä¾›ã—ã¾ã™ã€‚
+Œ©ŠJ‚«AƒhƒLƒ…ƒƒ“ƒgA‚¨‚æ‚ÑŒ»İƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‘I‘ğ”ÍˆÍ‚Ö‚ÌƒAƒNƒZƒX‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 */
 #include "ILayoutControlData.h"
 
 /** ILayoutCmdData
 Command data interface used to pass layout data information to various commands.
-ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ãƒ¼ã‚¿æƒ…å ±ã‚’å„ç¨®ã‚³ãƒãƒ³ãƒ‰ã«æ¸¡ã™ãŸã‚ã®ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹
+ƒŒƒCƒAƒEƒgƒf[ƒ^î•ñ‚ğŠeíƒRƒ}ƒ“ƒh‚É“n‚·‚½‚ß‚ÌƒRƒ}ƒ“ƒhƒf[ƒ^ƒCƒ“ƒ^ƒtƒF[ƒX
 */
 #include "ILayoutCmdData.h"
 
 /** ILayoutUIUtils
 UI Layout-related utilities
-UI ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆé–¢é€£ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
+UI ƒŒƒCƒAƒEƒgŠÖ˜A‚Ìƒ†[ƒeƒBƒŠƒeƒB
 */
 #include "ILayoutUIUtils.h"
 
 /** IPageList
 which caches commonly needed information about pages in the document. 
-ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆå†…ã®ãƒšãƒ¼ã‚¸ã«é–¢ã—ã¦ä¸€èˆ¬çš„ã«å¿…è¦ãªæƒ…å ±ã‚’ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ã¾ã™ã€‚
+ƒhƒLƒ…ƒƒ“ƒg“à‚Ìƒy[ƒW‚ÉŠÖ‚µ‚Äˆê”Ê“I‚É•K—v‚Èî•ñ‚ğƒLƒƒƒbƒVƒ…‚µ‚Ü‚·B
 */
 #include "IPageList.h"
 
 /** IPanelControlData
 Interface that container widgets implement.
-ã‚³ãƒ³ãƒ†ãƒŠã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆãŒå®Ÿè£…ã™ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+ƒRƒ“ƒeƒiƒEƒBƒWƒFƒbƒg‚ªÀ‘•‚·‚éƒCƒ“ƒ^[ƒtƒF[ƒX
 */
 #include "IPanelControlData.h"
 
 /** IPanorama
 Interface used to manage views that can scroll.
-ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã§ãã‚‹ãƒ“ãƒ¥ãƒ¼ã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã•ã‚Œã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã€‚
+ƒXƒNƒ[ƒ‹‚Å‚«‚éƒrƒ…[‚ğŠÇ—‚·‚é‚½‚ß‚Ég—p‚³‚ê‚éƒCƒ“ƒ^[ƒtƒFƒCƒXB
 */
 #include "IPanorama.h"
 
 /** IPresentationList
 unordered list of document presentations. 
-ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ—ãƒ¬ã‚¼ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®é †åºä»˜ã‘ã•ã‚Œã¦ã„ãªã„ãƒªã‚¹ãƒˆã‚’ä¿æŒã—ã¾ã™ã€‚
+ƒhƒLƒ…ƒƒ“ƒgƒvƒŒƒ[ƒ“ƒe[ƒVƒ‡ƒ“‚Ì‡˜•t‚¯‚³‚ê‚Ä‚¢‚È‚¢ƒŠƒXƒg‚ğ•Û‚µ‚Ü‚·B
 */
 #include "IPresentationList.h"
 
+/** IScript
+Added to any boss that wants to be visible as an object in the scripting architecture
+and thus available to any scripting client.
+ƒXƒNƒŠƒvƒgƒA[ƒLƒeƒNƒ`ƒƒ‚ÅƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Ä•\¦‚µ
+ƒXƒNƒŠƒvƒgƒNƒ‰ƒCƒAƒ“ƒg‚Åg—p‚Å‚«‚é‚æ‚¤‚É‚·‚éƒ{ƒX‚É’Ç‰Á‚³‚ê‚Ü‚·B
+*/
+#include "IScript.h"
+
+/** IScriptRequestData
+Used to pass data into and out of a scripting request.
+ƒXƒNƒŠƒvƒg—v‹‚Æ‚ÌŠÔ‚Åƒf[ƒ^‚ğ‚â‚èæ‚è‚·‚é‚½‚ß‚Ég—p‚µ‚Ü‚·B
+*/
+#include "IScriptRequestData.h"
+
+/** IScriptUtils
+*/
+#include "IScriptUtils.h"
+
 /** ISpread
 A spread is the root of all drawable page item's IHierarchies
-ã‚¹ãƒ—ãƒ¬ãƒƒãƒ‰ã¯ã€ã™ã¹ã¦ã®æç”»å¯èƒ½ãªãƒšãƒ¼ã‚¸ã‚¢ã‚¤ãƒ†ãƒ ã®IHierarchiesã®ãƒ«ãƒ¼ãƒˆã§ã™
+ƒXƒvƒŒƒbƒh‚ÍA‚·‚×‚Ä‚Ì•`‰æ‰Â”\‚Èƒy[ƒWƒAƒCƒeƒ€‚ÌIHierarchies‚Ìƒ‹[ƒg‚Å‚·
 */
 #include "ISpread.h"
 
 /** IUIDData
-data interface that holds onto a UIDRef that can be used to uniquely describe a persistent object.
-æ°¸ç¶šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸€æ„ã«è¨˜è¿°ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã§ãã‚‹UIDRefã‚’ä¿æŒã™ã‚‹ãƒ‡ãƒ¼ã‚¿ ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã§ã™ã€‚
+Data interface that holds onto a UIDRef that can be used to uniquely describe a persistent object.
+‰i‘±ƒIƒuƒWƒFƒNƒg‚ğˆêˆÓ‚É‹Lq‚·‚é‚½‚ß‚Ég—p‚Å‚«‚éUIDRef‚ğ•Û‚·‚éƒf[ƒ^ ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Å‚·B
 */
 #include "IUIDData.h"
 
-// Constructor
-KESLayoutScrool::KESLayoutScrool(ScriptID methodID, IScriptRequestData* data, IScript* parent)
-	: scriptID(methodID), iScriptRequestData(data), iScript(parent) {}
+// General includes:
+#include "CAlert.h" // CAlert::InformationAlert(Msg);
+/** ScriptData
+Class that can hold any of the data types supported by the scripting architecture.
+ƒXƒNƒŠƒvƒg ƒA[ƒLƒeƒNƒ`ƒƒ‚ÅƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚é”CˆÓ‚Ìƒf[ƒ^Œ^‚ğ•Û‚Å‚«‚éƒNƒ‰ƒX‚Å‚·B
+*/
+#include "ScriptData.h"
 
-// MatchScrollZoomAllLayout
+/** Utils
+This is a helper class for calling methods in interfaces on the kUtilsBoss.
+kUtilsBoss ‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX‚Åƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·‚½‚ß‚Ìƒwƒ‹ƒp[ƒNƒ‰ƒX‚Å‚·B
+Utils<IFooUtils>()->MyFooMethod();
+*/
+#include "Utils.h"
+
+/* MatchScrollZoomAllLayout */
 ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 {
-	// Get front layout view
-	InterfacePtr<IControlView> iControlView_frontView(Utils<ILayoutUIUtils>()->QueryFrontView());
-	if (!iControlView_frontView) return kSuccess;
-
-	// Get front document
-	IDocument* iDocument_frontDocument = Utils<ILayoutUIUtils>()->GetFrontDocument();
-	if (!iDocument_frontDocument) return kSuccess;
-
-	// Panorama handles the control of content position, scale, and scrolling within the view's display area
-	InterfacePtr<IPanorama> iPanorama_frontView(iControlView_frontView, ::UseDefaultIID());
-	if (!iPanorama_frontView) return kSuccess;
-
-	// Get top-left position
-	PMPoint frontView_topLeft = iPanorama_frontView->GetContentLocationAtFrameOrigin();
-
-	// Get scale
-	PMReal xScale = iPanorama_frontView->GetXScaleFactor();
-	PMReal yScale = iPanorama_frontView->GetYScaleFactor();
-
-	// Get frontViewPageNumber
-	PMString pmString_frontViewPageNumber;
+	ErrorCode status = kFailure;
+	do
 	{
-		// Get front view page UID
-		UID UID_frontViewPag; 
-		{
-			InterfacePtr<ILayoutControlData> iLayoutControlData_frontView(iControlView_frontView, ::UseDefaultIID());
-			if (!iLayoutControlData_frontView) return kSuccess;
+		// Get front layout view
+		InterfacePtr<IControlView> iControlView_frontView(Utils<ILayoutUIUtils>()->QueryFrontView());
+		if (!iControlView_frontView) return kSuccess;
 
-			UID_frontViewPag = iLayoutControlData_frontView->GetPage();
+		// Panorama handles the control of content position, scale, and scrolling within the view's display area
+		InterfacePtr<IPanorama> iPanorama_frontView(iControlView_frontView, ::UseDefaultIID());
+		if (!iPanorama_frontView) return status;
+
+		// Get top-left position
+		PMPoint pMPoint_frontViewTopLeft = iPanorama_frontView->GetContentLocationAtFrameOrigin();
+
+		// Get scale
+		PMReal xScale = iPanorama_frontView->GetXScaleFactor();
+		PMReal yScale = iPanorama_frontView->GetYScaleFactor();
+
+		// Get frontViewPageNumber
+		PMString pmString_frontViewPageNumber;
+		do
+		{	
+			// Get front page UID
+			UID UID_page; 
+			InterfacePtr<ILayoutControlData> iLayoutControlData(iControlView_frontView, ::UseDefaultIID());
+			if (!iLayoutControlData) break;
+			UID_page = iLayoutControlData->GetPage();
+
+			// Get front document
+			IDocument* iDocument = Utils<ILayoutUIUtils>()->GetFrontDocument();
+			if (!iDocument) break;
+
+			// Get front document pageList
+			InterfacePtr<IPageList> iPageList(iDocument, ::UseDefaultIID());
+			if (!iPageList) break;
+
+			// Get front view page string
+			iPageList->GetPageString(UID_page, &pmString_frontViewPageNumber);
+		} while (false); // only do once
+
+		// Apply all document
+		do
+		{
+			// GetExecutionContextSession() returns a pointer to the ISession interface aggregated in the kSessionBoss
+			InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+
+			// Get document list
+			InterfacePtr<IDocumentList> iDocumentList(iApplication->QueryDocumentList());
+
+			for (int32 i = 0; i < iDocumentList->GetDocCount(); i++) {
+
+				IDocument* iDocument = iDocumentList->GetNthDoc(i);
+
+				// Get IControlView and IPanorama
+				auto result = KESLayoutScrool::QueryControlViewAndPanorama(iDocument);
+				IControlView* iControlView = result.first;
+				if (!iControlView) continue;
+				IPanorama* iPanorama = result.second;
+				if (!iPanorama) continue;
+
+				// Set Page
+				{
+					InterfacePtr<ICommand> iCommand_setPage(CmdUtils::CreateCommand(kSetPageCmdBoss));
+
+					IDataBase* iDataBase = ::GetDataBase(iDocument);
+					if (!iDataBase) continue;
+
+					InterfacePtr<IPageList> iPageList(iDocument, ::UseDefaultIID());
+					if (!iPageList) continue;
+
+					// Given a page string, returns the UID of the page.
+					UID UID_page = iPageList->PageStringToUID(pmString_frontViewPageNumber);
+					if (UID_page == kInvalidUID) continue;
+
+					UIDRef UIDRef_page(iDataBase, UID_page);
+
+					InterfacePtr<IHierarchy> iHierarchy(UIDRef_page, ::UseDefaultIID());
+					if (!iHierarchy) continue;
+
+					InterfacePtr<ISpread> iSpread(iDataBase, iHierarchy->GetSpreadUID(), ::UseDefaultIID());
+
+					iCommand_setPage->SetItemList(UIDList(iSpread));
+
+					InterfacePtr<ILayoutCmdData> iLayoutCmdData(iCommand_setPage, ::UseDefaultIID());
+
+					InterfacePtr<ILayoutControlData> iLayoutControlData(iControlView, ::UseDefaultIID());
+					if (!iLayoutControlData) continue;
+
+					iLayoutCmdData->Set(::GetUIDRef(iDocument), iLayoutControlData);
+
+					InterfacePtr<IUIDData> iUIDData(iCommand_setPage, ::UseDefaultIID());
+
+					iUIDData->Set(UIDRef_page);
+
+					CmdUtils::ProcessCommand(iCommand_setPage);
+				}
+
+				// Scale
+				iPanorama->ScalePanorama(xScale, yScale);
+
+				// Scroll
+				iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_frontViewTopLeft);
+
+				status = kSuccess;
+			}
+		} while (false); // only do once
+	} while (false); // only do once
+
+	return status; // If kSuccess is not returned, an error occurs
+}
+
+/* AccessContentLocationAtFrameOrigin
+My		ScriptID scriptID,	IScriptRequestData* iScriptRequestData,	IScript* iScript
+Sample	ScriptID propID,	IScriptRequestData* data,				IScript* parent
+
+scriptID four-character identifier. defined in KESScriptingDef.h
+{ // Check the scriptID
+	PMString pMString_scriptID = Utils<IScriptUtils>()->GetScriptID(scriptID);
+}
+
+IScript
+{ // GetName
+	PMString PMString_name = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
+}
+*/
+ErrorCode KESLayoutScrool::AccessContentLocationAtFrameOrigin
+	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY)
+{
+	// Using ScriptListData causes errors. Is this a bug?
+	ErrorCode status = kFailure;
+
+	do
+	{
+		ScriptData scriptData;
+
+		InterfacePtr<IDocument> iDocument(Utils<IScriptUtils>()->
+			QueryDocumentFromScript(iScript, iScriptRequestData->GetRequestContext()));
+		if (!iDocument) break;
+
+		// Get IPanorama
+		auto result = KESLayoutScrool::QueryControlViewAndPanorama(iDocument);
+		IPanorama* iPanorama = result.second;
+		if (!iPanorama) break;
+
+		// Get top-left position
+		PMPoint pMPoint_viewTopLeft = iPanorama->GetContentLocationAtFrameOrigin();
+
+		// Request
+		if (iScriptRequestData->IsPropertyGet())
+		{
+			if (flgXY == "X")
+			{
+				scriptData.SetPMReal(pMPoint_viewTopLeft.X());
+			}
+			else if (flgXY == "Y")
+			{
+				scriptData.SetPMReal(pMPoint_viewTopLeft.Y());
+			}
+
+			iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
+
+			status = kSuccess;
+		}
+		else if (iScriptRequestData->IsPropertyPut())
+		{
+			status = iScriptRequestData->ExtractRequestData(scriptID.Get(), scriptData);
+			if (status != kSuccess) break;
+
+			PMReal pMReal_point;
+			status = scriptData.GetPMReal(&pMReal_point);
+			if (status != kSuccess) break;
+
+			if (flgXY == "X")
+			{
+				pMPoint_viewTopLeft.X(pMReal_point);
+			}
+			else if (flgXY == "Y")
+			{
+				pMPoint_viewTopLeft.Y(pMReal_point);
+			}
+
+			// Scroll
+			iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_viewTopLeft);
+
+			status = kSuccess;
 		}
 
-		// Get front document pageList
-		InterfacePtr<IPageList> iPageList_frontDocument(iDocument_frontDocument, ::UseDefaultIID());
-		if (!iPageList_frontDocument) return kSuccess;
+	} while (false); // only do once
 
-		// Get front view page string
-		iPageList_frontDocument->GetPageString(UID_frontViewPag, &pmString_frontViewPageNumber);
-	}
+	return status; // If kSuccess is not returned, an error occurs
+}
+/* Query controlView and panorama */
+std::pair<IControlView*, IPanorama*> KESLayoutScrool::QueryControlViewAndPanorama(IDocument* iDocument)
+{
+	IControlView* iControlView = nil;
+	IPanorama* iPanorama = nil;
 
-	// GetExecutionContextSession() returns a pointer to the ISession interface aggregated in the kSessionBoss
-	InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
-
-	// Get document list
-	InterfacePtr<IDocumentList> iDocumentList(iApplication->QueryDocumentList());
-
-	for (int32 i = 0; i < iDocumentList->GetDocCount(); i++) {
-
-		IDocument* iDocument = iDocumentList->GetNthDoc(i);
-
+	do
+	{
 		// The document is presented for edit in the layout presentation.
 		InterfacePtr<IPresentationList> iPresentationList(iDocument, ::UseDefaultIID());
-		if (iPresentationList->size() == 0) continue;
+		if (iPresentationList->size() == 0) break;
 
 		// Iterate through an IPresentationList.
 		for (IPresentationList::iterator iter = iPresentationList->begin(); iter != iPresentationList->end(); ++iter) {
@@ -204,59 +371,14 @@ ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 			if (!iPanelControlData) continue;
 
 			// kLayoutWidgetBoss is a BOSS representing a layout view.
-			IControlView* iControlView_layoutView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
-			if (!iControlView_layoutView) continue;
+			iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+			if (!iControlView) continue;
 
-			InterfacePtr<IPanorama> iPanorama_layoutView(iControlView_layoutView, UseDefaultIID());
-			if (!iPanorama_layoutView) break;
-
-			// Set Page
-			{
-				InterfacePtr<ICommand> iCommand_setPage(CmdUtils::CreateCommand(kSetPageCmdBoss));
-
-				IDataBase* iDataBase = ::GetDataBase(iDocument);
-				if (!iDataBase) break;
-
-				InterfacePtr<IPageList> iPageList(iDocument, ::UseDefaultIID());
-				if (!iPageList) break;
-
-				// Given a page string, returns the UID of the page.
-				UID UID_page = iPageList->PageStringToUID(pmString_frontViewPageNumber);
-				if (UID_page == kInvalidUID) break;
-
-				UIDRef UIDRef_page(iDataBase, UID_page);
-
-				InterfacePtr<IHierarchy> iHierarchy(UIDRef_page, ::UseDefaultIID());
-				if (!iHierarchy) break;
-
-				InterfacePtr<ISpread> iSpread(iDataBase, iHierarchy->GetSpreadUID(), ::UseDefaultIID());
-
-				iCommand_setPage->SetItemList(UIDList(iSpread));
-
-				InterfacePtr<ILayoutCmdData> iLayoutCmdData(iCommand_setPage, ::UseDefaultIID());
-
-				InterfacePtr<ILayoutControlData> iLayoutControlData(iControlView_layoutView, ::UseDefaultIID());
-				if (!iLayoutControlData) break;
-
-				iLayoutCmdData->Set(::GetUIDRef(iDocument), iLayoutControlData);
-
-				InterfacePtr<IUIDData> iUIDData(iCommand_setPage, ::UseDefaultIID());
-
-				iUIDData->Set(UIDRef_page);
-
-				CmdUtils::ProcessCommand(iCommand_setPage);
-			}
-
-			// Scale
-			iPanorama_layoutView->ScalePanorama(xScale, yScale);
-
-			// Scroll
-			iPanorama_layoutView->ScrollContentLocationToFrameOrigin(frontView_topLeft);
-
-			// Completed
-			break;
+			InterfacePtr<IPanorama> iPanorama_layoutView(iControlView, UseDefaultIID());
+			if (!iPanorama_layoutView) continue;
+			iPanorama = iPanorama_layoutView;
 		}
-	}
+	} while (false); // only do once
 
-	return kSuccess; // If kSuccess is not returned, an error occurs
+	return std::make_pair(iControlView, iPanorama);
 }
