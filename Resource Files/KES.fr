@@ -42,6 +42,7 @@
 
 #include "ScriptInfoTypes.fh"
 #include "AppFrameworkID.h"
+#include "DocFrameworkID.h"
 
 // Project includes:
 #include "KESID.h"
@@ -188,21 +189,56 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			{ // Arguments
 			}
 		}
-		
+
+		// Specifies a property
+		Property
+		{
+			kKESAccessContentLocationAtFrameOriginXPropertyScriptElement,
+			p_AccessContentLocationAtFrameOriginX,
+			"access content location at frame origin x",
+			"Access content location at frame origin X",
+			RealType,						// type  RealArrayType(2)
+			{}
+			kNoAttributeClass,
+		}
+
+		Property
+		{
+			kKESAccessContentLocationAtFrameOriginYPropertyScriptElement,
+			p_AccessContentLocationAtFrameOriginY,
+			"access content location at frame origin y",
+			"Access content location at frame origin Y",
+			RealType,						// type  RealArrayType(2)
+			{}
+			kNoAttributeClass,
+		}
+
 		// Connects this plug-in's methods and properties to scripting.
 		Provider
 		{
 			kKESScriptProviderBoss,	// provider boss ID
 			{
-				Object{ kApplicationObjectScriptElement }, // Additional targets
+				/** Match scroll zoom all layout.
+				ExtendScript Example:
+					app.matchScrollZoomAllLayout();
+				*/
+				Object{ kApplicationObjectScriptElement }, // target
 				Method{ kKESMatchScrollZoomAllLayoutMethodScriptElement }, // Additional
+
+				/** Access content location at frame origin.
+				ExtendScript Example:
+					app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0; // Set
+					y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY; // get
+				*/
+				Object{ kLayoutWindowObjectScriptElement }, // target
+				Property{ kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
+				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additional
 			}
 		}
 		/***************************************************************************************************************************/
 	}
 };
 
-	
 #endif // __ODFRC__
 
 #include "KES_enUS.fr"
