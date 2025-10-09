@@ -3,7 +3,7 @@
 
 I'll add various things to ExtendScript.
 
-// extendScript for JavaScript
+### // extendScript for JavaScript
 
 // Match scroll zoom all layout.
 app.matchScrollZoomAllLayout();
