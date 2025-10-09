@@ -33,7 +33,9 @@
 
 // Plug-in:
 #define kKESPluginName	"KohakuExtendScript"			// Name of this plug-in.
-#define kKESPrefixNumber	0xe9400 		// Unique prefix number for this plug-in(*Must* be obtained from Adobe Developer Support).
+#define kKESPrefixNumber	0xe204291 		// Unique prefix number for this plug-in(*Must* be obtained from Adobe Developer Support).
+//#define kKESPrefixNumber	0xe9400 		// Unique prefix number for this plug-in(*Must* be obtained from Adobe Developer Support).
+
 #define kKESVersion		kSDKDefPluginVersionString						// Version of this plug-in (for the About Box).
 #define kKESAuthor		""					// Author of this plug-in (for the About Box).
 
@@ -185,6 +187,8 @@ DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
 
 // Script Element IDs
 DECLARE_PMID(kScriptInfoIDSpace, kKESMatchScrollZoomAllLayoutMethodScriptElement, kKESPrefix + 1)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 2)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 3)
 
 // "About Plug-ins" sub-menu:
 #define kKESAboutMenuKey			kKESStringPrefix "kKESAboutMenuKey"

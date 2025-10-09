@@ -41,6 +41,8 @@ enum KESScriptEvents
 // Property IDs
 enum KESScriptProperties
 {
+	p_AccessContentLocationAtFrameOriginX = 'KALX',
+	p_AccessContentLocationAtFrameOriginY = 'KALY',
 };
 
 
