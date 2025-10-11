@@ -23,8 +23,5 @@ public:
         (ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY);
 
 private:
-    /**  Query panorama.
-    */
-    static KeyValuePair<IControlView*, IPanorama*> QueryControlViewAndPanorama(IDocument* idocument);
 };
 
