@@ -186,11 +186,9 @@ ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 		PMString pmString_frontViewPageNumber;
 		do
 		{	
-			// Get front page UID
-			UID UID_page; 
-			InterfacePtr<ILayoutControlData> iLayoutControlData(iControlView_frontView, ::UseDefaultIID());
-			if (!iLayoutControlData) break;
-			UID_page = iLayoutControlData->GetPage();
+			// Get front view page UID
+			UID UID_page = Utils<ILayoutUIUtils>()->GetCurrentVisiblePage();
+			if (UID_page == kInvalidUID) break;
 
 			// Get front document
 			IDocument* iDocument = Utils<ILayoutUIUtils>()->GetFrontDocument();
