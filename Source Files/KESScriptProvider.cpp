@@ -81,7 +81,10 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID methodID, IScriptRequestData*
 	case e_MatchScrollZoomAllLayout:
 		status = KESLayoutScrool::MatchScrollZoomAllLayout();
 		break;
-
+	case e_ToggleSplitLayout:
+		status = KESLayoutScrool::ToggleSplitLayout(parent);
+		//status = KESLayoutScrool::ToggleSplitLayout(parent);
+		break;
 	default:
 		status = CScriptProvider::HandleMethod(methodID, data, parent);
 	}

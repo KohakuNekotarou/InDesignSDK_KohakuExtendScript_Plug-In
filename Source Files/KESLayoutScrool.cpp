@@ -25,6 +25,10 @@ Also involved in hit testing and Auto attaching/detaching observers.
 */
 #include "IControlView.h"
 
+/** IControlViewCmdData
+*/
+#include "IControlViewCmdData.h"
+
 /** ICommand
 commands are used to modify objects that persist in an InDesign database that supports undo. 
 コマンドは、元に戻すをサポートする InDesign データベースに保持されるオブジェクトを変更するために使用されます
@@ -52,6 +56,14 @@ store a list of open documents.
 開いているドキュメントのリストが格納されます。
 */
 #include "IDocumentList.h"
+
+/** IDocumentPresentation
+represents a view onto a document, and exists on the document presentation boss,
+along with IActiveContext, to designate an InDesign document presentation.
+ドキュメント上のビューを表し、InDesign ドキュメントプレゼンテーションを指定するために
+IActiveContextと共にドキュメントプレゼンテーション ボスに存在します。
+*/
+#include "IDocumentPresentation.h"
 
 /** IGalleyUtils
 an aggregrate of many different utility functions centered around the document window and galley sub window.
@@ -84,6 +96,12 @@ UI Layout-related utilities
 UI レイアウト関連のユーティリティ
 */
 #include "ILayoutUIUtils.h"
+
+/** ILayoutViewUtils
+Layout-view related utilities
+レイアウトビュー関連のユーティリティ
+*/
+#include "ILayoutViewUtils.h"
 
 /** IPageList
 which caches commonly needed information about pages in the document. 
@@ -139,6 +157,12 @@ Data interface that holds onto a UIDRef that can be used to uniquely describe a 
 */
 #include "IUIDData.h"
 
+/** IWidgetParent
+Interface to allow traversing widget hierarchy.
+ウィジェット階層をトラバースできるインターフェイス。
+*/
+#include "IWidgetParent.h"
+
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
 
@@ -169,11 +193,11 @@ ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 	{
 		// Get front layout view
 		InterfacePtr<IControlView> iControlView_frontView(Utils<ILayoutUIUtils>()->QueryFrontView());
-		if (!iControlView_frontView) return kSuccess;
+		if (!iControlView_frontView) break;
 
 		// Panorama handles the control of content position, scale, and scrolling within the view's display area
 		InterfacePtr<IPanorama> iPanorama_frontView(iControlView_frontView, ::UseDefaultIID());
-		if (!iPanorama_frontView) return status;
+		if (!iPanorama_frontView) break;
 
 		// Get top-left position
 		PMPoint pMPoint_frontViewTopLeft = iPanorama_frontView->GetContentLocationAtFrameOrigin();
@@ -184,7 +208,6 @@ ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 
 		// Get frontViewPageNumber
 		PMString pmString_frontViewPageNumber;
-		do
 		{	
 			// Get front view page UID
 			UID UID_page = Utils<ILayoutUIUtils>()->GetCurrentVisiblePage();
@@ -200,89 +223,69 @@ ErrorCode KESLayoutScrool::MatchScrollZoomAllLayout()
 
 			// Get front view page string
 			iPageList->GetPageString(UID_page, &pmString_frontViewPageNumber);
-		} while (false); // only do once
+		}
 
-		// Apply all document
-		do
+		// Get all layout views
+		K2Vector<IControlView*> iControlView_layoutViewList;
+		Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, nil, nil);
+
+		for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
+			iter != iControlView_layoutViewList.end(); ++iter)
 		{
-			// GetExecutionContextSession() returns a pointer to the ISession interface aggregated in the kSessionBoss
-			InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+			IControlView* iControlView = *iter;
+			if (iControlView == nil) continue;
 
-			// Get document list
-			InterfacePtr<IDocumentList> iDocumentList(iApplication->QueryDocumentList());
+			InterfacePtr<IPanorama> iPanorama(iControlView, UseDefaultIID());
+			if (!iPanorama) continue;
 
-			for (int32 i = 0; i < iDocumentList->GetDocCount(); i++) {
+			// Set Page
+			{
+				InterfacePtr<ICommand> iCommand_setPage(CmdUtils::CreateCommand(kSetPageCmdBoss));
 
-				IDocument* iDocument = iDocumentList->GetNthDoc(i);
+				InterfacePtr<ILayoutControlData> iLayoutControlData(iControlView, ::UseDefaultIID());
+				if (!iLayoutControlData) continue;
 
-				// The document is presented for edit in the layout presentation.
-				InterfacePtr<IPresentationList> iPresentationList(iDocument, ::UseDefaultIID());
-				if (iPresentationList->size() == 0) break;
+				IDocument* iDocument = iLayoutControlData->GetDocument();
+				if (!iDocument) continue;
 
-				// Iterate through an IPresentationList.
-				for (IPresentationList::iterator iter = iPresentationList->begin(); iter != iPresentationList->end(); ++iter) {
-					if (*iter == nil) continue;
+				IDataBase* iDataBase = ::GetDataBase(iDocument);
+				if (!iDataBase) continue;
 
-					// Galley or Story view.
-					if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(*iter)) continue;
+				InterfacePtr<IPageList> iPageList(iDocument, ::UseDefaultIID());
+				if (!iPageList) continue;
 
-					InterfacePtr<IPanelControlData> iPanelControlData(*iter, ::UseDefaultIID());
-					if (!iPanelControlData) continue;
+				// Given a page string, returns the UID of the page.
+				UID UID_page = iPageList->PageStringToUID(pmString_frontViewPageNumber);
+				if (UID_page == kInvalidUID) continue;
 
-					// kLayoutWidgetBoss is a BOSS representing a layout view.
-					IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
-					if (!iControlView) continue;
+				UIDRef UIDRef_page(iDataBase, UID_page);
 
-					InterfacePtr<IPanorama> iPanorama(iControlView, UseDefaultIID());
-					if (!iPanorama) continue;
+				InterfacePtr<IHierarchy> iHierarchy(UIDRef_page, ::UseDefaultIID());
+				if (!iHierarchy) continue;
 
-					// Set Page
-					{
-						InterfacePtr<ICommand> iCommand_setPage(CmdUtils::CreateCommand(kSetPageCmdBoss));
+				InterfacePtr<ISpread> iSpread(iDataBase, iHierarchy->GetSpreadUID(), ::UseDefaultIID());
 
-						IDataBase* iDataBase = ::GetDataBase(iDocument);
-						if (!iDataBase) continue;
+				iCommand_setPage->SetItemList(UIDList(iSpread));
 
-						InterfacePtr<IPageList> iPageList(iDocument, ::UseDefaultIID());
-						if (!iPageList) continue;
+				InterfacePtr<ILayoutCmdData> iLayoutCmdData(iCommand_setPage, ::UseDefaultIID());
 
-						// Given a page string, returns the UID of the page.
-						UID UID_page = iPageList->PageStringToUID(pmString_frontViewPageNumber);
-						if (UID_page == kInvalidUID) continue;
+				iLayoutCmdData->Set(::GetUIDRef(iDocument), iLayoutControlData);
 
-						UIDRef UIDRef_page(iDataBase, UID_page);
+				InterfacePtr<IUIDData> iUIDData(iCommand_setPage, ::UseDefaultIID());
 
-						InterfacePtr<IHierarchy> iHierarchy(UIDRef_page, ::UseDefaultIID());
-						if (!iHierarchy) continue;
+				iUIDData->Set(UIDRef_page);
 
-						InterfacePtr<ISpread> iSpread(iDataBase, iHierarchy->GetSpreadUID(), ::UseDefaultIID());
-
-						iCommand_setPage->SetItemList(UIDList(iSpread));
-
-						InterfacePtr<ILayoutCmdData> iLayoutCmdData(iCommand_setPage, ::UseDefaultIID());
-
-						InterfacePtr<ILayoutControlData> iLayoutControlData(iControlView, ::UseDefaultIID());
-						if (!iLayoutControlData) continue;
-
-						iLayoutCmdData->Set(::GetUIDRef(iDocument), iLayoutControlData);
-
-						InterfacePtr<IUIDData> iUIDData(iCommand_setPage, ::UseDefaultIID());
-
-						iUIDData->Set(UIDRef_page);
-
-						CmdUtils::ProcessCommand(iCommand_setPage);
-					}
-
-					// Scale
-					iPanorama->ScalePanorama(xScale, yScale);
-
-					// Scroll
-					iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_frontViewTopLeft);
-
-					status = kSuccess;
-				}
+				CmdUtils::ProcessCommand(iCommand_setPage);
 			}
-		} while (false); // only do once
+
+			// Scale
+			iPanorama->ScalePanorama(xScale, yScale);
+
+			// Scroll
+			iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_frontViewTopLeft);
+
+			status = kSuccess;
+		}
 	} while (false); // only do once
 
 	return status; // If kSuccess is not returned, an error occurs
@@ -314,11 +317,11 @@ ErrorCode KESLayoutScrool::AccessContentLocationAtFrameOrigin
 
 		// layoutWindowScriptObject == IPanelControlData
 		InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
-		if (!iPanelControlData) continue;
+		if (!iPanelControlData) break;
 
 		// kLayoutWidgetBoss is a BOSS representing a layout view.
 		IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
-		if (!iControlView) continue;
+		if (!iControlView) break;
 
 		InterfacePtr<IPanorama> iPanorama(iControlView, UseDefaultIID());
 		if (!iPanorama) continue;
@@ -367,6 +370,41 @@ ErrorCode KESLayoutScrool::AccessContentLocationAtFrameOrigin
 		}
 
 	} while (false); // only do once
+
+	return status; // If kSuccess is not returned, an error occurs
+}
+
+/**  Toggle split layout.
+*/
+ErrorCode KESLayoutScrool::ToggleSplitLayout(IScript* iScript)
+{
+	ErrorCode status = kFailure;
+
+	do
+	{
+		// layoutWindowScriptObject == IPanelControlData
+		InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
+		if (!iPanelControlData) break;
+
+		// kLayoutWidgetBoss is a BOSS representing a layout view.
+		IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+		if (!iControlView) break;
+
+		InterfacePtr<IWidgetParent> iWidgetParent(iControlView, UseDefaultIID());
+		if (!iWidgetParent) break;
+
+		InterfacePtr<IDocumentPresentation> iDocumentPresentation((IDocumentPresentation*)iWidgetParent->
+			QueryParentFor(IID_IDOCUMENTPRESENTATION));
+		if (!iDocumentPresentation) break;
+
+		// Toggle split layout view.
+		Utils<ILayoutViewUtils>()->ToggleSplitLayoutView(iDocumentPresentation);
+
+		status = kSuccess;
+
+	} while (false); // only do once
+
+	status = kSuccess;
 
 	return status; // If kSuccess is not returned, an error occurs
 }
