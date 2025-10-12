@@ -190,6 +190,17 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			}
 		}
 
+		Method
+		{
+			kKESToggleSplitLayoutMethodScriptElement, // Script Element ID	KESID.h Script Element IDs
+			e_ToggleSplitLayout, // Script Element ID	KEScriptingDefs.h	external dependencies
+			"toggle split layout", // If you want the name in the script to be "kohakuNekotarou", enter "kohaku nekotarou"
+			"Toggle split layout", // Description
+			VoidType, // Return value
+			{ // Arguments
+			}
+		}
+
 		// Specifies a property
 		Property
 		{
@@ -218,19 +229,29 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		{
 			kKESScriptProviderBoss,	// provider boss ID
 			{
-				/** Match scroll zoom all layout.
-				ExtendScript Example:
-					app.matchScrollZoomAllLayout();
-				*/
+
 				Object{ kApplicationObjectScriptElement }, // target
+
+				/** Match scroll zoom all layout.
+					ExtendScript Example:
+						app.matchScrollZoomAllLayout();
+				*/
 				Method{ kKESMatchScrollZoomAllLayoutMethodScriptElement }, // Additional
 
-				/** Access content location at frame origin.
-				ExtendScript Example:
-					app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0; // Set
-					y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY; // get
-				*/
+
 				Object{ kLayoutWindowObjectScriptElement }, // target
+
+				/** Toggle split layout.
+					ExtendScript Example:
+						
+				*/
+				Method{ kKESToggleSplitLayoutMethodScriptElement }, // Additional
+
+				/** Access content location at frame origin.
+					ExtendScript Example:
+						app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0; // Set
+						y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY; // get
+				*/
 				Property{ kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
 				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additional
 			}
