@@ -22,6 +22,10 @@ public:
     static ErrorCode AccessContentLocationAtFrameOrigin
         (ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY);
 
+    /**  Toggle split layout view.
+    */
+    static ErrorCode ToggleSplitLayout(IScript* iScript);
+
 private:
 };
 

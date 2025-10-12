@@ -34,7 +34,8 @@ DECLARE_GUID(CPrefs_CLSID, kCPrefs_CLSID);
 // Method IDs
 enum KESScriptEvents
 {
-	e_MatchScrollZoomAllLayout = 'KMSL'
+	e_MatchScrollZoomAllLayout = 'KMSL',
+	e_ToggleSplitLayout = 'KTSL',
 };
 
 
