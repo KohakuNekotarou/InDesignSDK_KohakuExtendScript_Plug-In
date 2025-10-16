@@ -1,6 +1,7 @@
 #pragma once
 
 // Interface includes:
+#include "IControlView.h"
 #include "IScript.h"
 #include "IScriptRequestData.h"
 
@@ -20,5 +21,7 @@ public:
     // Query Nth layout.
     static ErrorCode QueryNthLayout(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
-private:
+    // Get put content location at frame origin.
+    static ErrorCode GetPutContentLocationAtFrameOrigin
+        (ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY, IControlView* iControlView);
 };
