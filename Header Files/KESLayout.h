@@ -24,4 +24,7 @@ public:
     // Get put content location at frame origin.
     static ErrorCode GetPutContentLocationAtFrameOrigin
         (ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY, IControlView* iControlView);
+
+    // Is split layout view shown.
+    static ErrorCode IsSplitLayoutViewShown(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 };
