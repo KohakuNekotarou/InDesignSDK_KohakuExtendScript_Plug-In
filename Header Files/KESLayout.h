@@ -1,0 +1,24 @@
+#pragma once
+
+// Interface includes:
+#include "IScript.h"
+#include "IScriptRequestData.h"
+
+class KESLayout
+{
+public:
+    // Apply scrolling and zooming from the Front Layout Window to all Layout.
+    static ErrorCode MatchScrollZoomAllLayout();
+
+    // Access the top-left coordinates of the layout Window.
+    static ErrorCode AccessContentLocationAtFrameOrigin
+        (ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY);
+
+    // Toggle split layout view.
+    static ErrorCode ToggleSplitLayout(IScript* iScript);
+
+    // Query Nth layout.
+    static ErrorCode QueryNthLayout(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
+
+private:
+};

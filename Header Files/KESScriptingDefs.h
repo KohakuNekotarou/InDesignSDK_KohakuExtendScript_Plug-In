@@ -31,20 +31,28 @@ DECLARE_GUID(CPrefs_CLSID, kCPrefs_CLSID);
 // Note: 4-char IDs below must be unique.
 // See ScriptingDefs.h for further information.
 
+// Class ScriptIDs 
+enum KESScriptClasses
+{
+	c_KESSplitLayoutViewObject = 'KSLO', // object
+};
+
 // Method IDs
 enum KESScriptEvents
 {
-	e_MatchScrollZoomAllLayout = 'KMSL',
-	e_ToggleSplitLayout = 'KTSL',
+	e_KESMatchScrollZoomAllLayout = 'KMSL',
+	e_KESToggleSplitLayout = 'KTSL',
+	e_KESQueryNthLayout = 'KQNL',
 };
 
 
 // Property IDs
 enum KESScriptProperties
 {
-	p_AccessContentLocationAtFrameOriginX = 'KALX',
-	p_AccessContentLocationAtFrameOriginY = 'KALY',
+	p_KESAccessContentLocationAtFrameOriginX = 'KALX',
+	p_KESAccessContentLocationAtFrameOriginY = 'KALY',
+	p_KESSplitLayoutViewObject = 'KSLP',
+	p_KESNthLayoutIndex = 'KNLI',
 };
-
 
 #endif // __KESScriptingDefs_h__
