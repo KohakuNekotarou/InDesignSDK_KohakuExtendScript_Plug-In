@@ -34,8 +34,11 @@
 // Project includes:
 #include "KESScriptingDefs.h"
 #include "KESID.h"
-#include "KESLayoutScrool.h"
+#include "KESLayout.h"
 
+// CScriptProvider
+// Adding properties or methods to existing objects.
+// 既存のオブジェクトにプロパティやメソッドを追加する。
 class KESScriptProvider : public CScriptProvider
 {
 public:
@@ -49,18 +52,15 @@ public:
 	~KESScriptProvider() {}
 
 	/** This method is called if a provider can handle an method.
-	@param methodID identifies the ID of the method to handle.
-	@param data identifies an interface pointer used to extract data.
-	@param parent identifies an interface pointer on the script object representing the parent of the application object.
+	@param scriptID identifies the ID of the method to handle.
+	@param iScriptRequestData identifies an interface pointer used to extract data.
+	@param iScript identifies an interface pointer on the script object representing the parent of the application object.
 	*/
-	virtual ErrorCode HandleMethod(ScriptID methodID, IScriptRequestData* data, IScript* parent);
+	virtual ErrorCode HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
 	/** This method is called if a provider can handle a property.
-	@param propID identifies the ID of the property to handle.
-	@param data identifies an interface pointer used to extract data.
-	@param parent identifies an interface pointer on the script object 		representing the parent of the application object.
 	*/
-	virtual ErrorCode AccessProperty(ScriptID propID, IScriptRequestData* data, IScript* parent);
+	virtual ErrorCode AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 };
 
 
@@ -70,45 +70,49 @@ making the C++ code callable by the application.
 */
 CREATE_PMINTERFACE(KESScriptProvider, kKESScriptProviderImpl)
 
-
 /* HandleMethod */
-ErrorCode KESScriptProvider::HandleMethod(ScriptID methodID, IScriptRequestData* data, IScript* parent)
+ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
 
-	switch (methodID.Get())
+	switch (scriptID.Get())
 	{
-	case e_MatchScrollZoomAllLayout:
-		status = KESLayoutScrool::MatchScrollZoomAllLayout();
+	case KESScriptEvents::e_KESMatchScrollZoomAllLayout:
+		status = KESLayout::MatchScrollZoomAllLayout();
 		break;
-	case e_ToggleSplitLayout:
-		status = KESLayoutScrool::ToggleSplitLayout(parent);
-		//status = KESLayoutScrool::ToggleSplitLayout(parent);
+
+	case KESScriptEvents::e_KESToggleSplitLayout:
+		status = KESLayout::ToggleSplitLayout(iScript);
 		break;
+
+	case KESScriptEvents::e_KESQueryNthLayout:
+		status = KESLayout::QueryNthLayout(scriptID, iScriptRequestData, iScript);
+		break;
+
 	default:
-		status = CScriptProvider::HandleMethod(methodID, data, parent);
+		status = CScriptProvider::HandleMethod(scriptID, iScriptRequestData, iScript);
 	}
 
     return status;
 }
 
 /* AccessProperty */
-ErrorCode KESScriptProvider::AccessProperty(ScriptID propID, IScriptRequestData* data, IScript* parent)
+ErrorCode KESScriptProvider::AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
 
-	switch (propID.Get())
+	switch (scriptID.Get())
 	{
-	case p_AccessContentLocationAtFrameOriginX:
-		status = KESLayoutScrool::AccessContentLocationAtFrameOrigin(propID, data, parent, "X");
+	case KESScriptProperties::p_KESAccessContentLocationAtFrameOriginX:
+		status = KESLayout::AccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "X");
 		break;
 
-	case p_AccessContentLocationAtFrameOriginY:
-		status = KESLayoutScrool::AccessContentLocationAtFrameOrigin(propID, data, parent, "Y");
+	case KESScriptProperties::p_KESAccessContentLocationAtFrameOriginY:
+		status = KESLayout::AccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "Y");
 		break;
 
 	default:
-		status = CScriptProvider::AccessProperty(propID, data, parent);
+		status = CScriptProvider::AccessProperty(scriptID, iScriptRequestData, iScript);
 	}
 
 	return status;
