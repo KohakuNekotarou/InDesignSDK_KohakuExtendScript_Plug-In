@@ -281,11 +281,25 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			e_KESToggleSplitLayout,
 			"toggle split layout",
 			"Toggle split layout",
-			VoidType, // Return value
-			{ // Arguments
+			VoidType,
+			{
+			}
+		}
+		// ---------------------------------------------------------------------------------------
+		// Is split layout view shown
+		Method
+		{
+			kKESIsSplitLayoutViewShownMethodScriptElement,
+			e_KESIsSplitLayoutViewShown,
+			"is split layout view shown",
+			"Is split layout view shown",
+			BoolType,
+			"Is split layout view shown flg",
+			{
 			}
 		}
 
+		// ---------------------------------------------------------------------------------------
 		Property
 		{
 			kKESAccessContentLocationAtFrameOriginXPropertyScriptElement,
@@ -361,17 +375,20 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// Toggle split layout.
 				// ExtendScript Example:
-				// 		if(app.activeWindow.constructor.name == "LayoutWindow"){
-				//			app.activeWindow.toggleSplitLayout();
-				//		}
+				//		app.activeDocument.layoutWindows[0].toggleSplitLayout();
 				Method{ kKESToggleSplitLayoutMethodScriptElement }, // Additional
+
+				// Is split layout view shown.
+				// ExtendScript Example:
+				//		app.activeDocument.layoutWindows[0].isSplitLayoutViewShown();
+				Method{ kKESIsSplitLayoutViewShownMethodScriptElement }, // Additional
 
 				// Access content location at frame origin.
 				// ExtendScript Example:
 				//		app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0; // Set
 				//		y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY; // get
 				Property{ kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
-				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additionall
+				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additional
 			}
 		}
 	}
