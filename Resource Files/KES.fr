@@ -196,10 +196,10 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		// Split layout object
 		Object
 		{
-			kKESSplitLayoutViewObjectScriptElement,	// this object's script element ID
+			kKESSplitLayoutViewObjectScriptElement,	// Script element ID
 			c_KESSplitLayoutViewObject, // ScriptID
-			"split layout view", // name
-			"Split layout view", // description
+			"split layout view object", // name
+			"Split layout view Object", // description
 			kCPrefs_CLSID, // Windows CLSID
 			NoCollectionInfo, // CollectionElementType (scriptID, name, descr, CLSID)
 			kPreferencesObjectScriptElement, // base object script element ID
@@ -210,26 +210,39 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		// プロパティとしてsplitLayoutViewオブジェクトにアクセスできるようにする。
         Property
         {
-            kKESSplitLayoutViewObjectPropertyScriptElement,
-            p_KESSplitLayoutViewObject,
-            "split layout view property",
-            "Split layout view property",
+            kKESSplitLayoutViewObjectPropertyScriptElement,	// Script element ID
+            p_KESSplitLayoutViewObject, // ScriptID
+            "split layout view", // Access object using this name.
+            "Split layout view property", // description
             ObjectType( kKESSplitLayoutViewObjectScriptElement ),
             {}
             kNoAttributeClass,
         }
 
+		Property
+		{
+			kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement,
+			p_KESSplitLayoutViewAccessContentLocationAtFrameOriginX,
+			"access content location at frame origin x",
+			"Access content location at frame origin X",
+			RealType,						// type
+			{}										// alternate types
+			kNoAttributeClass,
+		}
 
-
-
-
-
-
-
-
+		Property
+		{
+			kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement,
+			p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY,
+			"access content location at frame origin y",
+			"Access content location at frame origin Y",
+			RealType,						// type
+			{}										// alternate types
+			kNoAttributeClass,
+		}
 
 		// ---------------------------------------------------------------------------------------
-		// Query Nth layout method
+		// Query Nth layout.
 		Method
 		{
 			kKESQueryNthLayoutMethodScriptElement, // ScriptElementID
@@ -248,7 +261,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
-		// Match scroll zoom all layout method
+		// Match scroll zoom all layout.
 		Method
 		{
 			kKESMatchScrollZoomAllLayoutMethodScriptElement, // Script Element ID	KESID.h Script Element IDs
@@ -261,25 +274,25 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
+		// Toggle split layout.
 		Method
 		{
-			kKESToggleSplitLayoutMethodScriptElement, // Script Element ID	KESID.h Script Element IDs
-			e_KESToggleSplitLayout, // Script Element ID	KEScriptingDefs.h	external dependencies
-			"toggle split layout", // If you want the name in the script to be "kohakuNekotarou", enter "kohaku nekotarou"
-			"Toggle split layout", // Description
+			kKESToggleSplitLayoutMethodScriptElement,
+			e_KESToggleSplitLayout,
+			"toggle split layout",
+			"Toggle split layout",
 			VoidType, // Return value
 			{ // Arguments
 			}
 		}
 
-		// Specifies a property
 		Property
 		{
 			kKESAccessContentLocationAtFrameOriginXPropertyScriptElement,
 			p_KESAccessContentLocationAtFrameOriginX,
 			"access content location at frame origin x",
 			"Access content location at frame origin X",
-			RealType,						// type  RealArrayType(2)
+			RealType,
 			{}
 			kNoAttributeClass,
 		}
@@ -290,7 +303,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			p_KESAccessContentLocationAtFrameOriginY,
 			"access content location at frame origin y",
 			"Access content location at frame origin Y",
-			RealType,						// type  RealArrayType(2)
+			RealType,
 			{}
 			kNoAttributeClass,
 		}
@@ -314,8 +327,8 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				// ExtendScript Example:
 				//     app.activeDocument.layoutWindows[0].splitLayoutView.accessContentLocationAtFrameOriginX = 0; // Set
 				//     y = app.activeDocument.layoutWindows[0].splitLayoutView.accessContentLocationAtFrameOriginY; // get
-				Property{ kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
-				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additional
+				Property{ kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
+				Property{ kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additiona
 			}
 		}
 
@@ -358,7 +371,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				//		app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0; // Set
 				//		y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY; // get
 				Property{ kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
-				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additional
+				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additionall
 			}
 		}
 	}
