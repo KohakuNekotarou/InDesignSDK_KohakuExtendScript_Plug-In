@@ -314,115 +314,24 @@ IScript
 ErrorCode KESLayout::AccessContentLocationAtFrameOrigin
 	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY)
 {
-	// Using ScriptListData causes errors. Is this a bug?
 	ErrorCode status = kFailure;
 
 	do
 	{
-
-		/*
-
 		InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
 		if (!iPanelControlData) break;
 
 		// kLayoutWidgetBoss is a BOSS representing a layout view.
-		IControlView* iControlView_iScript = iPanelControlData->FindWidget(kLayoutWidgetBoss);
-		if (!iControlView_iScript) break;
+		IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+		if (!iControlView) break;
 
-		InterfacePtr<IDocument> iDocument(Utils<IScriptUtils>()->
-			QueryDocumentFromScript(iScript, iScriptRequestData->GetRequestContext()));
+		// Get put content location at frame origin.
+		status = KESLayout::GetPutContentLocationAtFrameOrigin
+			(scriptID, iScriptRequestData, iScript, flgXY, iControlView);
 
-		IDataBase* iDataBase = ::GetDataBase(iDocument);
-		if (!iDataBase) continue;
+	} while (false); // only do once.
 
-		K2Vector<IControlView*> iControlView_layoutViewList;
-		Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, iControlView_iScript, iDataBase);
-
-		for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
-			iter != iControlView_layoutViewList.end(); ++iter)
-		{
-			IControlView* iControlView = *iter;
-			if (iControlView == nil) continue;
-
-			InterfacePtr<IWidgetParent> iWidgetParent(iControlView, UseDefaultIID());
-			if (!iWidgetParent) break;
-
-			InterfacePtr<IDocumentPresentation> iDocumentPresentation((IDocumentPresentation*)iWidgetParent->
-				QueryParentFor(IID_IDOCUMENTPRESENTATION));
-			if (!iDocumentPresentation) break;
-
-			if(iDocumentPresentation_iScript == iDocumentPresentation)
-			{
-				iControlView_target = iControlView;
-				break;
-			}
-		}
-
-		*/
-
-
-	
-
-
-		
-
-		InterfacePtr<IPanelControlData> iPanelControlData2(iScript, ::UseDefaultIID());
-		if (!iPanelControlData2) break;
-
-		// kLayoutWidgetBoss is a BOSS representing a layout view.
-		IControlView* iControlView2 = iPanelControlData2->FindWidget(kLayoutWidgetBoss);
-		if (!iControlView2) break;
-
-		InterfacePtr<IPanorama> iPanorama(iControlView2, ::UseDefaultIID());
-		if (!iPanorama) continue;
-
-		// Get top-left position
-		PMPoint pMPoint_viewTopLeft = iPanorama->GetContentLocationAtFrameOrigin();
-
-		// Request
-		ScriptData scriptData;
-		if (iScriptRequestData->IsPropertyGet())
-		{
-			if (flgXY == "X")
-			{
-				scriptData.SetPMReal(pMPoint_viewTopLeft.X());
-			}
-			else if (flgXY == "Y")
-			{
-				scriptData.SetPMReal(pMPoint_viewTopLeft.Y());
-			}
-
-			iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
-
-			status = kSuccess;
-		}
-		else if (iScriptRequestData->IsPropertyPut())
-		{
-			status = iScriptRequestData->ExtractRequestData(scriptID.Get(), scriptData);
-			if (status != kSuccess) break;
-
-			PMReal pMReal_point;
-			status = scriptData.GetPMReal(&pMReal_point);
-			if (status != kSuccess) break;
-
-			if (flgXY == "X")
-			{
-				pMPoint_viewTopLeft.X(pMReal_point);
-			}
-			else if (flgXY == "Y")
-			{
-				pMPoint_viewTopLeft.Y(pMReal_point);
-			}
-
-			// Scroll
-			iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_viewTopLeft);
-
-			status = kSuccess;
-		}
-
-	} while (false); // only do once
-
-	return status; // If kSuccess is not returned, an error occurs
+	return status; // If kSuccess is not returned, an error occurs.
 }
 
 // Toggle split layout.
@@ -440,13 +349,13 @@ ErrorCode KESLayout::ToggleSplitLayout(IScript* iScript)
 
 		status = kSuccess;
 
-	} while (false); // only do once
+	} while (false); // only do once.
 
-	return status; // If kSuccess is not returned, an error occurs
+	return status; // If kSuccess is not returned, an error occurs.
 }
 
 // Query Nth layout.
-ErrorCode  KESLayout::QueryNthLayout(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
+ErrorCode KESLayout::QueryNthLayout(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
 
@@ -487,6 +396,66 @@ ErrorCode  KESLayout::QueryNthLayout(ScriptID scriptID, IScriptRequestData* iScr
 
 		status = kSuccess;
 
+	} while (false); // only do once
+
+	return status; // If kSuccess is not returned, an error occurs
+}
+
+// Get put content location at frame origin.
+ErrorCode KESLayout::GetPutContentLocationAtFrameOrigin
+	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY, IControlView* iControlView)
+{
+	ErrorCode status = kFailure;
+
+	do
+	{
+		InterfacePtr<IPanorama> iPanorama(iControlView, ::UseDefaultIID());
+		if (!iPanorama) break;
+
+		// Get top-left position
+		PMPoint pMPoint_viewTopLeft = iPanorama->GetContentLocationAtFrameOrigin();
+
+		// Request
+		ScriptData scriptData;
+
+		if (iScriptRequestData->IsPropertyGet())
+		{
+			if (flgXY == "X")
+			{
+				scriptData.SetPMReal(pMPoint_viewTopLeft.X());
+			}
+			else if (flgXY == "Y")
+			{
+				scriptData.SetPMReal(pMPoint_viewTopLeft.Y());
+			}
+
+			iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
+
+			status = kSuccess;
+		}
+		else if (iScriptRequestData->IsPropertyPut())
+		{
+			status = iScriptRequestData->ExtractRequestData(scriptID.Get(), scriptData);
+			if (status != kSuccess) break;
+
+			PMReal pMReal_point;
+			status = scriptData.GetPMReal(&pMReal_point);
+			if (status != kSuccess) break;
+
+			if (flgXY == "X")
+			{
+				pMPoint_viewTopLeft.X(pMReal_point);
+			}
+			else if (flgXY == "Y")
+			{
+				pMPoint_viewTopLeft.Y(pMReal_point);
+			}
+
+			// Scroll
+			iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_viewTopLeft);
+
+			status = kSuccess;
+		}
 	} while (false); // only do once
 
 	return status; // If kSuccess is not returned, an error occurs

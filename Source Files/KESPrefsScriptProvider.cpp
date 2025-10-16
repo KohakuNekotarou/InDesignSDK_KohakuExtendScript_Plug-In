@@ -23,6 +23,7 @@
 // Project includes:
 #include "KESScriptingDefs.h"
 #include "KESID.h"
+#include "KESLayout.h"
 
 // PrefsScriptProvider
 // Subclass this to add a singleton script object and its properties to the scripting DOM.
@@ -53,7 +54,9 @@ public:
 
 private:
 
-	ErrorCode AccessProperty_SplitLayoutViewObject(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
+	// Access SplitLayoutView top-left coordinates of the layout Window.
+	static ErrorCode SplitLayoutViewAccessContentLocationAtFrameOrigin
+	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY);
 };
 
 /*	Make the implementation available to the application.
@@ -77,11 +80,13 @@ ErrorCode KESPrefsScriptProvider::AccessProperty(ScriptID scriptID, IScriptReque
 	do {
 		switch (scriptID.Get())
 		{
-		case KESScriptProperties::p_KESAccessContentLocationAtFrameOriginX: // ‚©‚è
-		{
-			status = kSuccess;
+		case KESScriptProperties::p_KESSplitLayoutViewAccessContentLocationAtFrameOriginX:
+			status = this->SplitLayoutViewAccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "X");
 			break;
-		}
+
+		case KESScriptProperties::p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY:
+			status = this->SplitLayoutViewAccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "Y");
+			break;
 		default:
 			status = PrefsScriptProvider::AccessProperty(scriptID, iScriptRequestData, iScript);
 			break;
@@ -91,82 +96,67 @@ ErrorCode KESPrefsScriptProvider::AccessProperty(ScriptID scriptID, IScriptReque
 	return status;
 }
 
-//
-ErrorCode KESPrefsScriptProvider::AccessProperty_SplitLayoutViewObject
-	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
+ErrorCode KESPrefsScriptProvider::SplitLayoutViewAccessContentLocationAtFrameOrigin
+(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY)
 {
 	ErrorCode status = kFailure;
-
 	do {
-		InterfacePtr<IDocumentPresentation> iDocumentPresentation_iScript(iScript, ::UseDefaultIID());
-		if (!iDocumentPresentation_iScript) break;
+		// Query parent(layout window).
+		InterfacePtr<IScript> iScript_parent((IScript*)iScript->
+			QueryParent(IScript::kDefaultIID, iScriptRequestData->GetRequestContext()));
+		if (!iScript_parent) break;
+
+		InterfacePtr<IDocumentPresentation> iDocumentPresentation_parent(iScript_parent, ::UseDefaultIID());
+		if (!iDocumentPresentation_parent) break;
 
 		// Is the secondary layout widget displayed?
-		if (Utils<ILayoutViewUtils>()->IsSplitLayoutViewShown(iDocumentPresentation_iScript) != kTrue)
-			return kSuccess; // Error handling.
+		if (Utils<ILayoutViewUtils>()->
+			IsSplitLayoutViewShown(iDocumentPresentation_parent) != kTrue) break;
 
-
-
-
-		// ----------------------------------------------------
-
-		InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
-		if (!iPanelControlData) break;
-
-		// kLayoutWidgetBoss is a BOSS representing a layout view.
-		IControlView* iControlView_iScript = iPanelControlData->FindWidget(kLayoutWidgetBoss);
-		if (!iControlView_iScript) break;
-
-		InterfacePtr<IDocument> iDocument(Utils<IScriptUtils>()->
-			QueryDocumentFromScript(iScript, iScriptRequestData->GetRequestContext()));
-
-		IDataBase* iDataBase = ::GetDataBase(iDocument);
-		if (!iDataBase) continue;
-
-		K2Vector<IControlView*> iControlView_layoutViewList;
-		Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, iControlView_iScript, iDataBase);
-
-		IControlView* iControlView_splitLayoutView = nil;
-		for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
-			iter != iControlView_layoutViewList.end(); ++iter)
+		// Get SplitLayoutView
+		IControlView* iControlView_SplitLayout = nil;
 		{
-			IControlView* iControlView = *iter;
-			if (iControlView == nil) continue;
+			InterfacePtr<IPanelControlData> iPanelControlData(iScript_parent, ::UseDefaultIID());
+			if (!iPanelControlData) break;
 
-			InterfacePtr<IWidgetParent> iWidgetParent(iControlView, ::UseDefaultIID());
-			if (!iWidgetParent) break;
+			// kLayoutWidgetBoss is a BOSS representing a layout view.
+			IControlView* iControlView_iScript = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+			if (!iControlView_iScript) break;
 
-			InterfacePtr<IDocumentPresentation> iDocumentPresentation((IDocumentPresentation*)iWidgetParent->
-				QueryParentFor(IID_IDOCUMENTPRESENTATION));
-			if (!iDocumentPresentation) break;
+			InterfacePtr<IDocument> iDocument(Utils<IScriptUtils>()->
+				QueryDocumentFromScript(iScript_parent, iScriptRequestData->GetRequestContext()));
 
-			if (iDocumentPresentation_iScript == iDocumentPresentation)
+			IDataBase* iDataBase = ::GetDataBase(iDocument);
+			if (!iDataBase) break;
+
+			K2Vector<IControlView*> iControlView_layoutViewList;
+			Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, iControlView_iScript, iDataBase);
+
+			for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
+				iter != iControlView_layoutViewList.end(); ++iter)
 			{
-				iControlView_splitLayoutView = iControlView;
-				break;
+				IControlView* iControlView = *iter;
+				if (iControlView == nil) continue;
+
+				InterfacePtr<IWidgetParent> iWidgetParent(iControlView, UseDefaultIID());
+				if (!iWidgetParent) continue;
+
+				InterfacePtr<IDocumentPresentation> iDocumentPresentation((IDocumentPresentation*)iWidgetParent->
+					QueryParentFor(IID_IDOCUMENTPRESENTATION));
+				if (!iDocumentPresentation) continue;
+
+				if (iDocumentPresentation_parent == iDocumentPresentation)
+				{
+					iControlView_SplitLayout = iControlView;
+					break;
+				}
 			}
+			if (!iControlView_SplitLayout) break;
 		}
 
-
-
-
-
-
-		InterfacePtr<IScript> iScript_splitLayoutView(iControlView_splitLayoutView, ::UseDefaultIID());
-
-
-
-
-
-
-
-
-		ScriptData returnData;
-		returnData.SetObject(iScript_splitLayoutView);
-
-		iScriptRequestData->AppendReturnData(iScript, scriptID, returnData);
-
-		status = kSuccess;
+		// Get put content location at frame origin.
+		status = KESLayout::GetPutContentLocationAtFrameOrigin
+			(scriptID, iScriptRequestData, iScript, flgXY, iControlView_SplitLayout);
 
 	} while (false);
 
