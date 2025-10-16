@@ -78,15 +78,22 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData*
 	switch (scriptID.Get())
 	{
 	case KESScriptEvents::e_KESMatchScrollZoomAllLayout:
+
 		status = KESLayout::MatchScrollZoomAllLayout();
 		break;
 
 	case KESScriptEvents::e_KESToggleSplitLayout:
+
 		status = KESLayout::ToggleSplitLayout(iScript);
 		break;
 
 	case KESScriptEvents::e_KESQueryNthLayout:
+
 		status = KESLayout::QueryNthLayout(scriptID, iScriptRequestData, iScript);
+		break;
+
+	case KESScriptEvents::e_KESIsSplitLayoutViewShown:
+		status = KESLayout::IsSplitLayoutViewShown(scriptID, iScriptRequestData, iScript);
 		break;
 
 	default:

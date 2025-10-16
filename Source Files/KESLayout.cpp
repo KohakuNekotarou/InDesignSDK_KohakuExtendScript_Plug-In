@@ -3,187 +3,34 @@
 
 // ---------------------------------------------------------------------------------------
 // Interface includes:
-/** IApplication
-IApplication is similar to ISession,
-and holds all the app-specific and UI-specific information on the current session (kSessionBoss).
-現在のセッション (kSessionBoss) に関するアプリ固有および UI 固有のすべての情報を保持します
-The application object (kAppBoss) 
-also manages and provides access to the global event loop (via its interface IEventDispatcher).
-アプリケーション オブジェクト (kAppBoss) は、
-グローバル イベント ループを (インターフェイス IEventDispatcher を介して) 管理し、アクセスも提供します。
-*/
 #include "IApplication.h"
-
-/** IControlView
-Interface responsible for determining the visual appearance of widgets. 
-ウィジェットの視覚的な外観を決定する役割を担うインターフェイス。
-Handles drawing in various states. 
-さまざまな状態での描画を処理します。
-Also involved in hit testing and Auto attaching/detaching observers.
-ヒットテストやオブザーバーの自動着脱にも関与しています。
-*/
 #include "IControlView.h"
-
-/** IControlViewCmdData
-*/
 #include "IControlViewCmdData.h"
-
-/** ICommand
-commands are used to modify objects that persist in an InDesign database that supports undo. 
-コマンドは、元に戻すをサポートする InDesign データベースに保持されるオブジェクトを変更するために使用されます
-*/
 #include "ICommand.h"
-
-/** IDataBase
-A database is the underlying data structure used for storage of documents, preferences, books, etc.
-データベースは、ドキュメント、設定、書籍などの保存に使用される基礎となるデータ構造です。
-It handles allocation, serialization, deletion of objects in the files.
-ファイル内のオブジェクトの割り当て、シリアル化、削除を処理します。
-It also handles caching of objects.
-また、オブジェクトのキャッシュも処理します。
-*/
 #include "IDataBase.h"
-
-/** IDocument
-Represents an InDesign publication. Provides the basic file operations. 
-InDesign 文書を表します。基本的なファイル操作を提供します。
-*/
 #include "IDocument.h"
-
-/** IDocumentList
-store a list of open documents.
-開いているドキュメントのリストが格納されます。
-*/
 #include "IDocumentList.h"
-
-/** IDocumentPresentation
-represents a view onto a document, and exists on the document presentation boss,
-along with IActiveContext, to designate an InDesign document presentation.
-ドキュメント上のビューを表し、InDesign ドキュメントプレゼンテーションを指定するために
-IActiveContextと共にドキュメントプレゼンテーション ボスに存在します。
-*/
 #include "IDocumentPresentation.h"
-
-/** IGalleyUtils
-an aggregrate of many different utility functions centered around the document window and galley sub window.
-ドキュメント ウィンドウとギャレー サブ ウィンドウを中心としたさまざまなユーティリティ関数の集合体です。
-*/
-#include "IGalleyUtils.h"
-
-/** IHierarchy
-stores a persistent, UID-based tree structure. This tree structure is used for InDesign's display hierarchy.
-永続的な UID ベースのツリー構造が格納されます。このツリー構造は、InDesign の表示階層に使用されます。
-*/
 #include "IHierarchy.h"
-
-/** ILayoutControlData
-Data interface for the Layout Widget.
-レイアウトウィジェットのデータインターフェース。
-Provides access to the spread, document, and currently installed selection.
-見開き、ドキュメント、および現在インストールされている選択範囲へのアクセスを提供します。
-*/
 #include "ILayoutControlData.h"
-
-/** ILayoutCmdData
-Command data interface used to pass layout data information to various commands.
-レイアウトデータ情報を各種コマンドに渡すためのコマンドデータインタフェース
-*/
 #include "ILayoutCmdData.h"
-
-/** ILayoutUIUtils
-UI Layout-related utilities
-UI レイアウト関連のユーティリティ
-*/
 #include "ILayoutUIUtils.h"
-
-/** ILayoutViewUtils
-Layout-view related utilities
-レイアウトビュー関連のユーティリティ
-*/
 #include "ILayoutViewUtils.h"
-
-/** IPageList
-which caches commonly needed information about pages in the document. 
-ドキュメント内のページに関して一般的に必要な情報をキャッシュします。
-*/
 #include "IPageList.h"
-
-/** IPanelControlData
-Interface that container widgets implement.
-コンテナウィジェットが実装するインターフェース
-*/
 #include "IPanelControlData.h"
-
-/** IPanorama
-Interface used to manage views that can scroll.
-スクロールできるビューを管理するために使用されるインターフェイス。
-*/
 #include "IPanorama.h"
-
-/** IPresentationList
-unordered list of document presentations. 
-ドキュメントプレゼンテーションの順序付けされていないリストを保持します。
-*/
 #include "IPresentationList.h"
-
-/** IScript
-Added to any boss that wants to be visible as an object in the scripting architecture
-and thus available to any scripting client.
-スクリプトアーキテクチャでオブジェクトとして表示し
-スクリプトクライアントで使用できるようにするボスに追加されます。
-*/
 #include "IScript.h"
-
-/** IScriptRequestData
-Used to pass data into and out of a scripting request.
-スクリプト要求との間でデータをやり取りするために使用します。
-*/
 #include "IScriptRequestData.h"
-
-/** IScriptUtils
-*/
 #include "IScriptUtils.h"
-
-/** ISpread
-A spread is the root of all drawable page item's IHierarchies
-スプレッドは、すべての描画可能なページアイテムのIHierarchiesのルートです
-*/
 #include "ISpread.h"
-
-/** IUIDData
-Data interface that holds onto a UIDRef that can be used to uniquely describe a persistent object.
-永続オブジェクトを一意に記述するために使用できるUIDRefを保持するデータ インターフェイスです。
-*/
 #include "IUIDData.h"
-
-/** IWidgetParent
-Interface to allow traversing widget hierarchy.
-ウィジェット階層をトラバースできるインターフェイス。
-*/
 #include "IWidgetParent.h"
 
 // ---------------------------------------------------------------------------------------
 // General includes:
-// CAlert
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
-
-/** KeyValuePair
-KeyValuePair is similar in concept to std::pair.
-KeyValuePair は、概念が std::pair に似ています。
-*/
-#include "KeyValuePair.h"
-
-/** ScriptData
-Class that can hold any of the data types supported by the scripting architecture.
-スクリプト アーキテクチャでサポートされている任意のデータ型を保持できるクラスです。
-*/
 #include "ScriptData.h"
-
-/** Utils
-This is a helper class for calling methods in interfaces on the kUtilsBoss.
-kUtilsBoss のインターフェイスでメソッドを呼び出すためのヘルパークラスです。
-Utils<IFooUtils>()->MyFooMethod();
-*/
 #include "Utils.h"
 
 // ---------------------------------------------------------------------------------------
@@ -417,7 +264,6 @@ ErrorCode KESLayout::GetPutContentLocationAtFrameOrigin
 
 		// Request
 		ScriptData scriptData;
-
 		if (iScriptRequestData->IsPropertyGet())
 		{
 			if (flgXY == "X")
@@ -456,6 +302,30 @@ ErrorCode KESLayout::GetPutContentLocationAtFrameOrigin
 
 			status = kSuccess;
 		}
+	} while (false); // only do once
+
+	return status; // If kSuccess is not returned, an error occurs
+}
+
+// Is split layout view shown.
+ErrorCode KESLayout::IsSplitLayoutViewShown(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
+{
+	ErrorCode status = kFailure;
+
+	do
+	{
+		InterfacePtr<IDocumentPresentation> iDocumentPresentation(iScript, ::UseDefaultIID());
+		if (!iDocumentPresentation) break;
+
+		bool16 bool16_result = Utils<ILayoutViewUtils>()->IsSplitLayoutViewShown(iDocumentPresentation);
+
+		ScriptData scriptData;
+
+		scriptData.SetBoolean(bool16_result);
+
+		iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
+
+		status = kSuccess;
 	} while (false); // only do once
 
 	return status; // If kSuccess is not returned, an error occurs
