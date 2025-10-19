@@ -39,59 +39,78 @@
 #include "KESScriptingDefs.h"
 
 /* MatchScrollZoomAllLayout */
-ErrorCode KESLayout::MatchScrollZoomAllLayout()
+ErrorCode KESLayout::MatchScrollZoomAllLayout(bool16 flg)
 {
 	ErrorCode status = kFailure;
 	do
 	{
 		// Get front layout view
 		InterfacePtr<IControlView> iControlView_frontView(Utils<ILayoutUIUtils>()->QueryFrontView());
-		if (!iControlView_frontView) break;
+		if (iControlView_frontView == nil) break;
 
 		// Panorama handles the control of content position, scale, and scrolling within the view's display area
 		InterfacePtr<IPanorama> iPanorama_frontView(iControlView_frontView, ::UseDefaultIID());
-		if (!iPanorama_frontView) break;
+		if (iPanorama_frontView == nil) break;
 
 		// Get top-left position
 		PMPoint pMPoint_frontViewTopLeft = iPanorama_frontView->GetContentLocationAtFrameOrigin();
 
 		// Get scale
-		PMReal xScale = iPanorama_frontView->GetXScaleFactor();
-		PMReal yScale = iPanorama_frontView->GetYScaleFactor();
+		PMReal frontViewXScale = iPanorama_frontView->GetXScaleFactor();
+		PMReal frontViewYScale = iPanorama_frontView->GetYScaleFactor();
 
+		
 		// Get frontViewPageNumber
 		PMString pmString_frontViewPageNumber;
-		{	
-			// Get front view page UID
+		if (flg == 1)
+		{
 			UID UID_page = Utils<ILayoutUIUtils>()->GetCurrentVisiblePage();
 			if (UID_page == kInvalidUID) break;
 
-			// Get front document
 			IDocument* iDocument = Utils<ILayoutUIUtils>()->GetFrontDocument();
-			if (!iDocument) break;
+			if (iDocument == nil) break;
 
-			// Get front document pageList
 			InterfacePtr<IPageList> iPageList(iDocument, ::UseDefaultIID());
-			if (!iPageList) break;
+			if (iPageList == nil) break;
 
-			// Get front view page string
 			iPageList->GetPageString(UID_page, &pmString_frontViewPageNumber);
 		}
+		
+		InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+		if (iApplication == nil) break;
 
-		// Get all layout views
-		K2Vector<IControlView*> iControlView_layoutViewList;
-		Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, nil, nil);
+		InterfacePtr<IDocumentList> iDocumentList(iApplication->QueryDocumentList());
+		if (iDocumentList == nil) break;
 
-		for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
-			iter != iControlView_layoutViewList.end(); ++iter)
+		int32 docCount = iDocumentList->GetDocCount();
+		for (int32 i = 0; i < docCount; i++)
 		{
-			IControlView* iControlView = *iter;
+			IDocument* iDocument = iDocumentList->GetNthDoc(i);
+			if (iDocument == nil) continue;
+
+			InterfacePtr<IPresentationList> iPresentationList(iDocument, ::UseDefaultIID());
+			if (iPresentationList == nil) continue;
+
+			// When only one documentPresentation exists.
+			if (iDocumentList->GetDocCount() == 1 && iPresentationList->Length() == 1) return kSuccess;
+
+			IDocumentPresentation* iDocumentPresentation = iPresentationList->First();
+			if (iDocumentPresentation == nil) continue;
+
+			InterfacePtr<IPanelControlData> iPanelControlData(iDocumentPresentation, ::UseDefaultIID());
+			if (iPanelControlData == nil) continue;
+
+			IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
 			if (iControlView == nil) continue;
 
+			// When it is same as front layout view.
+			if (iControlView_frontView == iControlView) continue;
+
 			InterfacePtr<IPanorama> iPanorama(iControlView, UseDefaultIID());
-			if (!iPanorama) continue;
+			if (iPanorama == nil) continue;
 
 			// Set Page
+			if (flg == 1)
 			{
 				InterfacePtr<ICommand> iCommand_setPage(CmdUtils::CreateCommand(kSetPageCmdBoss));
 
@@ -131,8 +150,14 @@ ErrorCode KESLayout::MatchScrollZoomAllLayout()
 				CmdUtils::ProcessCommand(iCommand_setPage);
 			}
 
-			// Scale
-			iPanorama->ScalePanorama(xScale, yScale);
+			// Get scale
+			PMReal xScale = iPanorama->GetXScaleFactor();
+			PMReal yScale = iPanorama->GetYScaleFactor();
+
+			if (frontViewXScale != xScale && frontViewYScale != yScale) {
+				// Scale
+				iPanorama->ScalePanorama(frontViewXScale, frontViewYScale);
+			}
 
 			// Scroll
 			iPanorama->ScrollContentLocationToFrameOrigin(pMPoint_frontViewTopLeft);
@@ -144,20 +169,11 @@ ErrorCode KESLayout::MatchScrollZoomAllLayout()
 	return status; // If kSuccess is not returned, an error occurs
 }
 
-/* AccessContentLocationAtFrameOrigin
-My		ScriptID scriptID,	IScriptRequestData* iScriptRequestData,	IScript* iScript
-Sample	ScriptID propID,	IScriptRequestData* data,				IScript* parent
-
-scriptID four-character identifier. defined in KESScriptingDef.h
-{ // Check the scriptID
-	PMString pMString_scriptID = Utils<IScriptUtils>()->GetScriptID(scriptID);
-}
-
-IScript
-{ // GetName
-	PMString PMString_name = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
-}
-*/
+// Access content location at frame origin
+// Check the scriptID:
+//		PMString pMString_scriptID = Utils<IScriptUtils>()->GetScriptID(scriptID);
+// GetName:
+//		PMString PMString_name = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
 ErrorCode KESLayout::AccessContentLocationAtFrameOrigin
 	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript, std::string flgXY)
 {

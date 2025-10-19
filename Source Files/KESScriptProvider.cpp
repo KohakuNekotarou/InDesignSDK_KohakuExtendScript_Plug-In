@@ -28,13 +28,14 @@
 #include "IScriptRequestData.h"
 
 // General includes:
-#include "CAlert.h"
+#include "CAlert.h" // CAlert::InformationAlert(Msg);
 #include "CScriptProvider.h"
 
 // Project includes:
 #include "KESScriptingDefs.h"
 #include "KESID.h"
 #include "KESLayout.h"
+#include "KESLayoutScrollBarObserver.h"
 
 // CScriptProvider
 // Adding properties or methods to existing objects.
@@ -79,7 +80,7 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData*
 	{
 	case KESScriptEvents::e_KESMatchScrollZoomAllLayout:
 
-		status = KESLayout::MatchScrollZoomAllLayout();
+		status = KESLayout::MatchScrollZoomAllLayout(1);
 		break;
 
 	case KESScriptEvents::e_KESToggleSplitLayout:
@@ -116,6 +117,10 @@ ErrorCode KESScriptProvider::AccessProperty(ScriptID scriptID, IScriptRequestDat
 
 	case KESScriptProperties::p_KESAccessContentLocationAtFrameOriginY:
 		status = KESLayout::AccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "Y");
+		break;
+
+	case KESScriptProperties::p_KESAutoMatchScrollZoomAllLayout:
+		status = KESLayoutScrollBarObserver::AutoMatchScrollZoomAllLayout(scriptID, iScriptRequestData, iScript);
 		break;
 
 	default:
