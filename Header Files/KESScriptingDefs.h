@@ -43,6 +43,7 @@ enum KESScriptEvents
 	e_KESMatchScrollZoomAllLayout = 'KMSL',
 	e_KESToggleSplitLayout = 'KTSL',
 	e_KESQueryNthLayout = 'KQNL',
+	e_KESIsSplitLayoutViewShown = 'KISL',
 };
 
 
@@ -53,6 +54,9 @@ enum KESScriptProperties
 	p_KESAccessContentLocationAtFrameOriginY = 'KALY',
 	p_KESSplitLayoutViewObject = 'KSLP',
 	p_KESNthLayoutIndex = 'KNLI',
+	p_KESSplitLayoutViewAccessContentLocationAtFrameOriginX = 'KSLX',
+	p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY = 'KSLY',
+	p_KESAutoMatchScrollZoomAllLayout = 'KAML',
 };
 
 #endif // __KESScriptingDefs_h__

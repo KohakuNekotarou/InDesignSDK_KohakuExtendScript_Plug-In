@@ -51,41 +51,20 @@
 DECLARE_PMID(kPlugInIDSpace, kKESPluginID, kKESPrefix + 0)
 
 // ClassIDs:
-DECLARE_PMID(kClassIDSpace, kKESScriptProviderBoss, kKESPrefix + 3)
-DECLARE_PMID(kClassIDSpace, kKESPrefsScriptProviderBoss, kKESPrefix + 4)
+DECLARE_PMID(kClassIDSpace, kKESScriptProviderBoss, kKESPrefix + 0)
+DECLARE_PMID(kClassIDSpace, kKESPrefsScriptProviderBoss, kKESPrefix + 1)
+DECLARE_PMID(kClassIDSpace, kKESLayoutScrollBarBoss, kKESPrefix + 2)
 
 // InterfaceIDs:
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 0)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 1)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 2)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 3)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 4)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 5)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 6)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 7)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 8)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 9)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 10)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 11)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 12)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 13)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 14)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 15)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 16)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 17)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 18)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 19)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 20)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 21)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 22)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 23)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 24)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IKESINTERFACE, kKESPrefix + 25)
+DECLARE_PMID(kInterfaceIDSpace, IID_IKESLAYOUTSCROLLBAROBSERVER, kKESPrefix + 0)
 
 // ImplementationIDs:
 // ŽÀ‘•ID
 DECLARE_PMID(kImplementationIDSpace, kKESScriptProviderImpl, kKESPrefix + 0 )
 DECLARE_PMID(kImplementationIDSpace, kKESPrefsScriptProviderImpl, kKESPrefix + 1)
+DECLARE_PMID(kImplementationIDSpace, kKESLayoutScrollBarObserverImpl, kKESPrefix + 2)
+
+
 
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
@@ -114,29 +93,6 @@ DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
 
 // WidgetIDs:
 //DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 2)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 3)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 4)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 5)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 6)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 7)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 8)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 9)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 10)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 11)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 12)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 13)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 14)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 15)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 16)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 17)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 18)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 19)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 20)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 21)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 22)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 23)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 24)
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 25)
 
 // Script Element IDs
 DECLARE_PMID(kScriptInfoIDSpace, kKESMatchScrollZoomAllLayoutMethodScriptElement, kKESPrefix + 1)
@@ -146,6 +102,12 @@ DECLARE_PMID(kScriptInfoIDSpace, kKESToggleSplitLayoutMethodScriptElement, kKESP
 DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectScriptElement, kKESPrefix + 5)
 DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectPropertyScriptElement, kKESPrefix + 6)
 DECLARE_PMID(kScriptInfoIDSpace, kKESQueryNthLayoutMethodScriptElement, kKESPrefix + 7)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 8)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 9)
+DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 10)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 11)
+
+
 
 // "About Plug-ins" sub-menu:
 #define kKESAboutMenuKey			kKESStringPrefix "kKESAboutMenuKey"
