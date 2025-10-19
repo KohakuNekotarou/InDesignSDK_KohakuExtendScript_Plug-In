@@ -11,6 +11,7 @@
 #include "IDocument.h"
 #include "IDocumentList.h"
 #include "IDocumentPresentation.h"
+#include "IGalleyUtils.h"
 #include "IHierarchy.h"
 #include "ILayoutControlData.h"
 #include "ILayoutCmdData.h"
@@ -96,6 +97,9 @@ ErrorCode KESLayout::MatchScrollZoomAllLayout(bool16 flg)
 
 			IDocumentPresentation* iDocumentPresentation = iPresentationList->First();
 			if (iDocumentPresentation == nil) continue;
+
+			// Galley or Story view.
+			if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(iDocumentPresentation)) continue;
 
 			InterfacePtr<IPanelControlData> iPanelControlData(iDocumentPresentation, ::UseDefaultIID());
 			if (iPanelControlData == nil) continue;
@@ -207,6 +211,9 @@ ErrorCode KESLayout::ToggleSplitLayout(IScript* iScript)
 		InterfacePtr<IDocumentPresentation> iDocumentPresentation(iScript, ::UseDefaultIID());
 		if (!iDocumentPresentation) break;
 
+		// Galley or Story view.
+		if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(iDocumentPresentation)) break;
+
 		// Toggle split layout view.
 		Utils<ILayoutViewUtils>()->ToggleSplitLayoutView(iDocumentPresentation);
 
@@ -248,6 +255,9 @@ ErrorCode KESLayout::QueryNthLayout(ScriptID scriptID, IScriptRequestData* iScri
 
 			iDocumentPresentation_nth = iPresentationList->At(int32_nthNum);
 			if (!iDocumentPresentation_nth) break;
+
+			// Galley or Story view.
+			if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(iDocumentPresentation_nth)) break;
 		}
 
 		InterfacePtr<IScript> iScript_window(iDocumentPresentation_nth, ::UseDefaultIID());
@@ -332,6 +342,9 @@ ErrorCode KESLayout::IsSplitLayoutViewShown(ScriptID scriptID, IScriptRequestDat
 	{
 		InterfacePtr<IDocumentPresentation> iDocumentPresentation(iScript, ::UseDefaultIID());
 		if (!iDocumentPresentation) break;
+
+		// Galley or Story view.
+		if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(iDocumentPresentation)) break;
 
 		bool16 bool16_result = Utils<ILayoutViewUtils>()->IsSplitLayoutViewShown(iDocumentPresentation);
 

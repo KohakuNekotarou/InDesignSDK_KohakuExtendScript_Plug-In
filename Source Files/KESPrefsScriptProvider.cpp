@@ -6,6 +6,7 @@
 #include "IDataBase.h"
 #include "IDocument.h"
 #include "IDocumentPresentation.h"
+#include "IGalleyUtils.h"
 #include "ILayoutViewUtils.h"
 #include "IPanelControlData.h"
 #include "IScript.h"
@@ -108,6 +109,9 @@ ErrorCode KESPrefsScriptProvider::SplitLayoutViewAccessContentLocationAtFrameOri
 
 		InterfacePtr<IDocumentPresentation> iDocumentPresentation_parent(iScript_parent, ::UseDefaultIID());
 		if (!iDocumentPresentation_parent) break;
+
+		// Galley or Story view.
+		if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(iDocumentPresentation_parent)) break;
 
 		// Is the secondary layout widget displayed?
 		if (Utils<ILayoutViewUtils>()->
