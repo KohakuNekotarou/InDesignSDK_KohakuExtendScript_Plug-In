@@ -1,8 +1,3 @@
-//========================================================================================
-//  
-//  $File$
-//  
-//  Owner: Adobe Developer Technologies
 #pragma once
 
 // Interface includes
@@ -22,7 +17,6 @@ public:
 	// Destructor.
 	~KESLayoutScrollBarObserver();
 
-
 	virtual void Update(const ClassID& theChange, ISubject* theSubject, const PMIID& protocol, void* changedBy);
 
 	void LazyUpdate(ISubject* iSubject, const PMIID& protocol, const LazyNotificationData* data);
@@ -30,4 +24,8 @@ public:
 	// Match scroll zoom all layout attach.
 	static ErrorCode AutoMatchScrollZoomAllLayout
 		(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
+
+private:
+	// Attach
+	static void AttachPanorama();
 };
