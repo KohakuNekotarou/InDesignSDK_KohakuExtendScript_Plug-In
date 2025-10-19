@@ -40,12 +40,20 @@
 #include "BuildNumber.h"
 #include "PlugInModel_UIAttributes.h"
 
+
+
+
+
 #include "ScriptInfoTypes.fh"
 #include "AppFrameworkID.h"
 #include "DocFrameworkID.h"
 
 #include "ScriptInfoTypes.fh"
 #include "ScriptingID.h"
+#include "widgetid.h"
+
+
+
 
 // Project includes:
 #include "KESID.h"
@@ -54,10 +62,14 @@
 #include "TextID.h"
 
 
+
+
+
+
+
+
+
 #include "DialogLayoutID.h"
-
-
-
 #include "KESScriptingDefs.h"
 
 #ifdef __ODFRC__
@@ -93,11 +105,11 @@ resource ExtraPluginInfo(1)
 };
 
 /* 
- * Boss class definitions.
+ * Boss class definitionsÅiíËã`Åj.
  */
 resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 {{{
-	/***************************************************************************************************************************/
+	// ---------------------------------------------------------------------------------------
 	Class
 	{
 		kKESPrefsScriptProviderBoss,
@@ -106,8 +118,8 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 			IID_ISCRIPTPROVIDER, kKESPrefsScriptProviderImpl,	
 		}
 	},
-	/***************************************************************************************************************************/
 
+	// ---------------------------------------------------------------------------------------
 	Class
 	{
 		kKESScriptProviderBoss,
@@ -117,6 +129,30 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 			
 		}
 	},
+
+	// ---------------------------------------------------------------------------------------
+	// Ç÷ÇÒÇµÇ§ÇøÇ§
+	AddIn
+	{
+		kActiveContextBoss,
+		kInvalidClass,
+		{
+			IID_IKESLAYOUTSCROLLBAROBSERVER, kKESLayoutScrollBarObserverImpl,
+		}
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
 }}};
 
 /*  
@@ -300,6 +336,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
+		//
 		Property
 		{
 			kKESAccessContentLocationAtFrameOriginXPropertyScriptElement,
@@ -311,6 +348,8 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			kNoAttributeClass,
 		}
 
+		// ---------------------------------------------------------------------------------------
+		//
 		Property
 		{
 			kKESAccessContentLocationAtFrameOriginYPropertyScriptElement,
@@ -318,6 +357,19 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			"access content location at frame origin y",
 			"Access content location at frame origin Y",
 			RealType,
+			{}
+			kNoAttributeClass,
+		}
+
+		// ---------------------------------------------------------------------------------------
+		// Auto match scroll zoom all layout
+		Property
+		{
+			kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement,
+			p_KESAutoMatchScrollZoomAllLayout,
+			"auto match scroll zoom all layout",
+			"Auto match scroll zoom all layout",
+			BoolType,
 			{}
 			kNoAttributeClass,
 		}
@@ -352,6 +404,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		{
 			kKESScriptProviderBoss,	// provider boss ID
 			{
+				// ---------------------------------------------------------------------------------------
 				// target
 				Object{ kApplicationObjectScriptElement },
 
@@ -359,6 +412,12 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				// ExtendScript Example:
 				//		app.matchScrollZoomAllLayout();
 				Method{ kKESMatchScrollZoomAllLayoutMethodScriptElement }, // Additional
+
+				// Access content location at frame origin.
+				// ExtendScript Example:
+				//		app.autoMatchScrollZoomAllLayout = true; // Set
+				//		flg = app.autoMatchScrollZoomAllLayout; // get
+				Property{ kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kReadWrite }, // Additional
 
 				// ---------------------------------------------------------------------------------------
 				// target
