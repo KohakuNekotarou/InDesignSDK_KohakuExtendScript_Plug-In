@@ -34,5 +34,5 @@ if(result){
 }
 
 // Split / Unsplit layout.
-    app.activeDocument.queryNthLayout(0).toggleSplitLayout();
+app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 ```
