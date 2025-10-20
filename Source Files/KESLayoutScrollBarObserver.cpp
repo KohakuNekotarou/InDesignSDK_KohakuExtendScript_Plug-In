@@ -75,14 +75,27 @@ ErrorCode KESLayoutScrollBarObserver::AutoMatchScrollZoomAllLayout
 	{
 		// Request
 		ScriptData scriptData;
-		if (iScriptRequestData->IsPropertyGet())
+		if (iScriptRequestData->IsPropertyGet()) // Get
 		{
-			
-			//iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
+			IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
+			if (iActiveContext == nil) break;
+
+			InterfacePtr<ISubject> iSubject(iActiveContext, ::UseDefaultIID());
+			if (iSubject == nil) break;
+
+			InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
+			if (iObserver == nil) break;
+
+			bool16 attachFlg = iSubject->IsAttached
+				(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
+
+			scriptData.SetBoolean(attachFlg);
+
+			iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
 
 			status = kSuccess;
 		}
-		else if (iScriptRequestData->IsPropertyPut())
+		else if (iScriptRequestData->IsPropertyPut()) // Set
 		{
 			status = iScriptRequestData->ExtractRequestData(scriptID.Get(), scriptData);
 			if (status != kSuccess) break;
