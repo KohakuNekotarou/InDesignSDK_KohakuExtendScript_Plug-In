@@ -6,17 +6,33 @@
 
 ## extendScript for JavaScript
 ```
+// Auto match scroll zoom all layout. 
+app.autoMatchScrollZoomAllLayout = true; // Set
+flg = app.autoMatchScrollZoomAllLayout; // get
+
+// Auto match scroll zoom all layout.
+app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout = true; // Set
+
 // Match scroll zoom all layout.
 app.matchScrollZoomAllLayout();
 
-// Set Top-left coordinates of the layout.
-app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0;
+// Query Nth layout. 
+app.activeDocument.queryNthLayout(0);
 
-// Get Top-left coordinates of the layout.
-y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY;
+// Access content location at frame origin.
+app.activeDocument.queryNthLayout(0).accessContentLocationAtFrameOriginX = 0; // Set
+y = app.activeDocument.queryNthLayout(0).accessContentLocationAtFrameOriginY;  // Get
+
+// Is split layout view shown.
+result = app.activeDocument.queryNthLayout(0).isSplitLayoutViewShown();
+
+// Access content location at frame origin.
+result = app.activeDocument.queryNthLayout(0).isSplitLayoutViewShown();
+if(result){
+    app.activeDocument.queryNthLayout(0).splitLayoutView.accessContentLocationAtFrameOriginX = 0; // Set
+    y = app.activeDocument.queryNthLayout(0).splitLayoutView.accessContentLocationAtFrameOriginY; // get
+}
 
 // Split / Unsplit layout.
-if(app.activeWindow.constructor.name == "LayoutWindow"){
-    app.activeWindow.toggleSplitLayout();
-}
+    app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 ```
