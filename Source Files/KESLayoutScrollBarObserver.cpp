@@ -71,25 +71,55 @@ ErrorCode KESLayoutScrollBarObserver::AutoMatchScrollZoomAllLayout
 {
 	ErrorCode status = kFailure;
 
+	PMString PMString_parentName = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
+
 	do
 	{
-		// Request
 		ScriptData scriptData;
+
+		IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
+		if (iActiveContext == nil) break;
+
 		if (iScriptRequestData->IsPropertyGet()) // Get
 		{
-			IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
-			if (iActiveContext == nil) break;
+			bool16 attachFlg;
 
-			InterfacePtr<ISubject> iSubject(iActiveContext, ::UseDefaultIID());
-			if (iSubject == nil) break;
+			if (PMString_parentName == "application")
+			{
+				IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
+				if (iActiveContext == nil) break;
 
-			InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
-			if (iObserver == nil) break;
+				InterfacePtr<ISubject> iSubject(iActiveContext, ::UseDefaultIID());
+				if (iSubject == nil) break;
 
-			bool16 attachFlg = iSubject->IsAttached
+				InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
+				if (iObserver == nil) break;
+
+				attachFlg = iSubject->IsAttached
 				(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
 
-			scriptData.SetBoolean(attachFlg);
+				scriptData.SetBoolean(attachFlg);
+			}
+			else if(PMString_parentName == "layout window")
+			{
+				InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
+				if (!iPanelControlData) break;
+
+				IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+				if (!iControlView) break;
+
+				InterfacePtr<ISubject> iSubject(iControlView, ::UseDefaultIID());
+				if (!iSubject) break;
+
+
+				InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
+				if (iObserver == nil) break;
+
+				attachFlg = iSubject->IsAttached
+				(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+
+				scriptData.SetBoolean(attachFlg);
+			}
 
 			iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
 
@@ -106,33 +136,7 @@ ErrorCode KESLayoutScrollBarObserver::AutoMatchScrollZoomAllLayout
 
 			if (flg == kTrue) // Attach
 			{
-				IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
-				if (iActiveContext == nil) break;
-
-				InterfacePtr<ISubject> iSubject(iActiveContext, ::UseDefaultIID());
-				if (iSubject == nil) break;
-
-				InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
-				if (iObserver == nil) break;
-
-
-				bool16 attachFlg = iSubject->IsAttached
-				(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
-
-				if (attachFlg == kFalse)
-				{
-					iSubject->AttachObserver
-					(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
-				}
-
-				KESLayoutScrollBarObserver::AttachPanorama();
-			}
-			else // Detach
-			{
-				IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
-				if (iActiveContext == nil) break;
-
-				// Detach activeContext observer.
+				if (PMString_parentName == "application")
 				{
 					InterfacePtr<ISubject> iSubject(iActiveContext, ::UseDefaultIID());
 					if (iSubject == nil) break;
@@ -140,41 +144,100 @@ ErrorCode KESLayoutScrollBarObserver::AutoMatchScrollZoomAllLayout
 					InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
 					if (iObserver == nil) break;
 
+
 					bool16 attachFlg = iSubject->IsAttached
 					(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
 
-					if (attachFlg == kTrue)
+					if (attachFlg == kFalse)
 					{
-						iSubject->DetachObserver
-							(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
+						iSubject->AttachObserver
+						(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
 					}
+
+					KESLayoutScrollBarObserver::AttachPanorama();
 				}
-
-				// Detach panorama observer.
+				else if (PMString_parentName == "layout window")
 				{
-					K2Vector<IControlView*> iControlView_layoutViewList;
-					Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, nil, nil);
+					InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
+					if (!iPanelControlData) break;
 
-					for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
-						iter != iControlView_layoutViewList.end(); ++iter)
+					IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+					if (!iControlView) break;
+
+					KESLayoutScrollBarObserver::AttachPanorama(iControlView);
+				}
+			}
+			else // Detach
+			{
+				if (PMString_parentName == "application")
+				{
+					// Detach activeContext observer.
 					{
-						IControlView* iControlView = *iter;
-						if (iControlView == nil) continue;
-
-						InterfacePtr<ISubject> iSubject(iControlView, ::UseDefaultIID());
-						if (!iSubject) break;
+						InterfacePtr<ISubject> iSubject(iActiveContext, ::UseDefaultIID());
+						if (iSubject == nil) break;
 
 						InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
 						if (iObserver == nil) break;
 
 						bool16 attachFlg = iSubject->IsAttached
-						(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+						(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
 
 						if (attachFlg == kTrue)
 						{
 							iSubject->DetachObserver
-								(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+							(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLAYOUTSCROLLBAROBSERVER);
 						}
+					}
+
+					// Detach panorama observer.
+					{
+						K2Vector<IControlView*> iControlView_layoutViewList;
+						Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, nil, nil);
+
+						for (K2Vector<IControlView*>::const_iterator iter = iControlView_layoutViewList.begin();
+							iter != iControlView_layoutViewList.end(); ++iter)
+						{
+							IControlView* iControlView = *iter;
+							if (iControlView == nil) continue;
+
+							InterfacePtr<ISubject> iSubject(iControlView, ::UseDefaultIID());
+							if (!iSubject) break;
+
+							InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
+							if (iObserver == nil) break;
+
+							bool16 attachFlg = iSubject->IsAttached
+							(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+
+							if (attachFlg == kTrue)
+							{
+								iSubject->DetachObserver
+									(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+							}
+						}
+					}
+				}
+				else if (PMString_parentName == "layout window")
+				{
+					InterfacePtr<IPanelControlData> iPanelControlData(iScript, ::UseDefaultIID());
+					if (!iPanelControlData) break;
+
+					IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
+					if (!iControlView) break;
+
+					InterfacePtr<ISubject> iSubject(iControlView, ::UseDefaultIID());
+					if (!iSubject) break;
+
+					InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
+					if (iObserver == nil) break;
+
+					bool16 attachFlg = iSubject->IsAttached
+					(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+
+					if (attachFlg == kTrue)
+					{
+						iSubject->DetachObserver
+							(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
 					}
 				}
 			}
@@ -271,5 +334,28 @@ void KESLayoutScrollBarObserver::AttachPanorama()
 					(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
 			}
 		}
+	} while (false); // only do once
+}
+
+void KESLayoutScrollBarObserver::AttachPanorama(IControlView* iControlView)
+{
+	do {
+		IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
+		if (iActiveContext == nil) break;
+
+		InterfacePtr<IObserver> iObserver(iActiveContext, IID_IKESLAYOUTSCROLLBAROBSERVER);
+		if (iObserver == nil) break;
+
+		InterfacePtr<ISubject> iSubject(iControlView, ::UseDefaultIID());
+		if (iSubject == nil) break;
+
+		bool16 attachFlg = iSubject->IsAttached
+			(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+
+		if (attachFlg == kTrue) break;
+
+		iSubject->AttachObserver
+			(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLAYOUTSCROLLBAROBSERVER);
+
 	} while (false); // only do once
 }
