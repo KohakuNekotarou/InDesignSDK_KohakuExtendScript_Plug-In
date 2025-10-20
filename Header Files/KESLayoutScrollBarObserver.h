@@ -28,4 +28,5 @@ public:
 private:
 	// Attach
 	static void AttachPanorama();
+	static void AttachPanorama(IControlView* iControlView);
 };
