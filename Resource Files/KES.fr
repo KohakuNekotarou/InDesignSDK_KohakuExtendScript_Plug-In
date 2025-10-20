@@ -362,7 +362,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
-		// Auto match scroll zoom all layout
+		// Auto match scroll zoom all layout for app
 		Property
 		{
 			kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement,
@@ -413,7 +413,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				//		app.matchScrollZoomAllLayout();
 				Method{ kKESMatchScrollZoomAllLayoutMethodScriptElement }, // Additional
 
-				// Access content location at frame origin.
+				// Auto match scroll zoom all layout. 
 				// ExtendScript Example:
 				//		app.autoMatchScrollZoomAllLayout = true; // Set
 				//		flg = app.autoMatchScrollZoomAllLayout; // get
@@ -434,20 +434,26 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// Toggle split layout.
 				// ExtendScript Example:
-				//		app.activeDocument.layoutWindows[0].toggleSplitLayout();
+				//		app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 				Method{ kKESToggleSplitLayoutMethodScriptElement }, // Additional
 
 				// Is split layout view shown.
 				// ExtendScript Example:
-				//		app.activeDocument.layoutWindows[0].isSplitLayoutViewShown();
+				//		app.activeDocument.queryNthLayout(0).isSplitLayoutViewShown();
 				Method{ kKESIsSplitLayoutViewShownMethodScriptElement }, // Additional
 
 				// Access content location at frame origin.
 				// ExtendScript Example:
-				//		app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginX = 0; // Set
-				//		y = app.activeDocument.layoutWindows[0].accessContentLocationAtFrameOriginY; // get
+				//		app.activeDocument.queryNthLayout(0).accessContentLocationAtFrameOriginX = 0; // Set
+				//		y = app.activeDocument.queryNthLayout(0).accessContentLocationAtFrameOriginY; // get
 				Property{ kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
 				Property{ kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additional
+
+				// Auto match scroll zoom all layout. 
+				// ExtendScript Example:
+				//		app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout = true; // Set
+				//		flg = app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout; // get		
+				Property{ kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kReadWrite }, // Additional
 			}
 		}
 	}
