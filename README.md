@@ -10,14 +10,14 @@
 app.autoMatchScrollZoomAllLayout = true; // Set
 flg = app.autoMatchScrollZoomAllLayout; // get
 
-// Auto match scroll zoom all layout.
-app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout = true; // Set
-
 // Match scroll zoom all layout.
 app.matchScrollZoomAllLayout();
 
 // Query Nth layout. 
 app.activeDocument.queryNthLayout(0);
+
+// Auto match scroll zoom all layout.
+app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout = true; // Set
 
 // Access content location at frame origin.
 app.activeDocument.queryNthLayout(0).accessContentLocationAtFrameOriginX = 0; // Set
