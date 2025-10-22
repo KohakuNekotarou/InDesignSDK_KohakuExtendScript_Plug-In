@@ -64,8 +64,6 @@ DECLARE_PMID(kImplementationIDSpace, kKESScriptProviderImpl, kKESPrefix + 0 )
 DECLARE_PMID(kImplementationIDSpace, kKESPrefsScriptProviderImpl, kKESPrefix + 1)
 DECLARE_PMID(kImplementationIDSpace, kKESLayoutScrollBarObserverImpl, kKESPrefix + 2)
 
-
-
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
 //DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 5)
@@ -95,17 +93,19 @@ DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
 //DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 2)
 
 // Script Element IDs
-DECLARE_PMID(kScriptInfoIDSpace, kKESMatchScrollZoomAllLayoutMethodScriptElement, kKESPrefix + 1)
-DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 2)
-DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 3)
-DECLARE_PMID(kScriptInfoIDSpace, kKESToggleSplitLayoutMethodScriptElement, kKESPrefix + 4)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectScriptElement, kKESPrefix + 5)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectPropertyScriptElement, kKESPrefix + 6)
-DECLARE_PMID(kScriptInfoIDSpace, kKESQueryNthLayoutMethodScriptElement, kKESPrefix + 7)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 8)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 9)
-DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 10)
-DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 11)
+DECLARE_PMID(kScriptInfoIDSpace, kKESMatchScrollZoomAllLayoutMethodScriptElement, kKESPrefix + 0)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 1)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 2)
+DECLARE_PMID(kScriptInfoIDSpace, kKESToggleSplitLayoutMethodScriptElement, kKESPrefix + 3)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectScriptElement, kKESPrefix + 4)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectPropertyScriptElement, kKESPrefix + 5)
+DECLARE_PMID(kScriptInfoIDSpace, kKESQueryNthLayoutMethodScriptElement, kKESPrefix + 6)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 7)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 8)
+DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 9)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 10)
+DECLARE_PMID(kScriptInfoIDSpace, kKESSetKeyboardShortcutForStyleMethodScriptElement, kKESPrefix + 11)
+DECLARE_PMID(kScriptInfoIDSpace, kKESModifierEnumScriptElement, kKESPrefix + 12)
 
 // "About Plug-ins" sub-menu:
 #define kKESAboutMenuKey			kKESStringPrefix "kKESAboutMenuKey"

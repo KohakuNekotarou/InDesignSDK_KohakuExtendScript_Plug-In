@@ -44,6 +44,7 @@ enum KESScriptEvents
 	e_KESToggleSplitLayout = 'KTSL',
 	e_KESQueryNthLayout = 'KQNL',
 	e_KESIsSplitLayoutViewShown = 'KISL',
+	e_KESSetKeyboardShortcutForStyle = 'KSSS',
 };
 
 
@@ -57,6 +58,21 @@ enum KESScriptProperties
 	p_KESSplitLayoutViewAccessContentLocationAtFrameOriginX = 'KSLX',
 	p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY = 'KSLY',
 	p_KESAutoMatchScrollZoomAllLayout = 'KAML',
+	p_KESCKey = 'KKEY',
+	p_KESCModifier = 'KMOD',
+};
+
+enum KESScriptEnum
+{
+	en_KESModifier = 'KMDI',
+	en_KESNo = 'KNOO',
+	en_KESControl = 'KCTL',
+	en_KESShift = 'KSFT',
+	en_KESAltOrOption = 'KALT',
+	en_KESControlShift = 'KCTS',
+	en_KESControlAltOrOption = 'KCTA',
+	en_KESShiftAltOrOption = 'KSFA',
+	en_KESControlShiftAltOrOption = 'KCSA',
 };
 
 #endif // __KESScriptingDefs_h__
