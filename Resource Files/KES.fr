@@ -39,37 +39,17 @@
 #include "WidgetID.h"
 #include "BuildNumber.h"
 #include "PlugInModel_UIAttributes.h"
-
-
-
-
-
-#include "ScriptInfoTypes.fh"
-#include "AppFrameworkID.h"
-#include "DocFrameworkID.h"
-
-#include "ScriptInfoTypes.fh"
-#include "ScriptingID.h"
-#include "widgetid.h"
-
-
-
+// ---------------------------------------------------------------------------------------
+#include "AppFrameworkID.h" // for kApplicationObjectScriptElement.
+#include "DocFrameworkID.h" // for kDocumentObjectScriptElement.
+#include "ScriptInfoTypes.fh" // for BoolType etc.
+#include "TextScriptID.h" // for kParagraphStyleObjectScriptElement etc.
 
 // Project includes:
 #include "KESID.h"
 #include "GenericID.h"
 #include "ShuksanID.h"
 #include "TextID.h"
-
-
-
-
-
-
-
-
-
-#include "DialogLayoutID.h"
 #include "KESScriptingDefs.h"
 
 #ifdef __ODFRC__
@@ -105,7 +85,7 @@ resource ExtraPluginInfo(1)
 };
 
 /* 
- * Boss class definitionsÅiíËã`Åj.
+ * Boss class definitionsÔøΩiÔøΩÔøΩ`ÔøΩj.
  */
 resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 {{{
@@ -131,7 +111,6 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 	},
 
 	// ---------------------------------------------------------------------------------------
-	// Ç÷ÇÒÇµÇ§ÇøÇ§
 	AddIn
 	{
 		kActiveContextBoss,
@@ -140,19 +119,6 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 			IID_IKESLAYOUTSCROLLBAROBSERVER, kKESLayoutScrollBarObserverImpl,
 		}
 	},
-
-
-
-
-
-
-
-
-
-
-
-
-
 }}};
 
 /*  
@@ -223,7 +189,6 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 	{
         kFiredrakeScriptVersion, kCoreScriptManagerBoss, kInDesignAllLanguagesFS, k_Wild,
 		kFiredrakeScriptVersion, kCoreScriptManagerBoss, kInCopyAllLanguagesFS, k_Wild,
-		
 	}
 	
 	// Elements
@@ -243,15 +208,14 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// Enable access to the splitLayoutView object as a property.
-		// ÉvÉçÉpÉeÉBÇ∆ÇµÇƒsplitLayoutViewÉIÉuÉWÉFÉNÉgÇ…ÉAÉNÉZÉXÇ≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈÅB
         Property
         {
             kKESSplitLayoutViewObjectPropertyScriptElement,	// Script element ID
             p_KESSplitLayoutViewObject, // ScriptID
             "split layout view", // Access object using this name.
             "Split layout view property", // description
-            ObjectType( kKESSplitLayoutViewObjectScriptElement ),
-            {}
+            ObjectType( kKESSplitLayoutViewObjectScriptElement ), // type
+            {} // alternate types
             kNoAttributeClass,
         }
 
@@ -261,8 +225,8 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			p_KESSplitLayoutViewAccessContentLocationAtFrameOriginX,
 			"access content location at frame origin x",
 			"Access content location at frame origin X",
-			RealType,						// type
-			{}										// alternate types
+			RealType,
+			{}
 			kNoAttributeClass,
 		}
 
@@ -272,8 +236,8 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY,
 			"access content location at frame origin y",
 			"Access content location at frame origin Y",
-			RealType,						// type
-			{}										// alternate types
+			RealType,
+			{}
 			kNoAttributeClass,
 		}
 
@@ -292,7 +256,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				"index", // Parameter's name.
 				"Layout window index", // Parameter's description.
 				Int32Type, // Parameter's type.
-				kRequired, // kOptional or kRequiredÅiïKê{Åj.
+				kRequired, // kOptional or kRequiredÔøΩiÔøΩKÔøΩ{ÔøΩj.
 			}
 		}
 
@@ -362,7 +326,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
-		// Auto match scroll zoom all layout for app
+		// Auto match scroll zoom all layout.
 		Property
 		{
 			kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement,
@@ -372,6 +336,39 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			BoolType,
 			{}
 			kNoAttributeClass,
+		}
+		// ---------------------------------------------------------------------------------------
+		Enum
+		{
+			kKESModifierEnumScriptElement,
+			en_KESModifier,
+			"kes modifier",
+			"Modifier.",
+			{
+				en_KESNo, "no", "kNoKBSCModifier" // KesModifier.no
+				en_KESControl, "control", "kControl"
+				en_KESShift, "shift", "kShift"
+				en_KESAltOrOption, "alt or option", "kOption"
+				en_KESControlShift, "control shift", "kControlShift"
+				en_KESControlAltOrOption, "control alt or option", "kControlOption"
+				en_KESShiftAltOrOption, "shift alt or option", "kShiftOption"
+				en_KESControlShiftAltOrOption, "control shift alt or option", "kControlShiftOption"
+			}
+		}
+
+		// ---------------------------------------------------------------------------------------
+		// Set keyboard shortcut for style.
+		Method
+		{
+			kKESSetKeyboardShortcutForStyleMethodScriptElement, // ScriptElementID
+			e_KESSetKeyboardShortcutForStyle, // ScriptID
+			"set keyboard shortcut", // Name. If you want the name in the script to be "kohakuNekotarou", enter "kohaku nekotarou".
+			"Set keyboard shortcut", // Description
+			VoidType,
+			{
+				p_KESCKey, "key", "Key", StringType, kRequired,
+				p_KESCModifier, "modifier", "Modifier", EnumType(kKESModifierEnumScriptElement), kRequired,
+			}
 		}
 
 		// ---------------------------------------------------------------------------------------
@@ -454,6 +451,24 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				//		app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout = true; // Set
 				//		flg = app.activeDocument.queryNthLayout(0).autoMatchScrollZoomAllLayout; // get		
 				Property{ kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kReadWrite }, // Additional
+
+				// ---------------------------------------------------------------------------------------
+				// target
+				Object{ kCharacterStyleObjectScriptElement },
+				Object{ kParagraphStyleObjectScriptElement },
+
+				// Set keyboard shortcut for style.
+				// ExtendScript Example:
+				//		app.activeDocument.paragraphStyles.lastItem().setKeyboardShortcut("K", KesModifier.control);
+				//		// KesModifier.no
+				//		// KesModifier.control
+				//		// KesModifier.shift
+				//		// KesModifier.altOrOption
+				//		// KesModifier.controlShift
+				//		// KesModifier.controlAltOrOption
+				//		// KesModifier.shiftAltOrOption
+				//		// KesModifier.controlShiftAltOrOption
+				Method{ kKESSetKeyboardShortcutForStyleMethodScriptElement }, // Additional
 			}
 		}
 	}
