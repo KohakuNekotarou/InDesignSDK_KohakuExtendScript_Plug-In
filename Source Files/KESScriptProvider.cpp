@@ -36,6 +36,7 @@
 #include "KESID.h"
 #include "KESLayout.h"
 #include "KESLayoutScrollBarObserver.h"
+#include "KESStyle.h"
 
 // CScriptProvider
 // Adding properties or methods to existing objects.
@@ -97,6 +98,10 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData*
 		status = KESLayout::IsSplitLayoutViewShown(scriptID, iScriptRequestData, iScript);
 		break;
 
+	case KESScriptEvents::e_KESSetKeyboardShortcutForStyle:
+		status = KESStyle::SetKeyboardShortcut(iScriptRequestData, iScript);
+		break;
+
 	default:
 		status = CScriptProvider::HandleMethod(scriptID, iScriptRequestData, iScript);
 	}
@@ -104,7 +109,7 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData*
     return status;
 }
 
-/* AccessProperty */
+// AccessProperty
 ErrorCode KESScriptProvider::AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
