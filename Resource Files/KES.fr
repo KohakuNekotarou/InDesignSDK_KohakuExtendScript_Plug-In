@@ -459,15 +459,37 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// Set keyboard shortcut for style.
 				// ExtendScript Example:
+				//		app.activeDocument.characterStyles.lastItem().setKeyboardShortcut("null", KesModifier.no);
 				//		app.activeDocument.paragraphStyles.lastItem().setKeyboardShortcut("K", KesModifier.control);
-				//		// KesModifier.no
-				//		// KesModifier.control
-				//		// KesModifier.shift
-				//		// KesModifier.altOrOption
-				//		// KesModifier.controlShift
-				//		// KesModifier.controlAltOrOption
-				//		// KesModifier.shiftAltOrOption
-				//		// KesModifier.controlShiftAltOrOption
+				//		// Key
+				//		// 		null
+				//		// 		A～Z etc
+				//		// 		F1～12
+				//		// 		Space
+				//		// 		Up
+				//		// 		Down
+				//		// 		Right
+				//		// 		Left
+				//		// 		Right
+				//		// 		End
+				//		// 		PageUp
+				//		// 		PageDown
+				//		// 		Clear
+				//		// 		PadAdd
+				//		// 		PadSubtract
+				//		// 		PadMultiply
+				//		// 		PadDivide
+				//		// 		PadPeriod
+				//		// 		Pad0～9
+				//		// Modifier
+				//		//		KesModifier.no
+				//		//		KesModifier.control
+				//		//		KesModifier.shift
+				//		//		KesModifier.altOrOption
+				//		//		KesModifier.controlShift
+				//		//		KesModifier.controlAltOrOption
+				//		//		KesModifier.shiftAltOrOption
+				//		//		KesModifier.controlShiftAltOrOption
 				Method{ kKESSetKeyboardShortcutForStyleMethodScriptElement }, // Additional
 			}
 		}
