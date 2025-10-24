@@ -25,4 +25,4 @@
 // InDesign オブジェクトモデル内で、C++ 実装の実装 ID を登録できるようにします。
 REGISTER_PMINTERFACE(KESScriptProvider, kKESScriptProviderImpl)
 REGISTER_PMINTERFACE(KESPrefsScriptProvider, kKESPrefsScriptProviderImpl)
-REGISTER_PMINTERFACE(KESLayoutScrollBarObserver, kKESLayoutScrollBarObserverImpl)
+REGISTER_PMINTERFACE(KESLayoutScrollObserver, kKESLayoutScrollObserverImpl)

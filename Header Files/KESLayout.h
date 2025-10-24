@@ -2,6 +2,7 @@
 
 // Interface includes:
 #include "IControlView.h"
+#include "IPanorama.h"
 #include "IScript.h"
 #include "IScriptRequestData.h"
 
@@ -9,7 +10,7 @@ class KESLayout
 {
 public:
     // Apply scrolling and zooming from the Front Layout Window to all Layout.
-    static ErrorCode MatchScrollZoomAllLayout(bool16 flg);
+    static ErrorCode MatchScrollZoomAllLayout(bool16 flg, IPanorama* iPanorama_master);
 
     // Access the top-left coordinates of the layout Window.
     static ErrorCode AccessContentLocationAtFrameOrigin

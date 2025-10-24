@@ -56,13 +56,13 @@ DECLARE_PMID(kClassIDSpace, kKESPrefsScriptProviderBoss, kKESPrefix + 1)
 DECLARE_PMID(kClassIDSpace, kKESLayoutScrollBarBoss, kKESPrefix + 2)
 
 // InterfaceIDs:
-DECLARE_PMID(kInterfaceIDSpace, IID_IKESLAYOUTSCROLLBAROBSERVER, kKESPrefix + 0)
+DECLARE_PMID(kInterfaceIDSpace, IID_IKESLayoutScrollObserver, kKESPrefix + 0)
 
 // ImplementationIDs:
 // ŽÀ‘•ID
 DECLARE_PMID(kImplementationIDSpace, kKESScriptProviderImpl, kKESPrefix + 0 )
 DECLARE_PMID(kImplementationIDSpace, kKESPrefsScriptProviderImpl, kKESPrefix + 1)
-DECLARE_PMID(kImplementationIDSpace, kKESLayoutScrollBarObserverImpl, kKESPrefix + 2)
+DECLARE_PMID(kImplementationIDSpace, kKESLayoutScrollObserverImpl, kKESPrefix + 2)
 
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
@@ -90,7 +90,7 @@ DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
 
 
 // WidgetIDs:
-//DECLARE_PMID(kWidgetIDSpace, kKESWidgetID, kKESPrefix + 2)
+//DECLARE_PMID(kWidgetIDSpace, kKESTestTextWidgetID, kKESPrefix + 0)
 
 // Script Element IDs
 DECLARE_PMID(kScriptInfoIDSpace, kKESMatchScrollZoomAllLayoutMethodScriptElement, kKESPrefix + 0)
