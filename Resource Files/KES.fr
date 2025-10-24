@@ -116,7 +116,7 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 		kActiveContextBoss,
 		kInvalidClass,
 		{
-			IID_IKESLAYOUTSCROLLBAROBSERVER, kKESLayoutScrollBarObserverImpl,
+			IID_IKESLayoutScrollObserver, kKESLayoutScrollObserverImpl,
 		}
 	},
 }}};
