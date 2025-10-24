@@ -40,27 +40,31 @@
 #include "KESScriptingDefs.h"
 
 /* MatchScrollZoomAllLayout */
-ErrorCode KESLayout::MatchScrollZoomAllLayout(bool16 flg)
+ErrorCode KESLayout::MatchScrollZoomAllLayout(bool16 flg, IPanorama* iPanorama_master)
 {
 	ErrorCode status = kFailure;
 	do
 	{
-		// Get front layout view
-		InterfacePtr<IControlView> iControlView_frontView(Utils<ILayoutUIUtils>()->QueryFrontView());
-		if (iControlView_frontView == nil) break;
+		if (iPanorama_master == nil)
+		{
+			// Get front layout view
+			InterfacePtr<IControlView> iControlView_frontView(Utils<ILayoutUIUtils>()->QueryFrontView());
+			if (iControlView_frontView == nil) break;
 
-		// Panorama handles the control of content position, scale, and scrolling within the view's display area
-		InterfacePtr<IPanorama> iPanorama_frontView(iControlView_frontView, ::UseDefaultIID());
-		if (iPanorama_frontView == nil) break;
+			// Panorama handles the control of content position, scale, and scrolling within the view's display area
+			InterfacePtr<IPanorama> iPanorama_frontView(iControlView_frontView, ::UseDefaultIID());
+			if (iPanorama_frontView == nil) break;
+
+			iPanorama_master = iPanorama_frontView;
+		}
 
 		// Get top-left position
-		PMPoint pMPoint_frontViewTopLeft = iPanorama_frontView->GetContentLocationAtFrameOrigin();
+		PMPoint pMPoint_frontViewTopLeft = iPanorama_master->GetContentLocationAtFrameOrigin();
 
 		// Get scale
-		PMReal frontViewXScale = iPanorama_frontView->GetXScaleFactor();
-		PMReal frontViewYScale = iPanorama_frontView->GetYScaleFactor();
+		PMReal frontViewXScale = iPanorama_master->GetXScaleFactor();
+		PMReal frontViewYScale = iPanorama_master->GetYScaleFactor();
 
-		
 		// Get frontViewPageNumber
 		PMString pmString_frontViewPageNumber;
 		if (flg == 1)
@@ -107,11 +111,11 @@ ErrorCode KESLayout::MatchScrollZoomAllLayout(bool16 flg)
 			IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
 			if (iControlView == nil) continue;
 
-			// When it is same as front layout view.
-			if (iControlView_frontView == iControlView) continue;
-
 			InterfacePtr<IPanorama> iPanorama(iControlView, UseDefaultIID());
 			if (iPanorama == nil) continue;
+
+			// When it is same.
+			if (iPanorama_master == iPanorama) continue;
 
 			// Set Page
 			if (flg == 1)

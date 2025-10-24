@@ -192,7 +192,6 @@ ErrorCode KESStyle::SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, 
 				}
 			}
 		}
-
 		status = kSuccess;
 
 	} while (false); // only do once
