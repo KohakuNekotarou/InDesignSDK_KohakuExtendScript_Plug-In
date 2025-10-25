@@ -14,6 +14,7 @@
 #include "iPresentationList.h"
 #include "IScript.h"
 #include "IScriptRequestData.h"
+#include "ISubject.h"
 
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
@@ -41,16 +42,16 @@ void KESLayoutScrollObserver::Update(const ClassID& theChange, ISubject* theSubj
 {
 	switch (protocol.Get())
 	{
-	// When layout is added to the app's AutoMatchScrollZoomAllLayout.
+	// When active document change.
 	case IID_IACTIVECONTEXT:
 	{
-		IActiveContext::ContextInfo* contextInfo = reinterpret_cast<IActiveContext::ContextInfo*>(changedBy);
+		IActiveContext::ContextInfo* contextInfo = (IActiveContext::ContextInfo*)changedBy;
 
-		// When active layout view changed.
-		if (contextInfo->Key() == IID_ICONTROLVIEW) this->AttachAllPanorama();
+		if (contextInfo->Key() == IID_IDOCUMENT) this->AttachDocumentFirstLayoutPanorama();
 
 		break;
 	}
+	// When scroll or scale.
 	case IID_IPANORAMA:
 		switch (theChange.Get())
 		{
@@ -78,11 +79,11 @@ ErrorCode KESLayoutScrollObserver::AutoMatchScrollZoomAllLayout
 {
 	ErrorCode status = kFailure;
 
-	PMString PMString_parentName = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
-
 	do
 	{
 		ScriptData scriptData;
+
+		PMString PMString_parentName = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
 
 		IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
 		if (iActiveContext == nil) break;
@@ -150,7 +151,7 @@ ErrorCode KESLayoutScrollObserver::AutoMatchScrollZoomAllLayout
 							(ISubject::kRegularAttachment, iObserver, IID_IACTIVECONTEXT, IID_IKESLayoutScrollObserver);
 					}
 
-					KESLayoutScrollObserver::AttachAllPanorama();
+					KESLayoutScrollObserver::AttachDocumentFirstLayoutPanorama();
 				}
 				else if (PMString_parentName == "layout window")
 				{
@@ -214,9 +215,10 @@ ErrorCode KESLayoutScrollObserver::AutoMatchScrollZoomAllLayout
 }
 
 // Attach
-void KESLayoutScrollObserver::AttachAllPanorama()
+void KESLayoutScrollObserver::AttachDocumentFirstLayoutPanorama()  
 {
-	do {
+	do
+	{
 		IActiveContext* iActiveContext = GetExecutionContextSession()->GetActiveContext();
 		if (iActiveContext == nil) break;
 
@@ -224,47 +226,7 @@ void KESLayoutScrollObserver::AttachAllPanorama()
 		if (iObserver == nil) break;
 
 		// Detach
-		{
-			InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
-			if (iApplication == nil) break;
-
-			InterfacePtr<IDocumentList> iDocumentList(iApplication->QueryDocumentList());
-			if (iDocumentList == nil) break;
-
-			int32 docCount = iDocumentList->GetDocCount();
-			for (int32 i = 0; i < docCount; i++)
-			{
-				IDocument* iDocument = iDocumentList->GetNthDoc(i);
-				if (iDocument == nil) continue;
-
-				InterfacePtr<IPresentationList> iPresentationList(iDocument, ::UseDefaultIID());
-				if (iPresentationList == nil) continue;
-
-				IDocumentPresentation* iDocumentPresentation = iPresentationList->First();
-				if (iDocumentPresentation == nil) continue;
-
-				// Galley or Story view.
-				if (Utils<IGalleyUtils>() && Utils<IGalleyUtils>()->InGalleyOrStory(iDocumentPresentation)) continue;
-
-				InterfacePtr<IPanelControlData> iPanelControlData(iDocumentPresentation, ::UseDefaultIID());
-				if (iPanelControlData == nil) continue;
-
-				IControlView* iControlView = iPanelControlData->FindWidget(kLayoutWidgetBoss);
-				if (iControlView == nil) continue;
-
-				InterfacePtr<ISubject> iSubject(iControlView, ::UseDefaultIID());
-				if (!iSubject) break;
-
-				bool16 attachFlg = iSubject->IsAttached
-				(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLayoutScrollObserver);
-
-				if (attachFlg == kTrue)
-				{
-					iSubject->DetachObserver
-					(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLayoutScrollObserver);
-				}
-			}
-		}
+		KESLayoutScrollObserver::DetachAllPanorama(iActiveContext);
 
 		// Attach
 		// If the active view is not a SplitLayoutView in the document's initial presentation.
@@ -299,13 +261,14 @@ void KESLayoutScrollObserver::AttachAllPanorama()
 					(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLayoutScrollObserver);
 			}
 		}
-	} while (false); // only do once
+	} while (false); // only do once.
 }
 
-// 
+// Attach panorama.
 void KESLayoutScrollObserver::AttachPanorama(IActiveContext* iActiveContext, IControlView* iControlView)
 {
-	do {
+	do
+	{
 		// Detach all panorama.
 		KESLayoutScrollObserver::DetachAllPanorama(iActiveContext);
 
@@ -323,13 +286,14 @@ void KESLayoutScrollObserver::AttachPanorama(IActiveContext* iActiveContext, ICo
 		iSubject->AttachObserver
 			(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLayoutScrollObserver);
 
-	} while (false); // only do once
+	} while (false); // only do once.
 }
 
-// 
+// Detach all panorama.
 void KESLayoutScrollObserver::DetachAllPanorama(IActiveContext* iActiveContext)
 {
-	do{
+	do
+	{
 		K2Vector<IControlView*> iControlView_layoutViewList;
 		Utils<ILayoutViewUtils>()->GetAllLayoutViews(iControlView_layoutViewList, nil, nil);
 
@@ -354,5 +318,5 @@ void KESLayoutScrollObserver::DetachAllPanorama(IActiveContext* iActiveContext)
 				(ISubject::kRegularAttachment, iObserver, IID_IPANORAMA, IID_IKESLayoutScrollObserver);
 			}
 		}
-	} while (false); // only do once
+	} while (false); // only do once.
 }
