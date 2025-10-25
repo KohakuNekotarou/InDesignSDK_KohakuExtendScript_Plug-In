@@ -1,9 +1,5 @@
 #pragma once
 
-// Interface includes
-#include "IActiveContext.h"
-#include "ISubject.h"
-
 // Implem includes
 #include "CObserver.h"
 
@@ -37,12 +33,12 @@ public:
 	(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
 private:
-	// Attach all panorama
-	static void AttachAllPanorama();
+	// Attach document first layout panorama.
+	static void AttachDocumentFirstLayoutPanorama();
 
-	// Attach panorama
+	// Attach panorama.
 	static void AttachPanorama(IActiveContext* iActiveContext, IControlView* iControlView);
 
-	// Detach all panorama
+	// Detach all panorama.
 	static void DetachAllPanorama(IActiveContext* iActiveContext);
 };
