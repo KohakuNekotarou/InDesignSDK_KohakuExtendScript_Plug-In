@@ -96,7 +96,9 @@ ErrorCode KESStyle::SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, 
 
 			pMString_key.GetWChar_tString(sysCharBuffer, bufferSize);
 
-			VirtualKey virtualKey(sysCharBuffer[0]);
+			SysChar theChar = sysCharBuffer[0];
+
+			VirtualKey virtualKey(theChar);
 
 			virtualKey_shortCut = virtualKey;
 
