@@ -4,6 +4,12 @@
 **I'll add various things to ExtendScript.**
 <br>**Let's learn the InDesign SDK together.**
 
+On Mac, you cannot use downloaded plug-ins directly.
+https://helpx.adobe.com/jp/indesign/kb/indesign-and-macos-catalina.html
+Refer to the above and use Terminal to
+sudo xattr -r -d com.apple.quarantine /Applications/Adobe\ Indesign\ 2025/Plug-ins/KohakuExtendScript.InDesignPlugin
+Please execute.
+
 ## extendScript for JavaScript
 ```
 // Auto match scroll zoom all layout. 
