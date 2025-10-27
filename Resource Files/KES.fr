@@ -39,10 +39,13 @@
 #include "WidgetID.h"
 #include "BuildNumber.h"
 #include "PlugInModel_UIAttributes.h"
+
 // ---------------------------------------------------------------------------------------
 #include "AppFrameworkID.h" // for kApplicationObjectScriptElement.
+#include "CelStyID.h" // for kCellStyleObjectScriptElement.
 #include "DocFrameworkID.h" // for kDocumentObjectScriptElement.
 #include "ScriptInfoTypes.fh" // for BoolType etc.
+#include "TablesID.h" // for kTableStyleObjectScriptElement.
 #include "TextScriptID.h" // for kParagraphStyleObjectScriptElement etc.
 
 // Project includes:
@@ -454,6 +457,9 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// ---------------------------------------------------------------------------------------
 				// target
+				Object{ kObjectStylesObjectScriptElement },
+				Object{ kTableStyleObjectScriptElement },
+				Object{ kCellStyleObjectScriptElement },
 				Object{ kCharacterStyleObjectScriptElement },
 				Object{ kParagraphStyleObjectScriptElement },
 
