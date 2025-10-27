@@ -50,4 +50,17 @@ https://developer.adobe.com/indesign/
 
 2. Downloading the programming software, Xcode<br>
 SDK/docs/html/index.html<br>
-Download the Xcode version compatible with your InDesign version as a reference.
+Download the Xcode version compatible with your InDesign version as a reference.<br>
+https://developer.apple.com/download/all/?q=xcode
+
+3. Create a PlugIn template<br>
+Search for and install Java to use dolly.jar<br>
+SDK/devtools/dolly/dolly.jar<br>
+use<br>
+![DollyXs1](https://github.com/user-attachments/assets/1f2e1f85-45e5-4b55-b471-66a96a79d35e)<br>
+![DollyXs2](https://github.com/user-attachments/assets/5feaf568-000f-4ce8-bc11-bed5820689ae)<br>
+![DollyXs3](https://github.com/user-attachments/assets/92de3c44-2a62-4181-91a9-15d06b6388e3)<br>
+![DollyXs4](https://github.com/user-attachments/assets/46114f15-ab2c-4f05-bd17-4a54686b5040)<br>
+The project directory is located at<br>
+SDK/build/mac/prj<br>
+Set up and create as follows<br>
