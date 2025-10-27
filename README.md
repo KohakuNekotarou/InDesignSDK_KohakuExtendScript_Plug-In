@@ -41,3 +41,13 @@ if(result){
 // Split / Unsplit layout.
 app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 ```
+
+## Build Method
+**Mac Edition**
+
+1. Download the SDK<br>
+https://developer.adobe.com/indesign/
+
+2. Downloading the programming software, Xcode<br>
+SDK/docs/html/index.html<br>
+Download the Xcode version compatible with your InDesign version as a reference.
