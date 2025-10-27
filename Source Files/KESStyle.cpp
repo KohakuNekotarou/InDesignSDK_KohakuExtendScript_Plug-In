@@ -4,18 +4,32 @@
 // Interface includes:
 #include "IApplication.h"
 #include "IControlView.h"
+#include "IObjectStyleInfo.h"
 #include "IPanelMgr.h"
 #include "IScript.h"
 #include "IScriptErrorUtils.h"
 #include "IScriptRequestData.h"
 #include "IStyleInfo.h"
 
+
+
+#include "IActionManager.h"
+#include "IShortcutManager.h"
+#include "IShortcutContext.h"
+
+
+
+
+#include "IShortcutUtils.h"
+
 // ---------------------------------------------------------------------------------------
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
 #include "keyboarddefs.h"
+#include "ObjStylesUIID.h"
 #include "PMString.h"
 #include "StylePanelID.h"
+#include "TabStyUIID.h"
 #include "VirtualKey.h"
 #include "KBSCModifierDefs.h"
 
@@ -28,6 +42,59 @@
 ErrorCode KESStyle::SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
+
+
+
+
+
+
+
+	/* test
+
+	InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+
+	InterfacePtr<IActionManager> iActionManager(iApplication->QueryActionManager());
+
+	InterfacePtr<IShortcutManager> iShortcutManager(iActionManager, ::UseDefaultIID());
+
+	int32 NnumShortcutContexts = iShortcutManager->GetNumShortcutContexts();
+
+	PMString num;
+	num.AsNumber(NnumShortcutContexts);
+
+	PMString allShortcutContexts;
+	while (NnumShortcutContexts) {
+
+		IShortcutContext* iShortcutContext = iShortcutManager->
+			QueryNthShortcutContext(NnumShortcutContexts - 1);
+
+		PMString shortcutContext = iShortcutContext->GetShortcutContextString();
+
+		allShortcutContexts.Append(shortcutContext);
+		allShortcutContexts.Append("\n");
+
+		NnumShortcutContexts--;
+	}
+
+	CAlert::InformationAlert(allShortcutContexts);
+
+
+	//IShortcutContext* IShortcutUtils::QueryCurrentContext()
+
+	IShortcutContext* iShortcutContext = Utils<IShortcutUtils>()->QueryCurrentContext();
+
+	PMString shortcutContext = iShortcutContext->GetShortcutContextString();
+
+	CAlert::InformationAlert(shortcutContext);
+	*/
+
+
+
+
+
+
+
+
 
 	do
 	{
@@ -154,7 +221,18 @@ ErrorCode KESStyle::SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, 
 
 		// Target Style
 		PMString PMString_parentName = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
-		if (PMString_parentName == "character style" || PMString_parentName == "paragraph style") {
+
+		if (PMString_parentName == "object style")
+		{
+			InterfacePtr<IObjectStyleInfo> iObjectStyleInfo(iScript, ::UseDefaultIID());
+			if (!iObjectStyleInfo) break;
+
+			// Set keyboard shortcut.
+			iObjectStyleInfo->SetKeyboardShortcut(virtualKey_shortCut, modifiers);
+		}
+		else if (PMString_parentName == "cell style" || PMString_parentName == "table style"
+			|| PMString_parentName == "character style" || PMString_parentName == "paragraph style")
+		{
 			InterfacePtr<IStyleInfo> iStyleInfo(iScript, ::UseDefaultIID());
 			if (!iStyleInfo) break;
 
@@ -171,7 +249,22 @@ ErrorCode KESStyle::SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, 
 
 			WidgetID widgetID;
 			ActionID actionID;
-			if (PMString_parentName == "character style")
+			if (PMString_parentName == "object style")
+			{
+				actionID = kObjectStylePanelActionID;
+				widgetID = kObjStylesTreeViewPanelWidgetID;
+			}
+			else if (PMString_parentName == "cell style")
+			{
+				actionID = kCellStylesPanelActionID;
+				widgetID = kTabStyUICellStylePanelWidgetID;
+			}
+			else if (PMString_parentName == "table style")
+			{
+				actionID = kTableStylesPanelActionID;
+				widgetID = kTabStyUITableStylePanelWidgetID;
+			}
+			else if (PMString_parentName == "character style")
 			{
 				actionID = kCharacterStylesPanelActionID;
 				widgetID = kCharStylePanelWidgetID;
