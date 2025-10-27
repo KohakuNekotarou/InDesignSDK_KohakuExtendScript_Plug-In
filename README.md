@@ -68,7 +68,7 @@ Set up and create as follows
 4. Download the source from Git<br>
 ![gitDownload](https://github.com/user-attachments/assets/d096440d-13a1-4106-98a9-7f2469086d09)<br>
 Place the source files in the<br>
-SDK/source\sdksamples/KohakuExtendScript<br>
+SDK/source/sdksamples/KohakuExtendScript<br>
 folder
 
 5. Build in Xcode<br>
