@@ -79,8 +79,8 @@ The KESID.h file is already present in Plugin, so I don't think it needs to be a
 KESFactoryList.h is also not displayed, but it should be included in the project, so I don't think it needs to be added.<br>
 ![add](https://github.com/user-attachments/assets/b59fa0ad-5317-4d33-a50c-fb83f53aa459)&nbsp;  
 Set the build configuration to Release.<br>
-Product > Build<br>
-![add](https://github.com/user-attachments/assets/f8f82811-aa80-45e3-a15b-3938aa53e278)
+![add](https://github.com/user-attachments/assets/f8f82811-aa80-45e3-a15b-3938aa53e278)<br>
+Product > Build
 
 **6. Load PlugIn**<br>
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
