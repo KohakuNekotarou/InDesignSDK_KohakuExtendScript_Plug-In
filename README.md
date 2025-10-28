@@ -82,7 +82,7 @@ Set the build configuration to Release.
 Product > Build<br>
 ![add](https://github.com/user-attachments/assets/f8f82811-aa80-45e3-a15b-3938aa53e278)
 
-**6. Load PlugIn**
+**6. Load PlugIn**<br>
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
 Place it in the plugin folder.<br>
 If the message “As the correct plugin” appears.<br>
