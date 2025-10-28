@@ -26,3 +26,4 @@
 REGISTER_PMINTERFACE(KESScriptProvider, kKESScriptProviderImpl)
 REGISTER_PMINTERFACE(KESPrefsScriptProvider, kKESPrefsScriptProviderImpl)
 REGISTER_PMINTERFACE(KESLayoutScrollObserver, kKESLayoutScrollObserverImpl)
+REGISTER_PMINTERFACE(KESActionComponent, kKESActionComponentImpl)
