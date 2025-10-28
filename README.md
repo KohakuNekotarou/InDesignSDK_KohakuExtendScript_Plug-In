@@ -84,7 +84,7 @@ Product > Build
 
 **6. Load PlugIn**<br>
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
-Place it in the plugin folder.<br>
+Place the PlugIn in the PlugIn folder in InDesign.<br>
 If the message “As the correct plugin” appears.<br>
 Product > Clean Build Folder...<br>
 After performing the above, please try building.
