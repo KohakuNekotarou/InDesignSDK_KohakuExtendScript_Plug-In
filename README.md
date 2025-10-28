@@ -74,8 +74,7 @@ folder
 5. Build in Xcode<br>
 Load KohakuExtendScript project in Xcode<br>
 
-Add only source files not displayed in the project<br>
-It is important to add only source files not displayed in the project<br>
+Add source to the plugin<br>
 <img width="521" height="344" alt="スクリーンショット 2025-10-28 9 10 20" src="https://github.com/user-attachments/assets/e44454d3-ece5-48f8-bea5-7ff16cf2cc4d" />
 
 Set the build configuration to Release<br>
@@ -84,4 +83,8 @@ Product > Build
 
 6. Load PlugIn
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
-Place it in the plugin folder
+Place it in the plugin folder<br>
+If the message “As the correct plugin” appears<br>
+Product > Clean Build Folder...<br>
+After performing the above, please try building<br>
+https://community.adobe.com/t5/indesign-discussions/regarding-plug-in-loading-errors-when-creating-c-plug-ins-on-mac/td-p/15563634
