@@ -45,15 +45,15 @@ app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 ## Build Method
 **Mac Edition**
 
-**1. Download the SDK**
+**1. Download the SDK**<br>
 https://developer.adobe.com/indesign/
 
-**2. Downloading the programming software, Xcode**
+**2. Downloading the programming software, Xcode**<br>
 SDK/docs/html/index.html<br>
 Download the Xcode version compatible with your InDesign version as a reference.<br>
 https://developer.apple.com/download/all/?q=xcode
 
-**3. Create a PlugIn template**
+**3. Create a PlugIn template**<br>
 Search for and install Java to use dolly.jar<br>
 SDK/devtools/dolly/dolly.jar<br>
 use<br>
@@ -65,13 +65,13 @@ The project directory is located at<br>
 SDK/build/mac/prj<br>
 Set up and create as follows.
 
-**4. Download the source from Git**
+**4. Download the source from Git**<br>
 ![Git](https://github.com/user-attachments/assets/5157f513-096f-4e2e-b471-af644948e97c)<br>
 Place the source files in the<br>
 SDK/source/sdksamples/KohakuExtendScript<br>
 folder.
 
-**5. Build in Xcode**
+**5. Build in Xcode**<br>
 Load KohakuExtendScript project in Xcode.<br>
 Add source to the plugin.<br>
 The KES.fr file is already present in Resources.<br>
