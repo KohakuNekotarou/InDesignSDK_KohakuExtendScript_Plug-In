@@ -45,35 +45,33 @@ app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 ## Build Method
 **Mac Edition**
 
-1. Download the SDK<br>
+**1. Download the SDK**
 https://developer.adobe.com/indesign/
 
-2. Downloading the programming software, Xcode<br>
+**2. Downloading the programming software, Xcode**
 SDK/docs/html/index.html<br>
 Download the Xcode version compatible with your InDesign version as a reference.<br>
 https://developer.apple.com/download/all/?q=xcode
 
-3. Create a PlugIn template<br>
+**3. Create a PlugIn template**
 Search for and install Java to use dolly.jar<br>
 SDK/devtools/dolly/dolly.jar<br>
 use<br>
-![DollyXs1](https://github.com/user-attachments/assets/51c2d74e-a4fd-4f59-a0a3-be12664886b3)
-
-![DollyXs1](https://github.com/user-attachments/assets/1f2e1f85-45e5-4b55-b471-66a96a79d35e)<br>
-![DollyXs2](https://github.com/user-attachments/assets/5feaf568-000f-4ce8-bc11-bed5820689ae)<br>
-![DollyXs3](https://github.com/user-attachments/assets/92de3c44-2a62-4181-91a9-15d06b6388e3)<br>
-![DollyXs4](https://github.com/user-attachments/assets/46114f15-ab2c-4f05-bd17-4a54686b5040)<br>
+![DollyXs1](https://github.com/user-attachments/assets/51c2d74e-a4fd-4f59-a0a3-be12664886b3)<br>
+![DollyXs2](https://github.com/user-attachments/assets/f3217a76-ae24-4900-91de-70192542722d)<br>
+![DollyXs3](https://github.com/user-attachments/assets/c1529862-f564-44c9-a7ff-ed72d327351a)<br>
+![DollyXs4](https://github.com/user-attachments/assets/7b38b6ef-65c6-4e59-ad6f-f8037bfc5478)<br>
 The project directory is located at<br>
 SDK/build/mac/prj<br>
 Set up and create as follows.
 
-4. Download the source from Git<br>
-![gitDownload](https://github.com/user-attachments/assets/d096440d-13a1-4106-98a9-7f2469086d09)<br>
+**4. Download the source from Git**
+![Git](https://github.com/user-attachments/assets/5157f513-096f-4e2e-b471-af644948e97c)<br>
 Place the source files in the<br>
 SDK/source/sdksamples/KohakuExtendScript<br>
 folder.
 
-5. Build in Xcode<br>
+**5. Build in Xcode**
 Load KohakuExtendScript project in Xcode.<br>
 Add source to the plugin.<br>
 The KES.fr file is already present in Resources.<br>
@@ -83,9 +81,10 @@ KESFactoryList.h is also not displayed, but it should be included in the project
 Set the build configuration to Release.
 Product > Build<br>
 ![add](https://github.com/user-attachments/assets/f8f82811-aa80-45e3-a15b-3938aa53e278)
-7. Load PlugIn
+
+**6. Load PlugIn**
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
 Place it in the plugin folder.<br>
 If the message “As the correct plugin” appears.<br>
 Product > Clean Build Folder...<br>
-After performing the above, please try building.<br>
+After performing the above, please try building.
