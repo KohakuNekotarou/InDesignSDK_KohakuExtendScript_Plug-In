@@ -76,9 +76,11 @@ Load KohakuExtendScript project in Xcode<br>
 
 Add only source files not displayed in the project<br>
 It is important to add only source files not displayed in the project<br>
+<img width="521" height="344" alt="スクリーンショット 2025-10-28 9 10 20" src="https://github.com/user-attachments/assets/e44454d3-ece5-48f8-bea5-7ff16cf2cc4d" />
 
 Set the build configuration to Release<br>
 Product > Build
+<img width="430" height="35" alt="スクリーンショット 2025-10-28 10 00 07" src="https://github.com/user-attachments/assets/bedc1cf0-43b7-4239-a318-5436d148a272" />
 
 6. Load PlugIn
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
