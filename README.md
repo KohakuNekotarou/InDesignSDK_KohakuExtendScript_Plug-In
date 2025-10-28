@@ -57,6 +57,8 @@ https://developer.apple.com/download/all/?q=xcode
 Search for and install Java to use dolly.jar<br>
 SDK/devtools/dolly/dolly.jar<br>
 use<br>
+![DollyXs1](https://github.com/user-attachments/assets/51c2d74e-a4fd-4f59-a0a3-be12664886b3)
+
 ![DollyXs1](https://github.com/user-attachments/assets/1f2e1f85-45e5-4b55-b471-66a96a79d35e)<br>
 ![DollyXs2](https://github.com/user-attachments/assets/5feaf568-000f-4ce8-bc11-bed5820689ae)<br>
 ![DollyXs3](https://github.com/user-attachments/assets/92de3c44-2a62-4181-91a9-15d06b6388e3)<br>
