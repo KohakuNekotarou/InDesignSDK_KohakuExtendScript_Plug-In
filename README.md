@@ -72,6 +72,14 @@ SDK/source/sdksamples/KohakuExtendScript<br>
 folder
 
 5. Build in Xcode<br>
-Load the project in Xcode<br>
+Load KohakuExtendScript project in Xcode<br>
 
-To be continued tomorrow
+Add only source files not displayed in the project<br>
+It is important to add only source files not displayed in the project<br>
+
+Set the build configuration to Release<br>
+Product > Build
+
+6. Load PlugIn
+SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
+Place it in the plugin folder
