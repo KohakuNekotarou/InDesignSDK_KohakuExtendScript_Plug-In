@@ -63,28 +63,30 @@ use<br>
 ![DollyXs4](https://github.com/user-attachments/assets/46114f15-ab2c-4f05-bd17-4a54686b5040)<br>
 The project directory is located at<br>
 SDK/build/mac/prj<br>
-Set up and create as follows
+Set up and create as follows.
 
 4. Download the source from Git<br>
 ![gitDownload](https://github.com/user-attachments/assets/d096440d-13a1-4106-98a9-7f2469086d09)<br>
 Place the source files in the<br>
 SDK/source/sdksamples/KohakuExtendScript<br>
-folder
+folder.
 
 5. Build in Xcode<br>
-Load KohakuExtendScript project in Xcode<br>
+Load KohakuExtendScript project in Xcode.<br>
 
-Add source to the plugin<br>
+Add source to the plugin.<br>
+The KES.fr file is already present in Resources.<br>
+The KESID.h file is already present in Plugin, so I don't think it needs to be added to the project.<br>
+KESFactoryList.h is also not displayed, but it should be included in the project, so I don't think it needs to be added.<br>
 <img width="521" height="344" alt="スクリーンショット 2025-10-28 9 10 20" src="https://github.com/user-attachments/assets/e44454d3-ece5-48f8-bea5-7ff16cf2cc4d" />
 
-Set the build configuration to Release<br>
-Product > Build
+Set the build configuration to Release.<br>
+Product > Build<br>
 <img width="430" height="35" alt="スクリーンショット 2025-10-28 10 00 07" src="https://github.com/user-attachments/assets/bedc1cf0-43b7-4239-a318-5436d148a272" />
 
 6. Load PlugIn
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
-Place it in the plugin folder<br>
-If the message “As the correct plugin” appears<br>
+Place it in the plugin folder.<br>
+If the message “As the correct plugin” appears.<br>
 Product > Clean Build Folder...<br>
-After performing the above, please try building<br>
-https://community.adobe.com/t5/indesign-discussions/regarding-plug-in-loading-errors-when-creating-c-plug-ins-on-mac/td-p/15563634
+After performing the above, please try building.<br>
