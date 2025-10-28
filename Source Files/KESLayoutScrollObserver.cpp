@@ -152,6 +152,9 @@ ErrorCode KESLayoutScrollObserver::AutoMatchScrollZoomAllLayout
 					}
 
 					KESLayoutScrollObserver::AttachDocumentFirstLayoutPanorama();
+
+					bool16 pageFlg;
+					KESLayout::MatchScrollZoomAllLayout(pageFlg = kFalse, nil);
 				}
 				else if (PMString_parentName == "layout window")
 				{
@@ -162,6 +165,12 @@ ErrorCode KESLayoutScrollObserver::AutoMatchScrollZoomAllLayout
 					if (!iControlView) break;
 
 					KESLayoutScrollObserver::AttachPanorama(iActiveContext, iControlView);
+
+					InterfacePtr<IPanorama> iPanorama(iControlView, ::UseDefaultIID());
+					if (iPanorama == nil) break;
+
+					bool16 pageFlg;
+					KESLayout::MatchScrollZoomAllLayout(pageFlg = kFalse, iPanorama);
 				}
 			}
 			else // Detach
