@@ -77,11 +77,10 @@ Add source to the plugin.<br>
 The KES.fr file is already present in Resources.<br>
 The KESID.h file is already present in Plugin, so I don't think it needs to be added to the project.<br>
 KESFactoryList.h is also not displayed, but it should be included in the project, so I don't think it needs to be added.<br>
-<img width="521" height="344" alt="スクリーンショット 2025-10-28 9 10 20" src="https://github.com/user-attachments/assets/e44454d3-ece5-48f8-bea5-7ff16cf2cc4d" />
-Set the build configuration to Release.<br>
+![add](https://github.com/user-attachments/assets/b59fa0ad-5317-4d33-a50c-fb83f53aa459)&nbsp;  
+Set the build configuration to Release.
 Product > Build<br>
-<img width="430" height="35" alt="スクリーンショット 2025-10-28 10 00 07" src="https://github.com/user-attachments/assets/bedc1cf0-43b7-4239-a318-5436d148a272" />
-
+![add](https://github.com/user-attachments/assets/f8f82811-aa80-45e3-a15b-3938aa53e278)
 7. Load PlugIn
 SDK/build/mac/release_cocoa64/KohakuExtendScript.InDesignPlugin<br>
 Place it in the plugin folder.<br>
