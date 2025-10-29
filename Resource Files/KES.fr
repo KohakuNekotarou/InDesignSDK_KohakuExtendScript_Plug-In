@@ -340,38 +340,18 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			{}
 			kNoAttributeClass,
 		}
-		// ---------------------------------------------------------------------------------------
-		Enum
-		{
-			kKESModifierEnumScriptElement,
-			en_KESModifier,
-			"kes modifier",
-			"Modifier.",
-			{
-				en_KESNo, "no", "kNoKBSCModifier" // KesModifier.no
-				en_KESControl, "control", "kControl"
-				en_KESShift, "shift", "kShift"
-				en_KESAltOrOption, "alt or option", "kOption"
-				en_KESControlShift, "control shift", "kControlShift"
-				en_KESControlAltOrOption, "control alt or option", "kControlOption"
-				en_KESShiftAltOrOption, "shift alt or option", "kShiftOption"
-				en_KESControlShiftAltOrOption, "control shift alt or option", "kControlShiftOption"
-			}
-		}
 
 		// ---------------------------------------------------------------------------------------
-		// Set keyboard shortcut for style.
-		Method
+		// Keyboard shortcut for style.
+		Property
 		{
-			kKESSetKeyboardShortcutForStyleMethodScriptElement, // ScriptElementID
-			e_KESSetKeyboardShortcutForStyle, // ScriptID
-			"set keyboard shortcut", // Name. If you want the name in the script to be "kohakuNekotarou", enter "kohaku nekotarou".
-			"Set keyboard shortcut", // Description
-			VoidType,
-			{
-				p_KESCKey, "key", "Key", StringType, kRequired,
-				p_KESCModifier, "modifier", "Modifier", EnumType(kKESModifierEnumScriptElement), kRequired,
-			}
+			kKESKeyboardShortcutForStylePropertyScriptElement,
+			p_KESKeyboardShortcutForStyle,
+			"keyboard shortcut",
+			"Keyboard shortcut",
+			StringType,
+			{}
+			kNoAttributeClass,
 		}
 
 		// ---------------------------------------------------------------------------------------
@@ -465,38 +445,8 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// Set keyboard shortcut for style.
 				// ExtendScript Example:
-				//		app.activeDocument.characterStyles.lastItem().setKeyboardShortcut("null", KesModifier.no);
-				//		app.activeDocument.paragraphStyles.lastItem().setKeyboardShortcut("K", KesModifier.control);
-				//		// Key
-				//		// 		null
-				//		// 		A～Z etc
-				//		// 		F1～12
-				//		// 		Space
-				//		// 		Up
-				//		// 		Down
-				//		// 		Right
-				//		// 		Left
-				//		// 		Right
-				//		// 		End
-				//		// 		PageUp
-				//		// 		PageDown
-				//		// 		Clear
-				//		// 		PadAdd
-				//		// 		PadSubtract
-				//		// 		PadMultiply
-				//		// 		PadDivide
-				//		// 		PadPeriod
-				//		// 		Pad0～9
-				//		// Modifier
-				//		//		KesModifier.no
-				//		//		KesModifier.control
-				//		//		KesModifier.shift
-				//		//		KesModifier.altOrOption
-				//		//		KesModifier.controlShift
-				//		//		KesModifier.controlAltOrOption
-				//		//		KesModifier.shiftAltOrOption
-				//		//		KesModifier.controlShiftAltOrOption
-				Method{ kKESSetKeyboardShortcutForStyleMethodScriptElement }, // Additional
+				//		app.activeDocument.characterStyles.lastItem().KeyboardShortcut("aaaaaaaaaaaaaaa");
+				Property{ kKESKeyboardShortcutForStylePropertyScriptElement, kReadWrite }, // Additional
 			}
 		}
 	}
