@@ -10,6 +10,7 @@
 #include "IScriptRequestData.h"
 #include "IShortcutUtils.h"
 #include "IStyleInfo.h"
+#include "IScriptUtils.h"
 
 // ---------------------------------------------------------------------------------------
 // General includes:
@@ -21,6 +22,7 @@
 #include "TablesID.h"
 #include "TabStyUIID.h"
 #include "VirtualKey.h"
+#include "ScriptInfo.h"
 
 // ---------------------------------------------------------------------------------------
 // Project includes:
@@ -28,108 +30,153 @@
 #include "KESStyle.h"
 
 // Set keyboard shortcut.
-ErrorCode KESStyle::SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, IScript* iScript)
+// Context:
+//		DialogContext
+//		DefaultContext
+//		TableContext
+//		TableObjectContext
+//		KBSCContext_XMLStructureContext
+//		FullScreenContext
+//		TextContext
+ErrorCode KESStyle::KeyboardShortcut(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
 
 	do
 	{
 		ScriptData scriptData;
-		VirtualKey virtualKey_shortCut;
-
 		PMString pMString_shortcut;
-		if (iScriptRequestData->ExtractRequestData(p_KESShortcutStr, scriptData) != kSuccess) break;
-
-		if (scriptData.GetPMString(pMString_shortcut) != kSuccess) break;
-
-		VirtualKey virtualKey_keyOut;
-		int16 int16_modsOut;
-		Utils<IShortcutUtils>()->ParseShortcutString(pMString_shortcut, &virtualKey_keyOut, &int16_modsOut);
-
-		// Target Style
-		PMString PMString_parentName = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
-
-		// TimeStamp
-		GlobalTime globalTime_TimeStamp;
-		globalTime_TimeStamp.CurrentTime();
-
-		if (PMString_parentName == "object style")
-		{
-			InterfacePtr<IObjectStyleInfo> iObjectStyleInfo(iScript, ::UseDefaultIID());
-			if (!iObjectStyleInfo) break;
-
-			// Set keyboard shortcut.
-			iObjectStyleInfo->SetKeyboardShortcut(virtualKey_keyOut, int16_modsOut);
-
-			// Set timeStamp.
-			if (pMString_shortcut != "") iObjectStyleInfo->SetKeyboardShortcutTimeStamp(globalTime_TimeStamp);
-		}
-		else if (
-			PMString_parentName == "character style" ||
-			PMString_parentName == "paragraph style" ||
-			PMString_parentName == "cell style" ||
-			PMString_parentName == "table style"
-			)
+		if (iScriptRequestData->IsPropertyGet()) // Get
 		{
 			InterfacePtr<IStyleInfo> iStyleInfo(iScript, ::UseDefaultIID());
-			if (!iStyleInfo) break;
+			if (iStyleInfo == nil) break;
 
-			// Set shortcut.
-			iStyleInfo->SetKeyboardShortcut(virtualKey_keyOut, int16_modsOut);
+			int16 modifiers = 0;
+			VirtualKey shortcutKey = iStyleInfo->GetKeyboardShortcut(&modifiers);
 
-			// Set timeStamp.
-			if(pMString_shortcut != "") iStyleInfo->SetKeyboardShortcutTimeStamp(globalTime_TimeStamp);
+			pMString_shortcut = Utils<IShortcutUtils>()->GetShortcutString(shortcutKey, modifiers);
+
+			scriptData.SetPMString(pMString_shortcut);
+
+			iScriptRequestData->AppendReturnData(iScript, scriptID, scriptData);
 		}
-
-		// Panel redraw.
+		else if (iScriptRequestData->IsPropertyPut()) // Put
 		{
-			InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
-			if (iApplication == nil) break;
+			status = iScriptRequestData->ExtractRequestData(scriptID.Get(), scriptData);
+			if (status != kSuccess) break;
 
-			InterfacePtr<IPanelMgr> iPanelMgr(iApplication->QueryPanelManager());
+			status = scriptData.GetPMString(pMString_shortcut);
+			if (status != kSuccess) break;
 
-			WidgetID widgetID;
-			ActionID actionID;
-			if (PMString_parentName == "object style")
+			VirtualKey virtualKey_keyOut;
+			int16 int16_modsOut;
+			Utils<IShortcutUtils>()->ParseShortcutString(pMString_shortcut, &virtualKey_keyOut, &int16_modsOut);
+
+			PMString PMString_targetStyle = iScript->GetObjectInfo(iScriptRequestData->GetRequestContext())->GetName();
+
+			GlobalTime globalTime_TimeStamp; // TimeStamp
+			globalTime_TimeStamp.CurrentTime();
+			if (PMString_targetStyle == "object style")
 			{
-				actionID = kObjectStylePanelActionID;
-				widgetID = kObjStylesTreeViewPanelWidgetID;
+				InterfacePtr<IObjectStyleInfo> iObjectStyleInfo(iScript, ::UseDefaultIID());
+				if (!iObjectStyleInfo) break;
+
+				// Set keyboard shortcut.
+				iObjectStyleInfo->SetKeyboardShortcut(virtualKey_keyOut, int16_modsOut);
+
+				// Set timeStamp.
+				if (pMString_shortcut != "") iObjectStyleInfo->SetKeyboardShortcutTimeStamp(globalTime_TimeStamp);
 			}
-			else if (PMString_parentName == "cell style")
+			else if (
+				PMString_targetStyle == "character style" ||
+				PMString_targetStyle == "paragraph style" ||
+				PMString_targetStyle == "cell style" ||
+				PMString_targetStyle == "table style"
+				)
 			{
-				actionID = kCellStylesPanelActionID;
-				widgetID = kTabStyUICellStylePanelWidgetID;
-			}
-			else if (PMString_parentName == "table style")
-			{
-				actionID = kTableStylesPanelActionID;
-				widgetID = kTabStyUITableStylePanelWidgetID;
-			}
-			else if (PMString_parentName == "character style")
-			{
-				actionID = kCharacterStylesPanelActionID;
-				widgetID = kCharStylePanelWidgetID;
-			}
-			else if (PMString_parentName == "paragraph style")
-			{
-				actionID = kParagraphStylesPanelActionID;
-				widgetID = kParaStylePanelWidgetID;
+				InterfacePtr<IStyleInfo> iStyleInfo(iScript, ::UseDefaultIID());
+				if (!iStyleInfo) break;
+
+				// Set shortcut.
+				iStyleInfo->SetKeyboardShortcut(virtualKey_keyOut, int16_modsOut);
+
+				// Set timeStamp.
+				if (pMString_shortcut != "") iStyleInfo->SetKeyboardShortcutTimeStamp(globalTime_TimeStamp);
 			}
 
-			bool16 result = iPanelMgr->DoesPanelExist(widgetID);
-			if (result)
+			// Panel redraw.
 			{
-				result = iPanelMgr->IsPanelWithMenuIDShown(actionID);
+				InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+				if (iApplication == nil) break;
+
+				InterfacePtr<IPanelMgr> iPanelMgr(iApplication->QueryPanelManager());
+
+				WidgetID widgetID;
+				ActionID actionID;
+				if (PMString_targetStyle == "object style")
+				{
+					actionID = kObjectStylePanelActionID;
+					widgetID = kObjStylesTreeViewPanelWidgetID;
+				}
+				else if (PMString_targetStyle == "cell style")
+				{
+					actionID = kCellStylesPanelActionID;
+					widgetID = kTabStyUICellStylePanelWidgetID;
+				}
+				else if (PMString_targetStyle == "table style")
+				{
+					actionID = kTableStylesPanelActionID;
+					widgetID = kTabStyUITableStylePanelWidgetID;
+				}
+				else if (PMString_targetStyle == "character style")
+				{
+					actionID = kCharacterStylesPanelActionID;
+					widgetID = kCharStylePanelWidgetID;
+				}
+				else if (PMString_targetStyle == "paragraph style")
+				{
+					actionID = kParagraphStylesPanelActionID;
+					widgetID = kParaStylePanelWidgetID;
+				}
+
+				bool16 result = iPanelMgr->DoesPanelExist(widgetID);
 				if (result)
 				{
-					IControlView* iControlView = iPanelMgr->GetPanelFromWidgetID(widgetID);
+					result = iPanelMgr->IsPanelWithMenuIDShown(actionID);
+					if (result)
+					{
+						IControlView* iControlView = iPanelMgr->GetPanelFromWidgetID(widgetID);
 
-					iControlView->ForceRedraw();
+						iControlView->ForceRedraw();
+					}
 				}
 			}
 		}
-		status = kSuccess;
+		/*
 
+		int32 NnumShortcutContexts = iShortcutManager->GetNumShortcutContexts();
+
+		PMString num;
+		while (NnumShortcutContexts) {
+
+			IShortcutContext* iShortcutContext = iShortcutManager->
+				QueryNthShortcutContext(NnumShortcutContexts - 1);
+
+			PMString shortcutContext = iShortcutContext->GetShortcutContextString();
+
+			// Remove shortcut.
+			iShortcutManager->RemoveShortcut(shortcutContext, virtualKey_keyOut, int16_modsOut);
+
+			ActionID actionID = iShortcutManager->GetActionIDOfShortcut("TextContext", virtualKey_keyOut, int16_modsOut);
+			if (actionID == kInvalidActionID) CAlert::InformationAlert("Msg");
+			// Remove all shortcuts for action.
+			iShortcutManager->RemoveAllShortcutsForAction(actionID);
+
+			NnumShortcutContexts--;
+		}
+
+		*/
+		status = kSuccess;
 	} while (false); // only do once
 
 	return status; // If kSuccess is not returned, an error occurs

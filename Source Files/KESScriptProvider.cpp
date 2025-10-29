@@ -73,17 +73,13 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData*
 		break;
 
 	case KESScriptEvents::e_KESIsSplitLayoutViewShown:
-		status = KESLayout::IsSplitLayoutViewShown(scriptID, iScriptRequestData, iScript);
-		break;
 
-	case KESScriptEvents::e_KESSetKeyboardShortcutForStyle:
-		status = KESStyle::SetKeyboardShortcut(iScriptRequestData, iScript);
+		status = KESLayout::IsSplitLayoutViewShown(scriptID, iScriptRequestData, iScript);
 		break;
 
 	default:
 		status = CScriptProvider::HandleMethod(scriptID, iScriptRequestData, iScript);
 	}
-
     return status;
 }
 
@@ -95,20 +91,27 @@ ErrorCode KESScriptProvider::AccessProperty(ScriptID scriptID, IScriptRequestDat
 	switch (scriptID.Get())
 	{
 	case KESScriptProperties::p_KESAccessContentLocationAtFrameOriginX:
+
 		status = KESLayout::AccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "X");
 		break;
 
 	case KESScriptProperties::p_KESAccessContentLocationAtFrameOriginY:
+
 		status = KESLayout::AccessContentLocationAtFrameOrigin(scriptID, iScriptRequestData, iScript, "Y");
 		break;
 
 	case KESScriptProperties::p_KESAutoMatchScrollZoomAllLayout:
+
 		status = KESLayoutScrollObserver::AutoMatchScrollZoomAllLayout(scriptID, iScriptRequestData, iScript);
+		break;
+
+	case KESScriptProperties::p_KESKeyboardShortcutForStyle:
+
+		status = KESStyle::KeyboardShortcut(scriptID, iScriptRequestData, iScript);
 		break;
 
 	default:
 		status = CScriptProvider::AccessProperty(scriptID, iScriptRequestData, iScript);
 	}
-
 	return status;
 }
