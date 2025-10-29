@@ -24,5 +24,5 @@ class KESStyle
 {
 public:
     // Set keyboard shortcut.
-    static ErrorCode SetKeyboardShortcut(IScriptRequestData* iScriptRequestData, IScript* iScript);
+	static ErrorCode KeyboardShortcut(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 };

@@ -105,8 +105,7 @@ DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrame
 DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 8)
 DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 9)
 DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 10)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSetKeyboardShortcutForStyleMethodScriptElement, kKESPrefix + 11)
-DECLARE_PMID(kScriptInfoIDSpace, kKESModifierEnumScriptElement, kKESPrefix + 12)
+DECLARE_PMID(kScriptInfoIDSpace, kKESKeyboardShortcutForStylePropertyScriptElement, kKESPrefix + 11)
 
 // "About Plug-ins" sub-menu:
 #define kKESAboutMenuKey			kKESStringPrefix "kKESAboutMenuKey"
