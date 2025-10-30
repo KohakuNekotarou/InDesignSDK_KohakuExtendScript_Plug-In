@@ -52,6 +52,14 @@ app.activeDocument.characterStyles.lastItem().keyboardShortcut = "Shift+Ctrl+Alt
 shortcut = app.activeDocument.characterStyles.lastItem().keyboardShortcut;
 
 // Remove context shortcut.
+// Contextstring:
+// 		DialogContext
+// 		DefaultContext
+// 		TableContext
+// 		TableObjectContext
+// 		KBSCContext_XMLStructureContext
+// 		FullScreenContext
+// 		TextContext
 app.removeContextShortcut("DefaultContext", 'Shift+Ctrl+Alt+F12'); // Style shortcuts will not disappear.
 ```
 
