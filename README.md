@@ -4,7 +4,9 @@
 <br>**Let's learn the InDesign SDK together.**
 
 We cannot be held responsible for any issues arising from your use of this service.<br>
-Please use it at your own risk.
+Please use it at your own risk.<br>
+
+If you have any desired features, please post them in the discussions.<br>
 
 On Mac, you cannot use downloaded plug-ins directly.<br>
 https://helpx.adobe.com/jp/indesign/kb/indesign-and-macos-catalina.html<br>
