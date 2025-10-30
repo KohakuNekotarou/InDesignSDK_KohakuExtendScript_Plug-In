@@ -1,4 +1,4 @@
-#include "VCPlugInHeaders.h" // Visual Studio only?
+#include "VCPlugInHeaders.h"
 
 // ---------------------------------------------------------------------------------------
 // Interface includes:
@@ -26,18 +26,9 @@
 
 // ---------------------------------------------------------------------------------------
 // Project includes:
-#include "KESScriptingDefs.h"
 #include "KESStyle.h"
 
 // Set keyboard shortcut.
-// Context:
-//		DialogContext
-//		DefaultContext
-//		TableContext
-//		TableObjectContext
-//		KBSCContext_XMLStructureContext
-//		FullScreenContext
-//		TextContext
 ErrorCode KESStyle::KeyboardShortcut(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
@@ -152,31 +143,8 @@ ErrorCode KESStyle::KeyboardShortcut(ScriptID scriptID, IScriptRequestData* iScr
 				}
 			}
 		}
-		/*
-
-		int32 NnumShortcutContexts = iShortcutManager->GetNumShortcutContexts();
-
-		PMString num;
-		while (NnumShortcutContexts) {
-
-			IShortcutContext* iShortcutContext = iShortcutManager->
-				QueryNthShortcutContext(NnumShortcutContexts - 1);
-
-			PMString shortcutContext = iShortcutContext->GetShortcutContextString();
-
-			// Remove shortcut.
-			iShortcutManager->RemoveShortcut(shortcutContext, virtualKey_keyOut, int16_modsOut);
-
-			ActionID actionID = iShortcutManager->GetActionIDOfShortcut("TextContext", virtualKey_keyOut, int16_modsOut);
-			if (actionID == kInvalidActionID) CAlert::InformationAlert("Msg");
-			// Remove all shortcuts for action.
-			iShortcutManager->RemoveAllShortcutsForAction(actionID);
-
-			NnumShortcutContexts--;
-		}
-
-		*/
 		status = kSuccess;
+
 	} while (false); // only do once
 
 	return status; // If kSuccess is not returned, an error occurs

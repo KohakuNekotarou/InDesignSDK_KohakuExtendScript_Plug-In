@@ -13,6 +13,7 @@
 #include "KESID.h"
 #include "KESLayout.h"
 #include "KESLayoutScrollObserver.h"
+#include "KESShortcut.h"
 #include "KESStyle.h"
 
 // CScriptProvider
@@ -50,13 +51,14 @@ making the C++ code callable by the application.
 */
 CREATE_PMINTERFACE(KESScriptProvider, kKESScriptProviderImpl)
 
-/* HandleMethod */
+// HandleMethod
 ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode status = kFailure;
 
 	switch (scriptID.Get())
 	{
+	// Match scroll zoom all layout.
 	case KESScriptEvents::e_KESMatchScrollZoomAllLayout:
 
 		status = KESLayout::MatchScrollZoomAllLayout(1, nil);
@@ -75,6 +77,11 @@ ErrorCode KESScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData*
 	case KESScriptEvents::e_KESIsSplitLayoutViewShown:
 
 		status = KESLayout::IsSplitLayoutViewShown(scriptID, iScriptRequestData, iScript);
+		break;
+
+	case KESScriptEvents::e_KESRemoveContextShortcut:
+
+		status = KESShortcut::RemoveContextShortcut(iScriptRequestData, iScript);
 		break;
 
 	default:
