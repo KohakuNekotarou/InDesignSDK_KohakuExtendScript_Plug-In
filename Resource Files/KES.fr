@@ -355,6 +355,29 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
+		// Remove context shortcut method.
+		Method
+		{
+			kKESRemoveContextShortcutMethodScriptElement, // ScriptElementID
+			e_KESRemoveContextShortcut, // ScriptID
+			"remove context shortcut", // Name. If you want the name in the script to be "kohakuNekotarou", enter "kohaku nekotarou".
+			"Remove context shortcut", // Description
+			VoidType,
+			{ // list of method parameters.
+				p_KESRemoveContextShortcutContextString, // Parameter's ScriptID.
+				"context string", // Parameter's name.
+				"Context string", // Parameter's description.
+				StringType, // Parameter's type.
+				kRequired, // kOptional or kRequired.
+				p_KESRemoveContextShortcutString, // Parameter's ScriptID.
+				"shortcut string", // Parameter's name.
+				"Shortcut string", // Parameter's description.
+				StringType, // Parameter's type.
+				kRequired, // kOptional or kRequired.
+			}
+		}
+
+		// ---------------------------------------------------------------------------------------
 		// Connects this plug-in's singleton object and methods and properties to scripting
 		Provider
 		{
@@ -398,6 +421,11 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				//		app.autoMatchScrollZoomAllLayout = true; // Set
 				//		flg = app.autoMatchScrollZoomAllLayout; // get
 				Property{ kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kReadWrite }, // Additional
+
+				// Remove context shortcut.
+				// ExtendScript Example:
+				//		app.removeContextShortcut("TextContext");
+				Method{ kKESRemoveContextShortcutMethodScriptElement }, // Additional
 
 				// ---------------------------------------------------------------------------------------
 				// target
@@ -443,9 +471,11 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 				Object{ kCharacterStyleObjectScriptElement },
 				Object{ kParagraphStyleObjectScriptElement },
 
-				// Set keyboard shortcut for style.
+				// keyboard shortcut for style.
 				// ExtendScript Example:
-				//		app.activeDocument.characterStyles.lastItem().KeyboardShortcut("aaaaaaaaaaaaaaa");
+				//		app.activeDocument.characterStyles.lastItem().keyboardShortcut = ""; // delete
+				//		app.activeDocument.characterStyles.lastItem().keyboardShortcut = "Shift+Ctrl+Alt+Num 0"
+				// 		shortcut = app.activeDocument.characterStyles.lastItem().keyboardShortcut;
 				Property{ kKESKeyboardShortcutForStylePropertyScriptElement, kReadWrite }, // Additional
 			}
 		}
