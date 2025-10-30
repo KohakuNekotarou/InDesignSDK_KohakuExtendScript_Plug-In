@@ -44,7 +44,7 @@ if(result){
 // Split / Unsplit layout.
 app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 
-// keyboard shortcut for style.
+// Keyboard shortcut for style.
 app.activeDocument.characterStyles.lastItem().keyboardShortcut = ""; // delete
 app.activeDocument.characterStyles.lastItem().keyboardShortcut = "Shift+Ctrl+Alt+Num 0"
 shortcut = app.activeDocument.characterStyles.lastItem().keyboardShortcut;
