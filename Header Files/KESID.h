@@ -68,27 +68,6 @@ DECLARE_PMID(kImplementationIDSpace, kKESActionComponentImpl, kKESPrefix + 3)
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
 //DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 5)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 6)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 7)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 8)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 9)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 10)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 11)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 12)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 13)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 14)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 15)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 16)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 17)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 18)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 19)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 20)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 21)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 22)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 23)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 24)
-//DECLARE_PMID(kActionIDSpace, kKESActionID, kKESPrefix + 25)
-
 
 // WidgetIDs:
 //DECLARE_PMID(kWidgetIDSpace, kKESTestTextWidgetID, kKESPrefix + 0)
@@ -106,6 +85,7 @@ DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrame
 DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 9)
 DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 10)
 DECLARE_PMID(kScriptInfoIDSpace, kKESKeyboardShortcutForStylePropertyScriptElement, kKESPrefix + 11)
+DECLARE_PMID(kScriptInfoIDSpace, kKESRemoveContextShortcutMethodScriptElement, kKESPrefix + 12)
 
 // "About Plug-ins" sub-menu:
 #define kKESAboutMenuKey			kKESStringPrefix "kKESAboutMenuKey"

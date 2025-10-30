@@ -44,6 +44,7 @@ enum KESScriptEvents
 	e_KESToggleSplitLayout = 'KTSL',
 	e_KESQueryNthLayout = 'KQNL',
 	e_KESIsSplitLayoutViewShown = 'KISL',
+	e_KESRemoveContextShortcut = 'KRCS',
 };
 
 // Property IDs
@@ -57,6 +58,8 @@ enum KESScriptProperties
 	p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY = 'KSLY',
 	p_KESAutoMatchScrollZoomAllLayout = 'KAML',
 	p_KESKeyboardShortcutForStyle = 'KSCS',
+	p_KESRemoveContextShortcutContextString = 'KRSC',
+	p_KESRemoveContextShortcutString = 'KRSS'
 };
 
 #endif // __KESScriptingDefs_h__
