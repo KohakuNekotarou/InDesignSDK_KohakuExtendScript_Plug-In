@@ -24,6 +24,7 @@
 // Allows you to register the implementation IDs for your C++ implementations in the InDesign object model.
 // InDesign オブジェクトモデル内で、C++ 実装の実装 ID を登録できるようにします。
 REGISTER_PMINTERFACE(KESScriptProvider, kKESScriptProviderImpl)
-REGISTER_PMINTERFACE(KESPrefsScriptProvider, kKESPrefsScriptProviderImpl)
 REGISTER_PMINTERFACE(KESLayoutScrollObserver, kKESLayoutScrollObserverImpl)
 REGISTER_PMINTERFACE(KESActionComponent, kKESActionComponentImpl)
+REGISTER_PMINTERFACE(KESRepresentScriptProvider, kKESRepresentScriptProviderImpl)
+REGISTER_PMINTERFACE(KESShortcutScript, kKESShortcutScriptImpl)

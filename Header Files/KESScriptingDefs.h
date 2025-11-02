@@ -34,7 +34,9 @@ DECLARE_GUID(CPrefs_CLSID, kCPrefs_CLSID);
 // Class ScriptIDs 
 enum KESScriptClasses
 {
-	c_KESSplitLayoutViewObject = 'KSLO', // object
+	c_KESSplitLayoutViewObject = 'KSLO',
+	c_KESShortcutObject = 'KSCO',
+	c_KESShortcutsObject = 'KSSO',
 };
 
 // Method IDs
@@ -59,7 +61,7 @@ enum KESScriptProperties
 	p_KESAutoMatchScrollZoomAllLayout = 'KAML',
 	p_KESKeyboardShortcutForStyle = 'KSCS',
 	p_KESRemoveContextShortcutContextString = 'KRSC',
-	p_KESRemoveContextShortcutString = 'KRSS'
+	p_KESRemoveContextShortcutString = 'KRSS',
 };
 
 #endif // __KESScriptingDefs_h__

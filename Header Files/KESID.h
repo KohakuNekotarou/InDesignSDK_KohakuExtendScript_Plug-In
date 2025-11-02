@@ -52,8 +52,8 @@ DECLARE_PMID(kPlugInIDSpace, kKESPluginID, kKESPrefix + 0)
 
 // ClassIDs:
 DECLARE_PMID(kClassIDSpace, kKESScriptProviderBoss, kKESPrefix + 0)
-DECLARE_PMID(kClassIDSpace, kKESPrefsScriptProviderBoss, kKESPrefix + 1)
-DECLARE_PMID(kClassIDSpace, kKESLayoutScrollBarBoss, kKESPrefix + 2)
+DECLARE_PMID(kClassIDSpace, kKESRepresentScriptProviderBoss, kKESPrefix + 1)
+DECLARE_PMID(kClassIDSpace, kKESSplitLayoutViewBoss, kKESPrefix + 2)
 
 // InterfaceIDs:
 DECLARE_PMID(kInterfaceIDSpace, IID_IKESLayoutScrollObserver, kKESPrefix + 0)
@@ -61,9 +61,10 @@ DECLARE_PMID(kInterfaceIDSpace, IID_IKESLayoutScrollObserver, kKESPrefix + 0)
 // ImplementationIDs:
 // ŽÀ‘•ID
 DECLARE_PMID(kImplementationIDSpace, kKESScriptProviderImpl, kKESPrefix + 0 )
-DECLARE_PMID(kImplementationIDSpace, kKESPrefsScriptProviderImpl, kKESPrefix + 1)
-DECLARE_PMID(kImplementationIDSpace, kKESLayoutScrollObserverImpl, kKESPrefix + 2)
-DECLARE_PMID(kImplementationIDSpace, kKESActionComponentImpl, kKESPrefix + 3)
+DECLARE_PMID(kImplementationIDSpace, kKESLayoutScrollObserverImpl, kKESPrefix + 1)
+DECLARE_PMID(kImplementationIDSpace, kKESActionComponentImpl, kKESPrefix + 2)
+DECLARE_PMID(kImplementationIDSpace, kKESRepresentScriptProviderImpl, kKESPrefix + 3)
+DECLARE_PMID(kImplementationIDSpace, kKESShortcutScriptImpl, kKESPrefix + 4)
 
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kKESAboutActionID, kKESPrefix + 0)
@@ -77,15 +78,17 @@ DECLARE_PMID(kScriptInfoIDSpace, kKESMatchScrollZoomAllLayoutMethodScriptElement
 DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 1)
 DECLARE_PMID(kScriptInfoIDSpace, kKESAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 2)
 DECLARE_PMID(kScriptInfoIDSpace, kKESToggleSplitLayoutMethodScriptElement, kKESPrefix + 3)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectScriptElement, kKESPrefix + 4)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewObjectPropertyScriptElement, kKESPrefix + 5)
-DECLARE_PMID(kScriptInfoIDSpace, kKESQueryNthLayoutMethodScriptElement, kKESPrefix + 6)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement, kKESPrefix + 7)
-DECLARE_PMID(kScriptInfoIDSpace, kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kKESPrefix + 8)
-DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 9)
-DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 10)
-DECLARE_PMID(kScriptInfoIDSpace, kKESKeyboardShortcutForStylePropertyScriptElement, kKESPrefix + 11)
-DECLARE_PMID(kScriptInfoIDSpace, kKESRemoveContextShortcutMethodScriptElement, kKESPrefix + 12)
+DECLARE_PMID(kScriptInfoIDSpace, kKESQueryNthLayoutMethodScriptElement, kKESPrefix + 4)
+DECLARE_PMID(kScriptInfoIDSpace, kKESIsSplitLayoutViewShownMethodScriptElement, kKESPrefix + 5)
+DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptElement, kKESPrefix + 6)
+DECLARE_PMID(kScriptInfoIDSpace, kKESKeyboardShortcutForStylePropertyScriptElement, kKESPrefix + 7)
+DECLARE_PMID(kScriptInfoIDSpace, kKESRemoveContextShortcutMethodScriptElement, kKESPrefix + 8)
+DECLARE_PMID(kScriptInfoIDSpace, kKESShortcutObjectScriptElement, kKESPrefix + 9)
+
+// GUIDs for script objects:
+// Visual Studio : Tools > Generate GUID
+#define kKESShortcutObject_CLSID { 0xe38993cd, 0x3ab5, 0x4c66, { 0xb4, 0x24, 0xc4, 0xd6, 0x1b, 0xb1, 0x5a, 0x46 } }
+#define kKESShortcutsObject_CLSID { 0xe112b5f44, 0xc265, 0x4849, { 0x83, 0x55, 0x61, 0xaf, 0x47, 0xc1, 0xd3, 0x29 } }
 
 // "About Plug-ins" sub-menu:
 #define kKESAboutMenuKey			kKESStringPrefix "kKESAboutMenuKey"
@@ -102,7 +105,6 @@ DECLARE_PMID(kScriptInfoIDSpace, kKESRemoveContextShortcutMethodScriptElement, k
 #define kKESTargetMenuPath kKESPluginsMenuPath
 
 // Menu item positions:
-
 
 // Initial data format version numbers
 #define kKESFirstMajorFormatNumber  RezLong(1)
