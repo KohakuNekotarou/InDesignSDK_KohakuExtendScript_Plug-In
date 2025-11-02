@@ -53,7 +53,7 @@ DECLARE_PMID(kPlugInIDSpace, kKESPluginID, kKESPrefix + 0)
 // ClassIDs:
 DECLARE_PMID(kClassIDSpace, kKESScriptProviderBoss, kKESPrefix + 0)
 DECLARE_PMID(kClassIDSpace, kKESRepresentScriptProviderBoss, kKESPrefix + 1)
-DECLARE_PMID(kClassIDSpace, kKESSplitLayoutViewBoss, kKESPrefix + 2)
+DECLARE_PMID(kClassIDSpace, kKESShortcutScriptObjectBoss, kKESPrefix + 2)
 
 // InterfaceIDs:
 DECLARE_PMID(kInterfaceIDSpace, IID_IKESLayoutScrollObserver, kKESPrefix + 0)
