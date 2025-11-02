@@ -36,13 +36,6 @@ y = app.activeDocument.queryNthLayout(0).accessContentLocationAtFrameOriginY;  /
 // Is split layout view shown.
 result = app.activeDocument.queryNthLayout(0).isSplitLayoutViewShown();
 
-// Access content location at frame origin.
-result = app.activeDocument.queryNthLayout(0).isSplitLayoutViewShown();
-if(result){
-    app.activeDocument.queryNthLayout(0).splitLayoutView.accessContentLocationAtFrameOriginX = 0; // Set
-    y = app.activeDocument.queryNthLayout(0).splitLayoutView.accessContentLocationAtFrameOriginY; // get
-}
-
 // Split / Unsplit layout.
 app.activeDocument.queryNthLayout(0).toggleSplitLayout();
 
