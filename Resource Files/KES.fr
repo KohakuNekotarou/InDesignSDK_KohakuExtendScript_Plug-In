@@ -112,6 +112,17 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 			IID_ISCRIPTPROVIDER, kKESRepresentScriptProviderImpl,
 		}
 	},
+
+	// Shortcut script
+	Class
+	{
+		kKESShortcutScriptObjectBoss,
+		kBaseProxyScriptObjectBoss,
+		{
+			IID_ISCRIPT, kKESShortcutScriptImpl,	
+		}
+	},
+
 	// ---------------------------------------------------------------------------------------
 	AddIn
 	{
