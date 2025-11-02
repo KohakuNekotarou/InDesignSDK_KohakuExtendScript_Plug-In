@@ -8,6 +8,13 @@
 #include "IShortcutManager.h"
 #include "IShortcutUtils.h"
 
+
+
+
+
+
+#include "IMenuUtils.h"
+
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
 #include "keyboarddefs.h" // for kVirtualNullKey.
@@ -22,6 +29,70 @@ ErrorCode KESShortcut::RemoveContextShortcut(IScriptRequestData* iScriptRequestD
 
 	do
 	{
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+		// ---------------------------------------------------------------------------------------
+		// Get total number of ActionID.
+		InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+		if (iApplication == nil) break;
+
+		InterfacePtr<IActionManager> iActionManager(iApplication->QueryActionManager());
+		if (iActionManager == nil) break;
+
+		int32 numActions = iActionManager->GetNumActions();
+
+		// ---------------------------------------------------------------------------------------
+		// Get all ActionID and name.
+		PMString allActionName;
+		for(int32 i = 0; i < numActions; i++)
+		{
+			ActionID actionID = iActionManager->GetNthAction(i);
+
+			PMString pMString_actionID;
+			pMString_actionID.AsNumber(actionID.Get());
+
+			allActionName.Append(pMString_actionID);
+			allActionName.Append(" , ");
+
+			PMString pMString_actionArea = iActionManager->GetActionArea(actionID);
+
+
+			Utils<IMenuUtils>()->TranslateMenuName(pMString_actionArea);
+
+			allActionName.Append(pMString_actionArea);
+			allActionName.Append(" , ");
+
+			PMString pMString_actionName = iActionManager->GetActionName(actionID);
+
+			Utils<IMenuUtils>()->TranslateMenuName(pMString_actionName);
+
+			// Remove '&' character.
+			Utils<IMenuUtils>()->StripMenuAccelerator(&pMString_actionName, LocaleSetting::GetLocale().GetUserInterfaceId());
+
+			allActionName.Append(pMString_actionName);
+			allActionName.Append("\n");
+		}
+
+		CAlert::InformationAlert(allActionName);
+
+
+
+
+
+		/*
+
 		ScriptData scriptData;
 
 		// ---------------------------------------------------------------------------------------
@@ -77,6 +148,8 @@ ErrorCode KESShortcut::RemoveContextShortcut(IScriptRequestData* iScriptRequestD
 		if (iShortcutManager == nil) break;
 
 		iShortcutManager->RemoveShortcut(pMString_context, virtualKey_keyOut, int16_modsOut);
+		*/
+
 
 		status = kSuccess;
 

@@ -1,12 +1,14 @@
 #include "VCPlugInHeaders.h"
 
+// Implementation includes:
+#include "CScriptProvider.h"
+
 // Interface includes:
 #include "IScript.h"
 #include "IScriptRequestData.h"
 
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
-#include "CScriptProvider.h"
 
 // Project includes:
 #include "KESScriptingDefs.h"
@@ -16,39 +18,27 @@
 #include "KESShortcut.h"
 #include "KESStyle.h"
 
-// CScriptProvider
-// Adding properties or methods to existing objects.
-// 既存のオブジェクトにプロパティやメソッドを追加する。
-// KESScriptProvider
-class KESScriptProvider : public CScriptProvider
+class KESScriptProvider : public CScriptProvider // Adding properties or methods to existing objects.
 {
 public:
-	/** Constructor.
-	@param boss interface ptr from boss object on which this interface is aggregated.
-	*/
+
 	KESScriptProvider(IPMUnknown* boss) : CScriptProvider(boss) {};
 
-	/** Destructor. Does nothing.
-	*/
 	~KESScriptProvider() {}
 
-	/** This method is called if a provider can handle an method.
-	@param scriptID identifies the ID of the method to handle.
-	@param iScriptRequestData identifies an interface pointer used to extract data.
-	@param iScript identifies an interface pointer on the script object representing the parent of the application object.
-	*/
+	// This method is called if a provider can handle an method.
+	// @param scriptID identifies the ID of the method to handle.
+	// @param iScriptRequestData identifies an interface pointer used to extract data.
+	// @param iScript identifies an interface pointer on the script object representing the parent of the application object.
 	virtual ErrorCode HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
-	/** This method is called if a provider can handle a property.
-	*/
+	// This method is called if a provider can handle a property.
 	virtual ErrorCode AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 };
 
 
-/* CREATE_PMINTERFACE
-Binds the C++ implementation class onto its ImplementationID 
-making the C++ code callable by the application.
-*/
+// CREATE_PMINTERFACE
+// Binds the C++ implementation class onto its ImplementationID making the C++ code callable by the application.
 CREATE_PMINTERFACE(KESScriptProvider, kKESScriptProviderImpl)
 
 // HandleMethod
