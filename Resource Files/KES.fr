@@ -92,27 +92,26 @@ resource ExtraPluginInfo(1)
  */
 resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 {{{
-	// ---------------------------------------------------------------------------------------
-	Class
-	{
-		kKESPrefsScriptProviderBoss,
-		kBaseScriptProviderBoss,
-		{
-			IID_ISCRIPTPROVIDER, kKESPrefsScriptProviderImpl,	
-		}
-	},
-
-	// ---------------------------------------------------------------------------------------
+	
+	// Script provider
 	Class
 	{
 		kKESScriptProviderBoss,
 		kBaseScriptProviderBoss,
 		{
 			IID_ISCRIPTPROVIDER, kKESScriptProviderImpl,
-			
 		}
 	},
 
+	// Represent script provider
+	Class
+	{
+		kKESRepresentScriptProviderBoss,
+		kBaseScriptProviderBoss,
+		{
+			IID_ISCRIPTPROVIDER, kKESRepresentScriptProviderImpl,
+		}
+	},
 	// ---------------------------------------------------------------------------------------
 	AddIn
 	{
@@ -197,51 +196,20 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 	// Elements
 	{
 		// ---------------------------------------------------------------------------------------
-		// Split layout object
+		// Shortcut object
 		Object
 		{
-			kKESSplitLayoutViewObjectScriptElement,	// Script element ID
-			c_KESSplitLayoutViewObject, // ScriptID
-			"split layout view object", // name
-			"Split layout view Object", // description
-			kCPrefs_CLSID, // Windows CLSID
-			NoCollectionInfo, // CollectionElementType (scriptID, name, descr, CLSID)
-			kPreferencesObjectScriptElement, // base object script element ID
-			kPreferencesSuiteScriptElement,	// suite script element ID
-		}
-
-		// Enable access to the splitLayoutView object as a property.
-        Property
-        {
-            kKESSplitLayoutViewObjectPropertyScriptElement,	// Script element ID
-            p_KESSplitLayoutViewObject, // ScriptID
-            "split layout view", // Access object using this name.
-            "Split layout view property", // description
-            ObjectType( kKESSplitLayoutViewObjectScriptElement ), // type
-            {} // alternate types
-            kNoAttributeClass,
-        }
-
-		Property
-		{
-			kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement,
-			p_KESSplitLayoutViewAccessContentLocationAtFrameOriginX,
-			"access content location at frame origin x",
-			"Access content location at frame origin X",
-			RealType,
-			{}
-			kNoAttributeClass,
-		}
-
-		Property
-		{
-			kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement,
-			p_KESSplitLayoutViewAccessContentLocationAtFrameOriginY,
-			"access content location at frame origin y",
-			"Access content location at frame origin Y",
-			RealType,
-			{}
-			kNoAttributeClass,
+			kKESShortcutObjectScriptElement, // Script element ID
+			c_KESShortcutObject, // ScriptID
+			"shortcut", // Name
+			"Shortcut", // Description
+			kKESShortcutObject_CLSID, // Windows CLSID
+			c_KESShortcutsObject, // Collection
+			"shortcuts", // Name
+			"All shortcut", // Description
+			kKESShortcutsObject_CLSID, // Windows CLSID
+			kNonIDBasedObjectScriptElement, // base object script element ID
+			kBasicSuiteScriptElement,	// suite script element ID
 		}
 
 		// ---------------------------------------------------------------------------------------
@@ -288,6 +256,7 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 			{
 			}
 		}
+
 		// ---------------------------------------------------------------------------------------
 		// Is split layout view shown
 		Method
@@ -378,26 +347,17 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 		}
 
 		// ---------------------------------------------------------------------------------------
-		// Connects this plug-in's singleton object and methods and properties to scripting
+		// Represent script provider
+		// Subclass this to expose a new script object to the scripting.
 		Provider
 		{
-			kKESPrefsScriptProviderBoss,	// provider boss ID
+			kKESRepresentScriptProviderBoss, // provider boss ID
 			{
-				// Parent
-				Parent{ kLayoutWindowObjectScriptElement },	
+				// ---------------------------------------------------------------------------------------
+				Parent{ kMenuActionObjectScriptElement }, // Parent
 
-				// Split layout object
-				RepresentObject{ kKESSplitLayoutViewObjectScriptElement }, // Additional
-
-				// The property on the parent object returns Split layout object
-				ParentProperty{ kKESSplitLayoutViewObjectPropertyScriptElement, kReadOnly }, // Additional
-				
-				// Access content location at frame origin.
-				// ExtendScript Example:
-				//     app.activeDocument.layoutWindows[0].splitLayoutView.accessContentLocationAtFrameOriginX = 0; // Set
-				//     y = app.activeDocument.layoutWindows[0].splitLayoutView.accessContentLocationAtFrameOriginY; // get
-				Property{ kKESSplitLayoutViewAccessContentLocationAtFrameOriginXPropertyScriptElement, kReadWrite }, // Additional
-				Property{ kKESSplitLayoutViewAccessContentLocationAtFrameOriginYPropertyScriptElement, kReadWrite }, // Additiona
+				// Shortcut object.
+				RepresentObject{ kKESShortcutObjectScriptElement }, // Additional
 			}
 		}
 
@@ -424,8 +384,21 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// Remove context shortcut.
 				// ExtendScript Example:
-				//		app.removeContextShortcut("TextContext");
+				//		// Contextstring:
+				//		// 		DialogContext
+				// 		// 		DefaultContext
+				// 		// 		TableContext
+				// 		// 		TableObjectContext
+				// 		// 		KBSCContext_XMLStructureContext
+				// 		// 		FullScreenContext
+				// 		// 		TextContext
+				//		app.removeContextShortcut("DefaultContext", 'Shift+Ctrl+Alt+F12'); // Style shortcuts will not disappear.
 				Method{ kKESRemoveContextShortcutMethodScriptElement }, // Additional
+
+				// Display all ActionID.
+				// ExtendScript Example:
+				//		app.displayAllActionID();
+				//Method{ kKESDisplayAllActionIDMethodScriptElement }, // Additional
 
 				// ---------------------------------------------------------------------------------------
 				// target
