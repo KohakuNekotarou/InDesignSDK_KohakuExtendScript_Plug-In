@@ -1,3 +1,26 @@
+//========================================================================================
+//  
+//  $File$
+//  
+//  Owner: Adobe Developer Technologies
+//  
+//  $Author$
+//  
+//  $DateTime$
+//  
+//  $Revision$
+//  
+//  $Change$
+//  
+//  Copyright 1997-2010 Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
 #include "VCPlugInHeaders.h"
 
 // Interface includes:
@@ -12,63 +35,55 @@
 // Project includes:
 #include "KESID.h"
 #include "KESScriptingDefs.h"
-#include "KESShortcut.h"
 
-class KESShortcutScript : public CProxyScript // For script objects that are not UID-based.
+/** Implements IScript via partial implementation CProxyScript.
+ * 	The main purpose is to declare the class ScriptID.
+ * 
+ * 	@ingroup snippetrunner
+ * 	@author Ken Sadahiro
+*/
+class KESShortcutScript : public CProxyScript
 {
 public:
+	/** Constructor */
 	KESShortcutScript(IPMUnknown* boss);
 
-	virtual ~KESShortcutScript(void);
-
-	// Returns the database related to this object.
-	// Since the Shortcut isn't persistent, we just return the application database.
-	virtual IDataBase* GetDataBase(const RequestContext& requestContext) const;
-
-	// Return information for the object specifier.
-	virtual ScriptObject GetScriptObject(const RequestContext& requestContext) const;
+	/** Returns the database related to this object.
+	 * 	Since the SnippetRunner isn't persistent, we just return 
+	 * 	the application database.
+	 */
+	virtual IDataBase* GetDataBase(const RequestContext &context) const;
 
 private:
 	IDataBase* fDB;
 };
 
-// Make the implementation available to the application.
+/* Make the implementation available to the application.
+*/
 CREATE_PMINTERFACE(KESShortcutScript, kKESShortcutScriptImpl)
 
-// Constructor
-KESShortcutScript::KESShortcutScript(IPMUnknown* boss) : CProxyScript(boss)
+/* Constructor
+*/
+KESShortcutScript::KESShortcutScript(IPMUnknown* boss) :
+	CProxyScript(boss)	
 {
 	// NOTE: this ScriptID must match that used in the call to 
-	// IScriptUtils::CreateProxyScriptObject in KESShortcutScriptProvider::AppendNthObject.
-	this->fObjectType = c_KESShortcutObject;
-	this->fDB = nil;
+	// IScriptUtils::CreateProxyScriptObject in SnpRunnableScriptProvider::AppendNthObject.
+	fObjectType = c_KESShortcutObject;
+	fDB = nil;
 }
 
-// Destructor
-KESShortcutScript::~KESShortcutScript(void) {}
-
-// GetDataBase
+/* GetDataBase
 // A safe way to determine the appropriate database for this object. Most implementations
 // can simply inherit and use the default implementation { return ::GetDataBase( this ) ; }
 // but some script bosses are non-persistent, and should therefore override this method.
-IDataBase* KESShortcutScript::GetDataBase(const RequestContext& requestContext) const
+*/
+IDataBase* KESShortcutScript::GetDataBase(const RequestContext &context) const
 {
 	if (fDB == nil)
 	{
-		InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
-		if (iApplication != nil) const_cast<KESShortcutScript*>(this)->fDB = ::GetDataBase(iApplication);
+		InterfacePtr<IApplication> app(GetExecutionContextSession()->QueryApplication());
+		if (app != nil) const_cast<KESShortcutScript*>(this)->fDB = ::GetDataBase(app);
 	}
 	return fDB;
-}
-
-// GetScriptObject
-ScriptObject KESShortcutScript::GetScriptObject(const RequestContext& requestContext) const
-{
-	// identify script object by name
-	PMString pMString_name = "";
-	do
-	{
-		
-	} while (false);
-	return ScriptObject(ScriptData(pMString_name), GetObjectType(requestContext), kFormName);
 }
