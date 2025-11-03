@@ -14,6 +14,10 @@ Refer to the above and use Terminal to<br>
 sudo xattr -r -d com.apple.quarantine /Applications/Adobe\ Indesign\ 2025/Plug-ins/KohakuExtendScript.InDesignPlugin<br>
 Please execute.
 
+note<br>
+How to use ScriptList class<br>
+https://community.adobe.com/t5/indesign-discussions/how-to-use-scriptlist-class-in-indesign-cs5-sdk/m-p/3210409
+
 ## extendScript for JavaScript
 ```
 // Auto match scroll zoom all layout. 
