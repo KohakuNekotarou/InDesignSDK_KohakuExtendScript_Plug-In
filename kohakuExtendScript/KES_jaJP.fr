@@ -1,0 +1,57 @@
+//========================================================================================
+//  
+//  $File: $
+//  
+//  Owner: 
+//  
+//  $Author: $
+//  
+//  $DateTime: $
+//  
+//  $Revision: $
+//  
+//  $Change: $
+//  
+//  Copyright 1997-2008 Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
+#ifdef __ODFRC__
+
+
+// Japanese string table is defined here
+
+resource StringTable (kSDKDefStringsResourceID + index_jaJP)
+{
+        k_jaJP,	// Locale Id
+        0,		// Character encoding converter
+
+        {
+        	// ----- Menu strings
+                kKESCompanyKey,					kKESCompanyValue,
+                kKESAboutMenuKey,					kKESPluginName "[JP]...",
+                kKESPluginsMenuKey,				kKESPluginName "[JP]",
+
+                kSDKDefAboutThisPlugInMenuKey,			kSDKDefAboutThisPlugInMenuValue_jaJP,
+
+                // ----- Command strings
+
+                // ----- Window strings
+
+                // ----- Panel/dialog strings
+
+              // ----- Error strings
+
+                // ----- Misc strings
+                kKESAboutBoxStringKey,			kKESPluginName " [JP], version " kKESVersion " by " kKESAuthor "\n\n" kSDKDefCopyrightStandardValue "\n\n" kSDKDefPartnersStandardValue_jaJP,
+
+        }
+
+};
+
+#endif // __ODFRC__
