@@ -10,23 +10,9 @@
 #include "IIntData.h"
 #include "IScript.h"
 #include "IScriptRequestData.h"
-#include "IShortcutManager.h"
-
-
-
-#include "IMenuUtils.h"
-
-
-#include "IScriptErrorUtils.h"
 #include "IShortcutContext.h"
 #include "IShortcutManager.h"
 #include "IShortcutUtils.h"
-
-
-
-#include "IKBSCPreferences.h"
-
-
 
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
@@ -48,7 +34,6 @@ public:
 	virtual ErrorCode AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
 protected:
-
 	// Get the number of child objects in a collection on the given parent.
 	virtual int32 GetNumObjects(const IScriptRequestData* iScriptRequestData, IScript* iScript);
 
@@ -67,11 +52,11 @@ ErrorCode KESShortcutScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequ
 
 	switch (scriptID.Get())
 	{
-	case e_Create:
+	case e_Create: // Add shortcut.
 	{
-		ScriptData scriptData;
 		// ---------------------------------------------------------------------------------------
 		// Query shortcut context.
+		ScriptData scriptData;
 		PMString pMString_shortcutContext;
 		if (iScriptRequestData->ExtractRequestData(p_KESShortcutContextString, scriptData) == kFailure) break;
 
@@ -89,26 +74,26 @@ ErrorCode KESShortcutScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequ
 			)
 		{
 			return Utils<IScriptErrorUtils>()->
-				SetMissingRequiredParameterErrorData(iScriptRequestData, p_KESRemoveContextShortcutContextString);
+				SetMissingRequiredParameterErrorData(iScriptRequestData, p_KESShortcutContextString);
 		}
 
 		// ---------------------------------------------------------------------------------------
 		// Query shortcut string.
-		PMString pMString_shortcut;
+		PMString pMString_shortcutString;
 		if (iScriptRequestData->ExtractRequestData(p_KESShortcutString, scriptData) != kSuccess) break;
 
-		if (scriptData.GetPMString(pMString_shortcut) != kSuccess) break;
+		if (scriptData.GetPMString(pMString_shortcutString) != kSuccess) break;
 
 		// ---------------------------------------------------------------------------------------
 		// Parse shortcut string.
 		VirtualKey virtualKey_keyOut;
 		int16 int16_modsOut;
-		Utils<IShortcutUtils>()->ParseShortcutString(pMString_shortcut, &virtualKey_keyOut, &int16_modsOut);
+		Utils<IShortcutUtils>()->ParseShortcutString(pMString_shortcutString, &virtualKey_keyOut, &int16_modsOut);
 
 		if (virtualKey_keyOut == kVirtualNullKey)
 		{
 			return Utils<IScriptErrorUtils>()->
-				SetMissingRequiredParameterErrorData(iScriptRequestData, p_KESRemoveContextShortcutString);
+				SetMissingRequiredParameterErrorData(iScriptRequestData, p_KESShortcutString);
 		}
 
 		// ---------------------------------------------------------------------------------------
@@ -131,25 +116,14 @@ ErrorCode KESShortcutScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequ
 		InterfacePtr<IShortcutManager> iShortcutManager(iActionManager, ::UseDefaultIID());
 		if (iShortcutManager == nil) break;
 
-		IShortcutContext* iShortcutContext = iShortcutManager->QueryShortcutContextByName(pMString_shortcutContext);
+		PMString pMString_shortcutContextLocalString;
+		{ // Translation
+			IShortcutContext* iShortcutContext = iShortcutManager->QueryShortcutContextByName(pMString_shortcutContext);
 
-		PMString pMString_shortcutContextLocalString = iShortcutContext->GetShortcutContextString();
+			PMString pMString_shortcutContextLocalString = iShortcutContext->GetShortcutContextString();
+		}
 
 		iShortcutManager->AddShortcut(int32_actionID, pMString_shortcutContextLocalString, virtualKey_keyOut, int16_modsOut);
-
-		/* 
-		// ---------------------------------------------------------------------------------------
-		// Update the current shortcuts to those in a file.
-		InterfacePtr<IKBSCPreferences> iKBSCPreferences(GetExecutionContextSession(), IID_IKBSCPREFERENCES); // No kDefaultIID
-		if (iKBSCPreferences == nil) break;
-
-		iKBSCPreferences->GetCurrentSetKBSCArea();
-
-		IShortcutManager::ShortcutFileError shortcutFileError = iShortcutManager->ChangeShortcutSetFile(
-			iShortcutManager->GetShortcutSetFilename(),
-			iKBSCPreferences->GetCurrentSetKBSCArea()
-		);
-		*/
 
 		result = kSuccess;
 		break;
