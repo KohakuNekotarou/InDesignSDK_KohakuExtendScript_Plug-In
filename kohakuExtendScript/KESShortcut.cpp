@@ -29,88 +29,24 @@ ErrorCode KESShortcut::RemoveContextShortcut(IScriptRequestData* iScriptRequestD
 
 	do
 	{
-
-
-
-
-
-		
-
-
-
-
-
-
-
-
-		// ---------------------------------------------------------------------------------------
-		// Get total number of ActionID.
-		InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
-		if (iApplication == nil) break;
-
-		InterfacePtr<IActionManager> iActionManager(iApplication->QueryActionManager());
-		if (iActionManager == nil) break;
-
-		int32 numActions = iActionManager->GetNumActions();
-
-		// ---------------------------------------------------------------------------------------
-		// Get all ActionID and name.
-		PMString allActionName;
-		for(int32 i = 0; i < numActions; i++)
-		{
-			ActionID actionID = iActionManager->GetNthAction(i);
-
-			PMString pMString_actionID;
-			pMString_actionID.AsNumber(actionID.Get());
-
-			allActionName.Append(pMString_actionID);
-			allActionName.Append(" , ");
-
-			PMString pMString_actionArea = iActionManager->GetActionArea(actionID);
-
-
-			Utils<IMenuUtils>()->TranslateMenuName(pMString_actionArea);
-
-			allActionName.Append(pMString_actionArea);
-			allActionName.Append(" , ");
-
-			PMString pMString_actionName = iActionManager->GetActionName(actionID);
-
-			Utils<IMenuUtils>()->TranslateMenuName(pMString_actionName);
-
-			// Remove '&' character.
-			Utils<IMenuUtils>()->StripMenuAccelerator(&pMString_actionName, LocaleSetting::GetLocale().GetUserInterfaceId());
-
-			allActionName.Append(pMString_actionName);
-			allActionName.Append("\n");
-		}
-
-		CAlert::InformationAlert(allActionName);
-
-
-
-
-
-		/*
-
 		ScriptData scriptData;
 
 		// ---------------------------------------------------------------------------------------
 		// Query shortcut context.
-		PMString pMString_context;
+		PMString pMString_shortcutContext;
 		if (iScriptRequestData->ExtractRequestData(p_KESRemoveContextShortcutContextString, scriptData) != kSuccess) break;
 
-		if (scriptData.GetPMString(pMString_context) != kSuccess) break;
+		if (scriptData.GetPMString(pMString_shortcutContext) != kSuccess) break;
 
 		// validate.
 		if (
-			pMString_context != "DialogContext" &&
-			pMString_context != "DefaultContext" &&
-			pMString_context != "TableContext" &&
-			pMString_context != "TableObjectContext" &&
-			pMString_context != "KBSCContext_XMLStructureContext" &&
-			pMString_context != "FullScreenContext" &&
-			pMString_context != "TextContext"
+			pMString_shortcutContext != "DialogContext" &&
+			pMString_shortcutContext != "DefaultContext" &&
+			pMString_shortcutContext != "TableContext" &&
+			pMString_shortcutContext != "TableObjectContext" &&
+			pMString_shortcutContext != "KBSCContext_XMLStructureContext" &&
+			pMString_shortcutContext != "FullScreenContext" &&
+			pMString_shortcutContext != "TextContext"
 			)
 		{
 			return Utils<IScriptErrorUtils>()->
@@ -147,9 +83,7 @@ ErrorCode KESShortcut::RemoveContextShortcut(IScriptRequestData* iScriptRequestD
 		InterfacePtr<IShortcutManager> iShortcutManager(iActionManager, ::UseDefaultIID());
 		if (iShortcutManager == nil) break;
 
-		iShortcutManager->RemoveShortcut(pMString_context, virtualKey_keyOut, int16_modsOut);
-		*/
-
+		iShortcutManager->RemoveShortcut(pMString_shortcutContext, virtualKey_keyOut, int16_modsOut);
 
 		status = kSuccess;
 

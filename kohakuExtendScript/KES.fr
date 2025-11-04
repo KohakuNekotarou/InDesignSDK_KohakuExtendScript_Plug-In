@@ -360,8 +360,45 @@ resource VersionedScriptElementInfo(1) // Do not duplicate numbers.
 
 				// Shortcut object.
 				RepresentObject{ kKESShortcutObjectScriptElement }, // Additional
+
+				// element defined by and handled by this plug-in (e_Create, "add")
+				CollectionMethod{ kKESShortcutCreateMethodScriptElement }, 
 			}
 		}
+
+		Method
+		{
+			kKESShortcutCreateMethodScriptElement,
+			e_Create,
+			"add",
+			"Create a new shortcut",
+			VoidType,
+			{ // list of method parameters.
+				p_KESShortcutContextString, // Parameter's ScriptID.
+				"shortcut context string", // Parameter's name.
+				"Shortcut context string", // Parameter's description.
+				StringType, // Parameter's type.
+				kRequired, // kOptional or kRequired.
+				p_KESShortcutString, // Parameter's ScriptID.
+				"shortcut string", // Parameter's name.
+				"Shortcut string", // Parameter's description.
+				StringType, // Parameter's type.
+				kRequired, // kOptional or kRequired.
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
 		
 		// ---------------------------------------------------------------------------------------
 		// Connects this plug-in's methods and properties to scripting.

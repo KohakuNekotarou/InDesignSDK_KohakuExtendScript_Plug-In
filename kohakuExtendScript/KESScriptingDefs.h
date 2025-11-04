@@ -55,9 +55,12 @@ enum KESScriptProperties
 	p_KESAccessContentLocationAtFrameOriginY = 'KALY',
 	p_KESNthLayoutIndex = 'KNLI',
 	p_KESAutoMatchScrollZoomAllLayout = 'KAML',
-	p_KESKeyboardShortcutForStyle = 'KSCS',
+	p_KESKeyboardShortcutForStyle = 'KSFS',
 	p_KESRemoveContextShortcutContextString = 'KRSC',
 	p_KESRemoveContextShortcutString = 'KRSS',
+
+	p_KESShortcutContextString = 'KSCS',
+	p_KESShortcutString = 'KScS',
 };
 
 #endif // __KESScriptingDefs_h__

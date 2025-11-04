@@ -82,6 +82,7 @@ DECLARE_PMID(kScriptInfoIDSpace, kKESAutoMatchScrollZoomAllLayoutPropertyScriptE
 DECLARE_PMID(kScriptInfoIDSpace, kKESKeyboardShortcutForStylePropertyScriptElement, kKESPrefix + 7)
 DECLARE_PMID(kScriptInfoIDSpace, kKESRemoveContextShortcutMethodScriptElement, kKESPrefix + 8)
 DECLARE_PMID(kScriptInfoIDSpace, kKESShortcutObjectScriptElement, kKESPrefix + 9)
+DECLARE_PMID(kScriptInfoIDSpace, kKESShortcutCreateMethodScriptElement, kKESPrefix + 10)
 
 // GUIDs for script objects:
 // Visual Studio : Tools > Generate GUID

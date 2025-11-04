@@ -12,8 +12,25 @@
 #include "IScriptRequestData.h"
 #include "IShortcutManager.h"
 
+
+
+#include "IMenuUtils.h"
+
+
+#include "IScriptErrorUtils.h"
+#include "IShortcutContext.h"
+#include "IShortcutManager.h"
+#include "IShortcutUtils.h"
+
+
+
+#include "IKBSCPreferences.h"
+
+
+
 // General includes:
 #include "CAlert.h" // CAlert::InformationAlert(Msg);
+#include "keyboarddefs.h" // for kVirtualNullKey.
 
 // Project includes:
 #include "KESID.h"
@@ -26,11 +43,9 @@ public:
 
 	KESShortcutScriptProvider(IPMUnknown* boss);
 
-	virtual ~KESShortcutScriptProvider();
+	virtual ErrorCode HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
-	//virtual ErrorCode HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
-
-	//virtual ErrorCode AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
+	virtual ErrorCode AccessProperty(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript);
 
 protected:
 
@@ -44,21 +59,105 @@ protected:
 // Make the implementation available to the application.
 CREATE_PMINTERFACE(KESShortcutScriptProvider, kKESShortcutScriptProviderImpl)
 
-KESShortcutScriptProvider::KESShortcutScriptProvider(IPMUnknown* boss) :
-	RepresentScriptProvider(boss)
-{
-	// Do nothing
-}
+KESShortcutScriptProvider::KESShortcutScriptProvider(IPMUnknown* boss) : RepresentScriptProvider(boss){}
 
-KESShortcutScriptProvider::~KESShortcutScriptProvider() {}
-/*
 ErrorCode KESShortcutScriptProvider::HandleMethod(ScriptID scriptID, IScriptRequestData* iScriptRequestData, IScript* iScript)
 {
 	ErrorCode result = kFailure;
-	do
-	{
 
-	} while (false);
+	switch (scriptID.Get())
+	{
+	case e_Create:
+	{
+		ScriptData scriptData;
+		// ---------------------------------------------------------------------------------------
+		// Query shortcut context.
+		PMString pMString_shortcutContext;
+		if (iScriptRequestData->ExtractRequestData(p_KESShortcutContextString, scriptData) == kFailure) break;
+
+		if (scriptData.GetPMString(pMString_shortcutContext) == kFailure) break;
+
+		// validate.
+		if (
+			pMString_shortcutContext != "DialogContext" &&
+			pMString_shortcutContext != "DefaultContext" &&
+			pMString_shortcutContext != "TableContext" &&
+			pMString_shortcutContext != "TableObjectContext" &&
+			pMString_shortcutContext != "KBSCContext_XMLStructureContext" &&
+			pMString_shortcutContext != "FullScreenContext" &&
+			pMString_shortcutContext != "TextContext"
+			)
+		{
+			return Utils<IScriptErrorUtils>()->
+				SetMissingRequiredParameterErrorData(iScriptRequestData, p_KESRemoveContextShortcutContextString);
+		}
+
+		// ---------------------------------------------------------------------------------------
+		// Query shortcut string.
+		PMString pMString_shortcut;
+		if (iScriptRequestData->ExtractRequestData(p_KESShortcutString, scriptData) != kSuccess) break;
+
+		if (scriptData.GetPMString(pMString_shortcut) != kSuccess) break;
+
+		// ---------------------------------------------------------------------------------------
+		// Parse shortcut string.
+		VirtualKey virtualKey_keyOut;
+		int16 int16_modsOut;
+		Utils<IShortcutUtils>()->ParseShortcutString(pMString_shortcut, &virtualKey_keyOut, &int16_modsOut);
+
+		if (virtualKey_keyOut == kVirtualNullKey)
+		{
+			return Utils<IScriptErrorUtils>()->
+				SetMissingRequiredParameterErrorData(iScriptRequestData, p_KESRemoveContextShortcutString);
+		}
+
+		// ---------------------------------------------------------------------------------------
+		// Get actionID.
+		ScriptObject scriptObject = iScript->GetScriptObject(iScriptRequestData->GetRequestContext());
+
+		scriptData = scriptObject.specifierData;
+
+		int32 int32_actionID;
+		scriptData.GetInt32(&int32_actionID);
+
+		// ---------------------------------------------------------------------------------------
+		// Add shortcut.
+		InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
+		if (iApplication == nil) break;
+
+		InterfacePtr<IActionManager> iActionManager(iApplication->QueryActionManager());
+		if (iActionManager == nil) break;
+
+		InterfacePtr<IShortcutManager> iShortcutManager(iActionManager, ::UseDefaultIID());
+		if (iShortcutManager == nil) break;
+
+		IShortcutContext* iShortcutContext = iShortcutManager->QueryShortcutContextByName(pMString_shortcutContext);
+
+		PMString pMString_shortcutContextLocalString = iShortcutContext->GetShortcutContextString();
+
+		iShortcutManager->AddShortcut(int32_actionID, pMString_shortcutContextLocalString, virtualKey_keyOut, int16_modsOut);
+
+		/* 
+		// ---------------------------------------------------------------------------------------
+		// Update the current shortcuts to those in a file.
+		InterfacePtr<IKBSCPreferences> iKBSCPreferences(GetExecutionContextSession(), IID_IKBSCPREFERENCES); // No kDefaultIID
+		if (iKBSCPreferences == nil) break;
+
+		iKBSCPreferences->GetCurrentSetKBSCArea();
+
+		IShortcutManager::ShortcutFileError shortcutFileError = iShortcutManager->ChangeShortcutSetFile(
+			iShortcutManager->GetShortcutSetFilename(),
+			iKBSCPreferences->GetCurrentSetKBSCArea()
+		);
+		*/
+
+		result = kSuccess;
+		break;
+	}
+	default:
+		return RepresentScriptProvider::HandleMethod(scriptID, iScriptRequestData, iScript);
+	}
+
 	return result;
 }
 
@@ -71,7 +170,7 @@ ErrorCode KESShortcutScriptProvider::AccessProperty(ScriptID scriptID, IScriptRe
 
 	return result;
 }
-*/
+
 // GetNumObjects
 // For example,
 // app.menuActions[0].shortcuts[0]
@@ -95,7 +194,7 @@ int32 KESShortcutScriptProvider::GetNumObjects(const IScriptRequestData* iScript
 		scriptData.GetInt32(&int32_id);
 
 		// ---------------------------------------------------------------------------------------
-		// Get actionID.
+		// Get num shortcut for action.
 		InterfacePtr<IApplication> iApplication(GetExecutionContextSession()->QueryApplication());
 		if (iApplication == nil) break;
 
