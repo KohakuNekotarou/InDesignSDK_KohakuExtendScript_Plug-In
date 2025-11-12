@@ -18,6 +18,7 @@ note:<br>
 use ScriptListData<br>
 https://community.adobe.com/t5/indesign-discussions/cs5-unable-to-find-local-new-delete-g/m-p/2713086<br>
 Visual Studio : <br>
+Right-click on the project<br>
 Properties > Configuration Properties > Linker > Input > Additional Dependencies<br>
 
 ## extendScript for JavaScript
