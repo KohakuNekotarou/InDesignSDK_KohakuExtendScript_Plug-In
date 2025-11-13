@@ -20,7 +20,7 @@ https://community.adobe.com/t5/indesign-discussions/cs5-unable-to-find-local-new
 Visual Studio : <br>
 Right-click on the project<br>
 Properties > Configuration Properties > Linker > Input > Additional Dependencies<br>
-
+SDK\build\win\objrx64\ASLSupport.lib
 ## extendScript for JavaScript
 ```
 // Auto match scroll zoom all layout. 
